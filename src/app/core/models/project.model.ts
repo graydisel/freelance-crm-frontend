@@ -1,8 +1,8 @@
-export interface  ITask {
+export interface ITask {
   id: string;
   title: string;
   description: string;
-  status: "todo" | "in-progress" | "done";
+  status: 'todo' | 'in-progress' | 'done';
 }
 
 export interface IProject {

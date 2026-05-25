@@ -24,6 +24,12 @@ export class Project {
           description: 'Connect the database',
           status: 'todo',
         },
+        {
+          id: 't3',
+          title: 'Design',
+          description: 'Make a simple easy design',
+          status: 'done',
+        }
       ],
     },
     {
