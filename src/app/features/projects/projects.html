@@ -10,7 +10,7 @@
 
       <p class="project-client">Client: {{ project.clientName }}</p>
 
-      <button class="btn-toggle-task" (click)="toggleForm(project.id)">
+      <button class="btn-toggle-task" (click)="startEditForm(project.id)">
         {{activeProjectId === project.id ? 'Cancel' : 'Add a task'}}
       </button>
 
@@ -49,6 +49,10 @@
                 <div class="task-item">
                   <h5>{{ task.title }}</h5>
                   <p>{{ task.description }}</p>
+                  <button class="btn-status-task"
+                          (click)="changeStatus(project.id, task.id, task.status)">
+                    Put "In Progress" >
+                  </button>
                 </div>
               }
             }
@@ -63,6 +67,10 @@
                 <div class="task-item">
                   <h5>{{ task.title }}</h5>
                   <p>{{ task.description }}</p>
+                  <button class="btn-status-task visual-done"
+                          (click)="changeStatus(project.id, task.id, task.status)">
+                    Put "Done" >
+                  </button>
                 </div>
               }
             }

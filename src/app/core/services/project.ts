@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { IProject } from '../models/project.model';
+import { IProject, ITask } from '../models/project.model';
 
 @Injectable({
   providedIn: 'root',
@@ -51,4 +51,30 @@ export class Project {
   addProject (project: IProject) {
     this.projects.update(currentProjects => [...currentProjects, project]);
   };
+
+  addTask(projectId: string, title: string, description: string) {
+    const newTask: ITask = {
+      id: crypto.randomUUID(),
+      title: title,
+      description: description,
+      status: 'todo' as const,
+    }
+
+    this.projects.update(currentProjects =>
+      currentProjects.map(project => {
+        if (project.id === projectId) {
+          project.tasks = [newTask, ...project.tasks];
+        }
+        return project;
+      }))
+  }
+
+  updateTaskStatus(projectId: string, taskId: string, newStatus: ITask['status']) {
+    this.projects.update(currentProjects => currentProjects.map(project => {
+      if (project.id === projectId) {
+        project.tasks.map(task => task.id === taskId ? task.status = newStatus : task.status);
+      }
+      return project
+    }))
+  }
 }

@@ -181,4 +181,30 @@
     font-size: 0.85rem;
     color: #64748b;
   }
+
+  .btn-status-task {
+    margin-top: 10px;
+    background: #eff6ff;
+    color: #2563eb;
+    border: 1px solid #bfdbfe;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    font-weight: 500;
+    width: 100%;
+    text-align: left;
+    transition: background 0.2s;
+
+    &:hover {
+      background: #dbeafe;
+    }
+
+    &.visual-done {
+      background: #ecfdf5;
+      color: #059669;
+      border-color: #a7f3d0;
+      &:hover { background: #d1fae5; }
+    }
+  }
 }

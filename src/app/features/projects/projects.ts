@@ -24,7 +24,7 @@ export class Projects {
 
   protected activeProjectId: string | null = null;
 
-  toggleForm(projectId: string) {
+  startEditForm(projectId: string) {
     if (this.activeProjectId === projectId) {
       this.activeProjectId = null;
     } else {
@@ -35,29 +35,22 @@ export class Projects {
 
   onSubmitTask(projectId: string) {
     if (this.taskForm.valid) {
-      const formValue = this.taskForm.getRawValue();
-
-      const newTask = {
-        id: crypto.randomUUID(),
-        title: formValue.title,
-        description: formValue.description,
-        status: 'todo' as const,
-      };
-
-      this.projectService.projects.update((currentProjects) =>
-        currentProjects.map((project) => {
-          if (project.id === projectId) {
-            return {
-              ...project,
-              tasks: [...project.tasks, newTask],
-            };
-          }
-          return project;
-        }),
-      );
-
+      const { title, description } = this.taskForm.getRawValue();
+      this.projectService.addTask(projectId, title, description);
       this.activeProjectId = null;
       this.taskForm.reset();
     }
+  }
+
+  changeStatus(projectId: string, taskId: string, currentStatus: ITask['status'])  {
+    let nextStatus: ITask['status'];
+
+    if (currentStatus === 'todo') {
+      nextStatus = 'in-progress';
+    } else if (currentStatus === 'in-progress') {
+      nextStatus = 'done';
+    } else return;
+
+    this.projectService.updateTaskStatus(projectId, taskId, nextStatus);
   }
 }
