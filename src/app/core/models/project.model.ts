@@ -3,6 +3,7 @@ export interface ITask {
   title: string;
   description: string;
   status: 'todo' | 'in-progress' | 'done';
+  project: IProject;
 }
 
 export interface IProject {

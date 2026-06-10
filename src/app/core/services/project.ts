@@ -1,80 +1,83 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { IProject, ITask } from '../models/project.model';
+import { HttpClient, provideHttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Project {
-  projects = signal<IProject[]>([
-    {
-      id: '1',
-      name: 'Book store web site',
-      clientName: 'Ivan Ivanov',
-      budget: 500,
-      tasks: [
-        {
-          id: 't1',
-          title: 'Configure routing',
-          description: 'Make switching of pages',
-          status: 'done',
-        },
-        {
-          id: 't2',
-          title: 'Insert Firebase',
-          description: 'Connect the database',
-          status: 'todo',
-        },
-        {
-          id: 't3',
-          title: 'Design',
-          description: 'Make a simple easy design',
-          status: 'done',
-        }
-      ],
-    },
-    {
-      id: '2',
-      name: 'Mobile app (Fitness)',
-      clientName: 'ООО Sport',
-      budget: 1200,
-      tasks: [
-        {
-          id: 't3',
-          title: 'Make UI design',
-          description: 'Make pages on Figma',
-          status: 'in-progress',
-        },
-      ],
-    },
-  ]);
+  projects = signal<IProject[]>([]);
 
-  addProject (project: IProject) {
-    this.projects.update(currentProjects => [...currentProjects, project]);
-  };
+  http = inject(HttpClient);
+  loading = false;
+  error = '';
+  baseUrl = 'http://localhost:3000';
+
+  async loadProjects() {
+    this.loading = true;
+    this.error = '';
+    this.http.get<IProject[]>(`${this.baseUrl}/projects`).subscribe({
+      next: (data) => {
+        this.projects.set(data);
+        this.loading = false;
+      },
+      error: (error) => {
+        this.error = error;
+        this.loading = false;
+      },
+    });
+  }
+
+  addProject(project: IProject) {
+    this.projects.update((currentProjects) => [...currentProjects, project]);
+  }
 
   addTask(projectId: string, title: string, description: string) {
-    const newTask: ITask = {
-      id: crypto.randomUUID(),
+    this.http.post<ITask>(`${this.baseUrl}/tasks`, {
+      projectId: projectId,
       title: title,
       description: description,
-      status: 'todo' as const,
-    }
-
-    this.projects.update(currentProjects =>
-      currentProjects.map(project => {
-        if (project.id === projectId) {
-          project.tasks = [newTask, ...project.tasks];
+    })
+      .subscribe({
+        next: (createdTask) => {
+          this.projects.update((currentProjects) =>
+            currentProjects.map((project) => {
+              if (project.id === projectId) {
+                return {
+                    ...project,
+                  tasks: [createdTask, ...project.tasks],
+                }
+              }
+              return project;
+            }),
+          );
+        },
+        error: (error) => this.error = error,
         }
-        return project;
-      }))
+      );
   }
 
   updateTaskStatus(projectId: string, taskId: string, newStatus: ITask['status']) {
-    this.projects.update(currentProjects => currentProjects.map(project => {
-      if (project.id === projectId) {
-        project.tasks.map(task => task.id === taskId ? task.status = newStatus : task.status);
-      }
-      return project
-    }))
+    this.http.patch<ITask>(`${this.baseUrl}/tasks/${taskId}/status`, {
+      newStatus: newStatus
+    })
+      .subscribe({
+        next: (updatedTask) => {
+          this.projects.update((currentProjects) =>
+            currentProjects.map((project) => {
+              if (project.id === projectId) {
+                return {
+                  ...project,
+                  tasks: project.tasks.map((task) =>
+                    task.id === taskId ? { ...task, status: newStatus } : task
+                  )
+                };
+              }
+              return project;
+            })
+          );
+        },
+        error: (error) => this.error = error
+      });
   }
 }

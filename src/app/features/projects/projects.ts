@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, computed, OnInit } from '@angular/core';
 import { inject } from '@angular/core';
-import { Project, Project as ProjectService } from '../../core/services/project';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ITask } from '../../core/models/project.model';
+import { Project as ProjectService } from '../../core/services/project';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { IProject, ITask } from '../../core/models/project.model';
 
 @Component({
   selector: 'app-projects',
@@ -11,7 +11,7 @@ import { ITask } from '../../core/models/project.model';
   templateUrl: './projects.html',
   styleUrl: './projects.scss',
 })
-export class Projects {
+export class Projects implements OnInit {
   protected readonly projectService = inject(ProjectService);
   protected readonly projects = this.projectService.projects;
 
@@ -23,6 +23,8 @@ export class Projects {
   });
 
   protected activeProjectId: string | null = null;
+
+  protected readonly loadedProjects = computed(() => this.projects());
 
   startEditForm(projectId: string) {
     if (this.activeProjectId === projectId) {
@@ -52,5 +54,9 @@ export class Projects {
     } else return;
 
     this.projectService.updateTaskStatus(projectId, taskId, nextStatus);
+  }
+
+  ngOnInit() {
+    this.projectService.loadProjects();
   }
 }

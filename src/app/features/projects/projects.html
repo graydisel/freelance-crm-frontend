@@ -1,7 +1,7 @@
 <div class="projects-container">
   <h2>My projects:</h2>
 
-  @for (project of projects(); track project.id) {
+  @for (project of loadedProjects(); track project.id) {
     <div class="project-card">
       <div class="project-header">
         <h3>{{project.name}}</h3>
@@ -37,7 +37,7 @@
         </form>
       }
 
-      <h4 class="board-title">Kanban Desk:</h4>
+      <h4 class="board-title">Kanban Board:</h4>
 
       <div class="kanban-board">
         <div class="kanban-column">
