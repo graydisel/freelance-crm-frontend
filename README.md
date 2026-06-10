@@ -1,59 +1,37 @@
-# FreelanceCrm
+# Project Description: CRM Kanban System for Project Management
+Full-Stack Web Application designed for tracking projects and managing tasks on a real-time Kanban board. Built using a robust architecture featuring Angular 17+ 
+(Frontend), NestJS (Backend), and PostgreSQL (Database).
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.12.
+## 1. Target Audience
+The platform is engineered for small-to-medium businesses (SMBs), freelancers, digital agencies, and project managers who require a centralized, lightweight, and structured environment to streamline operations.
 
-## Development server
+* Freelancers and Contractors: Allows them to organize incoming client requests, track financial budgets per contract, and monitor tasks without administrative overhead.
 
-To start a local development server, run:
+* Project Managers and Team Leads: Provides full visibility over team velocity, allowing them to allocate resources effectively, prevent task stagnation, and break down projects into actionable tasks.
 
-```bash
-ng serve
-```
+* Executives and Business Owners: The future Dashboard view caters to strategic decision-makers by aggregating high-level financial health (total contract values) and team efficiency metrics across all operations at a single glance.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 2. Core Functionality & Technical Features
+ ### Frontend Architecture (Angular)
+* **Dynamic Kanban Workspace:** Projects are represented as modular cards containing their own dedicated Kanban boards with classic workflow columns (To Do, In Progress, Done) for seamless task transition.
 
-## Code scaffolding
+* **Modern State Management (Angular Signals):** Leverages fine-grained reactivity via Signals, eliminating heavy zone-based change detection cycles. This ensures immediate UI updates and ultra-fast rendering performance.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+* **Smart Network Caching:** Optimized request handling that prevents redundant HTTP GET requests to the server when users navigate between views, preserving client-side application state.
 
-```bash
-ng generate component component-name
-```
+* **Robust Dynamic Validation (Reactive Forms):** Fully enforces strict client-side data entry rules during task creation (e.g., minimum character length, required fields) preventing broken payloads from hitting the network layer.
+  ### Backend & Database Architecture (NestJS & PostgreSQL) 
+* Enterprise-Grade RESTful API: Provides declarative, highly structured REST endpoints handling full CRUD functionalities for project tracking and task workflows (GET, POST, PUT, PATCH).
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+* Relational Data Integrity: Features a true relational database schema mapping a One-to-Many relationship between projects and tasks. Configured with automated cascade deletion rules to maintain perfect relational sanitation.
 
-```bash
-ng generate --help
-```
+* Database-Level Constraint Validation (SQL Enum): Task state is locked down utilizing an strict native PostgreSQL enum type. This completely safeguards the dataset against corrupted, invalid, or loose string injections from malicious API calls.
 
-## Building
+* Isolated Environment Configuration: Runtime variables, database ports, and private cloud connection strings are entirely decoupled from the source code using standard .env configuration via @nestjs/config.
 
-To build the project run:
+## 3. Complete Tech Stack
+* Frontend Ecosystem: Angular 17+, TypeScript, RxJS (HttpClient observables), Angular Signals, Reactive Forms, SCSS.
 
-```bash
-ng build
-```
+* Backend Ecosystem: NestJS, TypeORM (Object-Relational Mapping), TypeScript, Node.js, @nestjs/config.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+* Database Infrastructure: PostgreSQL (hosted on Neon.tech cloud serverless platform).

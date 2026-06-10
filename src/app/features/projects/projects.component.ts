@@ -8,10 +8,10 @@ import { IProject, ITask } from '../../core/models/project.model';
   selector: 'app-projects',
   standalone: true,
   imports: [ReactiveFormsModule],
-  templateUrl: './projects.html',
-  styleUrl: './projects.scss',
+  templateUrl: './projects.component.html',
+  styleUrl: './projects.component.scss',
 })
-export class Projects implements OnInit {
+export class ProjectsComponent implements OnInit {
   protected readonly projectService = inject(ProjectService);
   protected readonly projects = this.projectService.projects;
 
