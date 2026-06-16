@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../../core/services/auth.service';
+import { AuthService } from '../../../core/services/auth/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,14 +10,14 @@ import { Router } from '@angular/router';
   styleUrl: './login.page.scss',
 })
 export class LoginPage {
-  private fb = inject(NonNullableFormBuilder);
-  private authService = inject(AuthService);
-  private router = inject(Router);
+  protected readonly fb = inject(NonNullableFormBuilder);
+  protected readonly authService = inject(AuthService);
+  protected readonly router = inject(Router);
 
   isLoading = signal(false);
   errorMessage = '';
 
-  protected readonly loginForm = this.fb.group({
+  loginForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
   });

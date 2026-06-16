@@ -1,0 +1,33 @@
+<div class="min-h-screen flex items-center justify-center bg-slate-50 px-4">
+  <div class="max-w-md w-full text-center space-y-6 bg-taupe-200 p-10 rounded-2xl shadow-xl border border-taupe-100">
+
+    <div class="relative">
+      <h1 class="text-9xl font-black tracking-tight text-lime-700/20 select-none">404</h1>
+      <p class="absolute inset-0 flex items-center justify-center text-2xl font-bold text-taupe-500 mt-4">
+        Page Not Found
+      </p>
+    </div>
+
+    <div class="space-y-2">
+      <h2 class="text-xl font-bold text-dark">Oops! Lost in Space?</h2>
+      <p class="text-sm text-slate-600 max-w-xs mx-auto">
+        The page you are looking for doesn't exist or has been moved to another workspace.
+      </p>
+    </div>
+
+    <div class="pt-4 flex flex-col sm:flex-row gap-3 justify-center">
+      <button
+        (click)="goHome()"
+        class="inline-flex justify-center items-center py-2.5 px-5 text-sm font-medium rounded-lg text-white bg-lime-700 hover:bg-lime-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-600 transition shadow-sm">
+        Go to Workspace
+      </button>
+
+      <button
+        (click)="goBack()"
+        class="inline-flex justify-center items-center py-2.5 px-5 text-sm font-medium rounded-lg text-dark bg-white border border-mauve-300 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-mauve-500 transition shadow-sm">
+        Go Back
+      </button>
+    </div>
+
+  </div>
+</div>
