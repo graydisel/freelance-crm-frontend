@@ -1,0 +1,112 @@
+// ─── Color palette ───────────────────────────────────────────────────────────
+$color-bg-main: #f8fafc; // slate-50
+$color-bg-sidebar: #d9d2c8; // taupe-200
+$color-bg-card: #ffffff;
+$color-bg-muted: #f1f5f9; // slate-100
+$color-bg-taupe-light: #ebe6e0; // taupe-100
+
+$color-border-accent: #c8b4c0; // mauve-300
+$color-border-taupe: #ebe6e0; // taupe-100
+$color-border-subtle: rgba(200, 180, 192, 0.4);
+
+$color-primary: #4d7c0f; // lime-700
+$color-primary-hover: #3f6212; // lime-800
+$color-primary-focus: #65a30d; // lime-600
+$color-primary-light: #ecfccb; // lime-100
+$color-primary-text: #365314; // lime-800
+
+$color-text-dark: #1e293b; // dark / slate-800
+$color-text-heading: #0f172a; // slate-900
+$color-text-muted: #64748b; // slate-600
+$color-text-accent: #7a6f63; // taupe-500
+$color-text-placeholder: #94a3b8; // slate-400
+$color-text-light: #cbd5e1; // slate-300
+
+$color-danger: #ef4444; // red-500
+$color-danger-bg: rgba(239, 68, 68, 0.1);
+$color-danger-hover: #dc2626; // red-600
+
+$color-success-bg: #f0fdf4; // green-50
+$color-success-text: #15803d; // green-700
+$color-success-ring: rgba(22, 163, 74, 0.2);
+
+$color-warning-bg: #fffbeb; // amber-50
+$color-warning-text: #b45309; // amber-700
+$color-warning-ring: rgba(217, 119, 6, 0.2);
+$color-warning-dark: #b45309; // amber-700
+
+$color-overlay: rgba(15, 23, 42, 0.4);
+
+$color-focus-mauve: #9a7d8f; // mauve-500
+
+// ─── Spacing ─────────────────────────────────────────────────────────────────
+$space-xs: 0.25rem;
+$space-sm: 0.5rem;
+$space-md: 0.75rem;
+$space-lg: 1rem;
+$space-xl: 1.5rem;
+$space-2xl: 2rem;
+$space-3xl: 2.5rem;
+
+// ─── Radius ──────────────────────────────────────────────────────────────────
+$radius-md: 0.5rem; // rounded-lg
+$radius-lg: 0.75rem; // rounded-xl
+$radius-xl: 1rem; // rounded-2xl
+$radius-full: 9999px;
+
+// ─── Typography ──────────────────────────────────────────────────────────────
+$font-family-base: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+$font-size-xs: 0.75rem;
+$font-size-sm: 0.875rem;
+$font-size-base: 1rem;
+$font-size-lg: 1.125rem;
+$font-size-xl: 1.25rem;
+$font-size-2xl: 1.875rem;
+$font-size-3xl: 1.875rem;
+
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+$font-weight-extrabold: 800;
+
+// ─── Layout ──────────────────────────────────────────────────────────────────
+$sidebar-width: 16rem;
+$sidebar-width-collapsed: 5rem;
+$mobile-header-height: 4rem;
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+$shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+
+// ─── Motion ──────────────────────────────────────────────────────────────────
+$transition-base: all 0.3s ease-in-out;
+$transition-fast: all 0.2s ease-in-out;
+$transition-progress: width 0.5s ease-in-out;
+
+// ─── Breakpoints ─────────────────────────────────────────────────────────────
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+
+@mixin md-up {
+  @media (min-width: $breakpoint-md) {
+    @content;
+  }
+}
+
+@mixin lg-up {
+  @media (min-width: $breakpoint-lg) {
+    @content;
+  }
+}
+
+@mixin xl-up {
+  @media (min-width: $breakpoint-xl) {
+    @content;
+  }
+}
+
+@mixin focus-ring($color: $color-primary-focus) {
+  outline: none;
+  box-shadow: 0 0 0 2px $color-bg-main, 0 0 0 4px $color;
+}

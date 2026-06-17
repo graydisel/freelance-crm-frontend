@@ -10,6 +10,8 @@ import { Observable, tap } from 'rxjs';
 export class AuthService {
   private http = inject(HttpClient);
   private readonly API_URL = `${environment.apiUrl}/auth`;
+  private readonly USER_KEY = environment.userKey;
+  private readonly TOKEN_KEY = environment.token;
 
   currentUser = signal<AuthResponse['user'] | null>(null);
 
@@ -23,8 +25,8 @@ export class AuthService {
   login(email: string, password: string): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.API_URL}/login`, { email, password }).pipe(
       tap((response) => {
-        localStorage.setItem('crm_token', response.access_token);
-        localStorage.setItem('crm_user', JSON.stringify(response.user));
+        localStorage.setItem(this.TOKEN_KEY, response.access_token);
+        localStorage.setItem(this.USER_KEY, JSON.stringify(response.user));
 
         this.currentUser.set(response.user);
       }),
@@ -32,12 +34,17 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem('crm_token');
-    localStorage.removeItem('crm_user');
+    localStorage.removeItem(this.TOKEN_KEY);
+    localStorage.removeItem(this.USER_KEY);
     this.currentUser.set(null);
+
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem(this.TOKEN_KEY);
   }
 
   get isAuthenticated(): boolean {
-    return !!localStorage.getItem('crm_token');
+    return !!localStorage.getItem(this.TOKEN_KEY);
   }
 }

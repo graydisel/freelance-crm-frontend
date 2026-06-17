@@ -1,0 +1,53 @@
+@use 'variables' as *;
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.crm-dashboard {
+  &__metric-card {
+    padding: $space-xl;
+    background-color: $color-bg-card;
+    border: 1px solid $color-border-subtle;
+    border-radius: $radius-xl;
+    box-shadow: $shadow-sm;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  &__metric-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  &__metric-label {
+    margin: 0;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $color-text-muted;
+  }
+
+  &__metric-value {
+    margin: $space-md 0 0;
+    font-size: $font-size-3xl;
+    font-weight: $font-weight-extrabold;
+    color: $color-text-heading;
+    letter-spacing: -0.025em;
+  }
+
+  &__metric-total {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $color-text-placeholder;
+  }
+
+  &__metric-hint {
+    margin: $space-xs 0 0;
+    font-size: $font-size-sm;
+    color: $color-text-accent;
+  }
+}

@@ -1,0 +1,41 @@
+@use 'variables' as *;
+
+.crm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-sm;
+  font-weight: $font-weight-medium;
+  line-height: 1.25;
+  cursor: pointer;
+  border: 1px solid transparent;
+  box-shadow: $shadow-sm;
+  transition: $transition-base;
+
+  &--sm { padding: 0.4rem 0.8rem; font-size: $font-size-xs; border-radius: $radius-md; }
+  &--md { padding: 0.625rem $space-lg; font-size: $font-size-sm; border-radius: $radius-md; }
+  &--lg { padding: 0.8rem $space-xl; font-size: $font-size-base; border-radius: $radius-lg; width: 100%; }
+
+  &--primary {
+    color: #ffffff;
+    background-color: $color-primary;
+    &:hover:not([disabled]) { background-color: $color-primary-hover; }
+  }
+  &--secondary {
+    color: $color-text-dark;
+    background-color: $color-bg-muted;
+    border-color: $color-border-subtle;
+    &:hover:not([disabled]) { background-color: $color-bg-taupe-light; }
+  }
+  &--danger {
+    color: #ffffff;
+    background-color: $color-danger;
+    &:hover:not([disabled]) { background-color: $color-danger-hover; }
+  }
+
+  &:disabled,
+  &--loading {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}

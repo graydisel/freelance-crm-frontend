@@ -1,0 +1,103 @@
+@use 'variables' as *;
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.crm-dashboard {
+  &__panel {
+    width: 100%;
+    overflow: hidden;
+    background-color: $color-bg-card;
+    border: 1px solid $color-border-subtle;
+    border-radius: $radius-xl;
+    box-shadow: $shadow-sm;
+  }
+
+  &__panel-header {
+    padding: 1.25rem $space-xl;
+    border-bottom: 1px solid rgba($color-border-accent, 0.3);
+  }
+
+  &__panel-title {
+    margin: 0;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+    color: $color-text-heading;
+  }
+
+  &__panel-subtitle {
+    margin: 0.125rem 0 0;
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+  }
+
+  &__project-list {
+    margin: 0;
+    padding: $space-sm $space-xl;
+    list-style: none;
+  }
+
+  &__project-item {
+    padding: $space-lg 0;
+    border-top: 1px solid rgba($color-border-accent, 0.2);
+
+    &:first-child {
+      border-top: none;
+    }
+  }
+
+  &__project-header {
+    display: flex;
+    gap: $space-md;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: $space-sm;
+  }
+
+  &__project-info {
+    min-width: 0;
+  }
+
+  &__project-name {
+    margin: 0;
+    overflow: hidden;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: $color-text-heading;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__project-client {
+    margin: 0;
+    overflow: hidden;
+    font-size: $font-size-xs;
+    color: $color-text-accent;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__project-count {
+    flex-shrink: 0;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    color: $color-text-muted;
+  }
+
+  &__progress-track {
+    width: 100%;
+    height: 0.5rem;
+    overflow: hidden;
+    background-color: $color-bg-muted;
+    border-radius: $radius-full;
+  }
+
+  &__progress-fill {
+    height: 100%;
+    background-color: $color-primary;
+    border-radius: $radius-full;
+    transition: $transition-progress;
+  }
+}

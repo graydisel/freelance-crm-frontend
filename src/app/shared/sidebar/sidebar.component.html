@@ -1,1 +1,133 @@
-<p>sidebar works!</p>
+<!-- Mobile top bar -->
+<header class="crm-sidebar__mobile-bar">
+  <button
+    type="button"
+    class="crm-sidebar__menu-btn"
+    (click)="toggleMobileMenu()"
+    aria-label="Open navigation menu">
+    <span class="crm-icon crm-icon--menu" aria-hidden="true"></span>
+  </button>
+
+  <div class="crm-sidebar__mobile-brand">
+    <span class="crm-sidebar__logo-mark">FC</span>
+    <span class="crm-sidebar__mobile-title">Freelance CRM</span>
+  </div>
+</header>
+
+<!-- Desktop sidebar -->
+<aside
+  class="crm-sidebar__panel"
+  [class.crm-sidebar__panel--collapsed]="isDesktopCollapsed()">
+  <div class="crm-sidebar__brand">
+    @if (!isDesktopCollapsed()) {
+      <div class="crm-sidebar__brand-info">
+        <span class="crm-sidebar__logo-mark">FC</span>
+        <div class="crm-sidebar__brand-text">
+          <h1 class="crm-sidebar__title">Freelance CRM</h1>
+          <p class="crm-sidebar__tagline">Workspace</p>
+        </div>
+      </div>
+    }
+
+    <button
+      type="button"
+      class="crm-sidebar__toggle"
+      [class.crm-sidebar__toggle--centered]="isDesktopCollapsed()"
+      (click)="toggleDesktopSidebar()"
+      title="Toggle sidebar"
+      aria-label="Toggle sidebar">
+      <span
+        class="crm-icon crm-icon--chevron"
+        [class.crm-icon--chevron-flipped]="!isDesktopCollapsed()"
+        aria-hidden="true"></span>
+    </button>
+  </div>
+
+  <nav class="crm-sidebar__nav" aria-label="Main navigation">
+    @for (item of navItems; track item.label) {
+      <a
+        [routerLink]="item.route"
+        routerLinkActive="crm-sidebar__nav-link--active"
+        [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }"
+        [title]="item.label"
+        class="crm-sidebar__nav-link">
+        <span class="crm-sidebar__nav-icon" aria-hidden="true">{{ item.label.charAt(0) }}</span>
+        @if (!isDesktopCollapsed()) {
+          <span class="crm-sidebar__nav-label">{{ item.label }}</span>
+        }
+      </a>
+    }
+  </nav>
+
+  <div class="crm-sidebar__footer">
+    <div
+      class="crm-sidebar__profile"
+      [class.crm-sidebar__profile--collapsed]="isDesktopCollapsed()">
+      @if (!isDesktopCollapsed()) {
+        <div class="crm-sidebar__profile-info">
+          <span class="crm-sidebar__avatar">{{ userDisplayName().charAt(0) }}</span>
+          <div class="crm-sidebar__profile-text">
+            <p class="crm-sidebar__profile-name">{{ userDisplayName() }}</p>
+            <p class="crm-sidebar__profile-role">{{ userRole() }}</p>
+          </div>
+        </div>
+      }
+
+      <button
+        type="button"
+        class="crm-sidebar__logout"
+        [class.crm-sidebar__logout--centered]="isDesktopCollapsed()"
+        (click)="logout()"
+        title="Logout"
+        aria-label="Logout">
+        <span class="crm-icon crm-icon--logout" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+</aside>
+
+<!-- Mobile overlay -->
+@if (isMobileMenuOpen()) {
+  <div
+    class="crm-sidebar__overlay"
+    (click)="closeMobileMenu()"
+    aria-hidden="true"></div>
+}
+
+<!-- Mobile drawer -->
+<aside
+  class="crm-sidebar__drawer"
+  [class.crm-sidebar__drawer--open]="isMobileMenuOpen()"
+  aria-label="Mobile navigation">
+  <div class="crm-sidebar__drawer-header">
+    <span class="crm-sidebar__drawer-title">Navigation</span>
+    <button
+      type="button"
+      class="crm-sidebar__close-btn"
+      (click)="closeMobileMenu()"
+      aria-label="Close navigation menu">
+      <span class="crm-icon crm-icon--close" aria-hidden="true"></span>
+    </button>
+  </div>
+
+  <nav class="crm-sidebar__drawer-nav">
+    @for (item of navItems; track item.label) {
+      <a
+        [routerLink]="item.route"
+        routerLinkActive="crm-sidebar__nav-link--active"
+        (click)="closeMobileMenu()"
+        class="crm-sidebar__nav-link">
+        <span class="crm-sidebar__nav-icon" aria-hidden="true">{{ item.label.charAt(0) }}</span>
+        <span class="crm-sidebar__nav-label">{{ item.label }}</span>
+      </a>
+    }
+  </nav>
+
+  <div class="crm-sidebar__drawer-footer">
+    <div class="crm-sidebar__drawer-profile">
+      <p class="crm-sidebar__profile-name">{{ userDisplayName() }}</p>
+      <p class="crm-sidebar__profile-role">{{ userRole() }}</p>
+    </div>
+    <button type="button" class="crm-sidebar__logout-text" (click)="logout()">Logout</button>
+  </div>
+</aside>

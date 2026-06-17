@@ -1,69 +1,69 @@
-<div class="min-h-screen flex items-center justify-center bg-slate-50 px-4">
-  <div class="max-w-md w-full space-y-8 bg-taupe-200 p-8 rounded-2xl shadow-xl border border-taupe-100">
-
-    <div>
-      <h2 class="text-center text-3xl font-extrabold text-taupe-500">Freelance CRM</h2>
-      <p class="mt-2 text-center text-sm text-slate-600">Enter your account</p>
-    </div>
+<div class="crm-login">
+  <div class="crm-login__panel">
+    <header class="crm-login__header">
+      <h2 class="crm-login__title">Freelance CRM</h2>
+      <p class="crm-login__subtitle">Enter your account</p>
+    </header>
 
     @if (errorMessage) {
-      <div class="bg-red-500/10 border border-red-500 text-red-500 p-3 rounded-lg text-sm text-center">
+      <div class="crm-form__alert crm-form__alert--danger" role="alert">
         {{ errorMessage }}
       </div>
     }
 
-    <form class="mt-8 space-y-6" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <div class="space-y-4">
-
-        <div>
-          <label class="block text-sm font-medium text-dark mb-1">Email</label>
+    <form class="crm-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="crm-form__fields">
+        <div class="crm-form__field">
+          <label class="crm-form__label" for="login-email">Email</label>
           <input
+            id="login-email"
             formControlName="email"
             type="email"
-            class="w-full px-4 py-2.5 bg-white border border-mauve-300 rounded-lg text-dark placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-mauve-500 focus:border-transparent transition"
-            placeholder="user@crm.com">
+            class="crm-form__input"
+            placeholder="user@crm.com"
+            autocomplete="email" />
 
           @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
             @if (loginForm.get('email')?.hasError('required')) {
-              <p class="text-red-500 text-xs mt-1">Email required</p>
+              <p class="crm-form__error">Email required</p>
             }
             @if (loginForm.get('email')?.hasError('email')) {
-              <p class="text-red-500 text-xs mt-1">Not correct email format</p>
+              <p class="crm-form__error">Not correct email format</p>
             }
           }
         </div>
 
-        <div>
-          <label class="block text-sm font-medium text-dark mb-1">Password</label>
+        <div class="crm-form__field">
+          <label class="crm-form__label" for="login-password">Password</label>
           <input
+            id="login-password"
             formControlName="password"
             type="password"
-            class="w-full px-4 py-2.5 bg-white border border-mauve-300 rounded-lg text-dark placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-mauve-500 focus:border-transparent transition"
-            placeholder="••••••••">
+            class="crm-form__input"
+            placeholder="••••••••"
+            autocomplete="current-password" />
+
           @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
             @if (loginForm.get('password')?.hasError('required')) {
-              <p class="text-red-500 text-xs mt-1">Password required</p>
+              <p class="crm-form__error">Password required</p>
             }
             @if (loginForm.get('password')?.hasError('minlength')) {
-              <p class="text-red-500 text-xs mt-1">Password length 6 symbols minimum</p>
+              <p class="crm-form__error">Password length 6 symbols minimum</p>
             }
           }
         </div>
-
       </div>
 
-      <div>
+      <div class="crm-form__actions">
         <button
+          crm-btn
           type="submit"
-          [disabled]="isLoading()"
-          class="group relative w-full flex justify-center py-2.5 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-lime-700 hover:bg-lime-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-600 transition disabled:opacity-50 disabled:cursor-not-allowed">
-
-          @if (isLoading()) {
-            <span class="animate-spin mr-2 border-2 border-white border-t-transparent rounded-full w-5 h-5"></span>
-          } {{ isLoading() ? 'Checking...' : 'Enter' }}
+          variant="primary"
+          size="lg"
+          [loading]="isLoading()">
+          Sign In
         </button>
       </div>
-
     </form>
   </div>
 </div>

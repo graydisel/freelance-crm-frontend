@@ -1,0 +1,27 @@
+<div class="crm-dashboard__panel">
+  <div class="crm-dashboard__panel-header">
+    <h3 class="crm-dashboard__panel-title">Quick Project Progress</h3>
+    <p class="crm-dashboard__panel-subtitle">Top projects by task completion</p>
+  </div>
+  <ul class="crm-dashboard__project-list">
+    @for (project of projects(); track project.name) {
+      <li class="crm-dashboard__project-item">
+        <div class="crm-dashboard__project-header">
+          <div class="crm-dashboard__project-info">
+            <p class="crm-dashboard__project-name">{{ project.name }}</p>
+            <p class="crm-dashboard__project-client">{{ project.client }}</p>
+          </div>
+          <span class="crm-dashboard__project-count">
+                {{ project.completedTasks }}/{{ project.totalTasks }}
+              </span>
+        </div>
+        <div class="crm-dashboard__progress-track crm-dashboard__progress-track--compact">
+          <div
+            class="crm-dashboard__progress-fill"
+            [style.width.%]="projectProgress(project.completedTasks, project.totalTasks) * 100">
+          </div>
+        </div>
+      </li>
+    }
+  </ul>
+</div>

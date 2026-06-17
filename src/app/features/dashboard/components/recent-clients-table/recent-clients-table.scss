@@ -1,0 +1,99 @@
+@use 'variables' as *;
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.crm-dashboard {
+  &__panel {
+    width: 100%;
+    overflow: hidden;
+    background-color: $color-bg-card;
+    border: 1px solid $color-border-subtle;
+    border-radius: $radius-xl;
+    box-shadow: $shadow-sm;
+  }
+
+  &__panel-header {
+    padding: 1.25rem $space-xl;
+    border-bottom: 1px solid rgba($color-border-accent, 0.3);
+  }
+
+  &__panel-title {
+    margin: 0;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+    color: $color-text-heading;
+  }
+
+  &__panel-subtitle {
+    margin: 0.125rem 0 0;
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+  }
+
+  &__table-wrap {
+    width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    display: block;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  &__table {
+    width: 100%;
+    min-width: 38rem;
+    border-collapse: collapse;
+
+    th {
+      padding: 0.875rem $space-xl;
+      font-size: $font-size-xs;
+      font-weight: $font-weight-semibold;
+      color: $color-text-accent;
+      text-align: left;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  }
+
+  &__table-head {
+    background-color: rgba($color-bg-main, 0.8);
+  }
+
+  &__table-body {
+    background-color: $color-bg-card;
+  }
+
+  &__table-row {
+    border-top: 1px solid rgba($color-border-accent, 0.2);
+    transition: $transition-fast;
+
+    &:hover {
+      background-color: rgba($color-bg-main, 0.6);
+    }
+
+    td {
+      padding: $space-md $space-lg;
+      white-space: nowrap;
+    }
+  }
+
+  &__company-name {
+    margin: 0;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: $color-text-heading;
+  }
+
+  &__cell-value {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $color-text-dark;
+  }
+
+  &__cell-muted {
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+  }
+}

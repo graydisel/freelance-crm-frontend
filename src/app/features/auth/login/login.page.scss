@@ -1,0 +1,106 @@
+@use 'variables' as *;
+@use 'animations';
+
+.crm-login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: $space-lg;
+  background-color: $color-bg-main;
+
+  &__panel {
+    width: 100%;
+    max-width: 28rem;
+    padding: $space-2xl;
+    background-color: $color-bg-sidebar;
+    border: 1px solid $color-border-taupe;
+    border-radius: $radius-xl;
+    box-shadow: $shadow-xl;
+  }
+
+  &__header {
+    text-align: center;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: $font-size-3xl;
+    font-weight: $font-weight-extrabold;
+    color: $color-text-accent;
+  }
+
+  &__subtitle {
+    margin: $space-sm 0 0;
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+  }
+}
+
+.crm-form {
+  margin-top: $space-2xl;
+
+  &__alert {
+    padding: $space-md;
+    margin-bottom: $space-lg;
+    font-size: $font-size-sm;
+    text-align: center;
+    border-radius: $radius-md;
+
+    &--danger {
+      color: $color-danger;
+      background-color: $color-danger-bg;
+      border: 1px solid $color-danger;
+    }
+  }
+
+  &__fields {
+    display: flex;
+    flex-direction: column;
+    gap: $space-lg;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__label {
+    margin-bottom: $space-xs;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $color-text-dark;
+  }
+
+  &__input {
+    width: 100%;
+    padding: 0.625rem $space-lg;
+    font-size: $font-size-base;
+    color: $color-text-dark;
+    background-color: $color-bg-card;
+    border: 1px solid $color-border-accent;
+    border-radius: $radius-md;
+    transition: $transition-base;
+
+    &::placeholder {
+      color: $color-text-placeholder;
+    }
+
+    &:focus {
+      @include focus-ring($color-focus-mauve);
+      border-color: transparent;
+    }
+  }
+
+  &__error {
+    margin: $space-xs 0 0;
+    font-size: $font-size-xs;
+    color: $color-danger;
+  }
+
+  &__actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin-top: $space-xl;
+  }
+}

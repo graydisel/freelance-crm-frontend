@@ -1,0 +1,14 @@
+@keyframes crm-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes crm-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

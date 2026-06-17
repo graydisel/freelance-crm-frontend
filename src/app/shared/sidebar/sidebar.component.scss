@@ -1,0 +1,527 @@
+@use 'variables' as *;
+@use 'animations';
+
+:host {
+  display: block;
+  position: relative;
+  z-index: 30;
+  width: 0;
+  transition: $transition-base;
+
+  @include md-up {
+    flex-shrink: 0;
+    width: $sidebar-width;
+
+    &.crm-sidebar--collapsed {
+      width: $sidebar-width-collapsed;
+    }
+  }
+}
+
+// ─── CSS-only icons ──────────────────────────────────────────────────────────
+.crm-icon {
+  display: inline-block;
+  flex-shrink: 0;
+
+  &--menu {
+    width: 1.375rem;
+    height: 0.125rem;
+    background-color: currentColor;
+    box-shadow: 0 -0.4375rem 0 currentColor, 0 0.4375rem 0 currentColor;
+  }
+
+  &--close {
+    position: relative;
+    width: 1.125rem;
+    height: 1.125rem;
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: currentColor;
+      border-radius: 1px;
+    }
+
+    &::before {
+      transform: translateY(-50%) rotate(45deg);
+    }
+
+    &::after {
+      transform: translateY(-50%) rotate(-45deg);
+    }
+  }
+
+  &--chevron {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(-45deg);
+    transition: transform 0.3s ease-in-out;
+
+    &-flipped {
+      transform: rotate(135deg);
+    }
+  }
+
+  &--logout {
+    position: relative;
+    width: 1rem;
+    height: 1rem;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0.125rem;
+      left: 0;
+      width: 0.5625rem;
+      height: 0.75rem;
+      border: 2px solid currentColor;
+      border-right: none;
+      border-radius: 2px 0 0 2px;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: 0;
+      width: 0.5rem;
+      height: 2px;
+      background-color: currentColor;
+      transform: translateY(-50%);
+      box-shadow: 0.1875rem -0.1875rem 0 0 currentColor, 0.1875rem 0.1875rem 0 0 currentColor;
+    }
+  }
+}
+
+// ─── Mobile top bar ───────────────────────────────────────────────────────────
+.crm-sidebar__mobile-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 40;
+  height: $mobile-header-height;
+  padding: 0 $space-lg;
+  background-color: $color-bg-sidebar;
+  border-bottom: 1px solid $color-border-subtle;
+  box-shadow: $shadow-sm;
+
+  @include md-up {
+    display: none;
+  }
+}
+
+.crm-sidebar__menu-btn,
+.crm-sidebar__close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-sm;
+  color: $color-text-muted;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  border-radius: $radius-md;
+  transition: $transition-fast;
+
+  &:hover {
+    color: $color-text-dark;
+    background-color: $color-bg-muted;
+  }
+
+  &:focus-visible {
+    @include focus-ring($color-primary-focus);
+  }
+}
+
+.crm-sidebar__mobile-brand {
+  display: flex;
+  gap: $space-md;
+  align-items: center;
+}
+
+.crm-sidebar__mobile-title {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-extrabold;
+  color: $color-text-accent;
+  letter-spacing: -0.025em;
+}
+
+// ─── Desktop panel ────────────────────────────────────────────────────────────
+.crm-sidebar__panel {
+  display: none;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: $sidebar-width;
+  height: 100vh;
+  background-color: $color-bg-sidebar;
+  border-right: 1px solid $color-border-subtle;
+  box-shadow: $shadow-sm;
+  transition: $transition-base;
+
+  @include md-up {
+    display: flex;
+  }
+
+  &--collapsed {
+    width: $sidebar-width-collapsed;
+  }
+}
+
+.crm-sidebar__brand {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  height: 5rem;
+  padding: 1.25rem $space-lg;
+  overflow: hidden;
+  border-bottom: 1px solid $color-border-subtle;
+}
+
+.crm-sidebar__brand-info {
+  display: flex;
+  gap: $space-md;
+  align-items: center;
+  min-width: 0;
+}
+
+.crm-sidebar__logo-mark {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  color: #ffffff;
+  background-color: $color-primary;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-sm;
+}
+
+.crm-sidebar__brand-text {
+  min-width: 0;
+}
+
+.crm-sidebar__title {
+  margin: 0;
+  overflow: hidden;
+  font-size: $font-size-base;
+  font-weight: $font-weight-extrabold;
+  color: $color-text-accent;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: -0.025em;
+}
+
+.crm-sidebar__tagline {
+  margin: 0;
+  overflow: hidden;
+  font-size: 0.625rem;
+  color: $color-text-muted;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.crm-sidebar__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-sm;
+  color: $color-text-muted;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  border-radius: $radius-md;
+  transition: $transition-fast;
+
+  &--centered {
+    margin-inline: auto;
+  }
+
+  &:hover {
+    color: $color-primary-hover;
+    background-color: rgba($color-primary, 0.1);
+  }
+
+  &:focus-visible {
+    @include focus-ring($color-primary-focus);
+  }
+}
+
+// ─── Navigation ───────────────────────────────────────────────────────────────
+.crm-sidebar__nav {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: $space-xs;
+  padding: 1.25rem $space-md;
+  overflow-y: auto;
+}
+
+.crm-sidebar__nav-link {
+  display: flex;
+  gap: $space-md;
+  align-items: center;
+  padding: 0.625rem $space-md;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $color-text-dark;
+  text-decoration: none;
+  border-radius: $radius-lg;
+  transition: $transition-fast;
+
+  &:hover {
+    color: $color-primary-hover;
+    background-color: rgba($color-primary, 0.1);
+  }
+
+  &:focus-visible {
+    @include focus-ring($color-primary-focus);
+  }
+
+  &--active {
+    color: #ffffff;
+    background-color: $color-primary;
+    box-shadow: $shadow-sm;
+
+    .crm-sidebar__nav-icon {
+      color: #ffffff;
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    &:hover {
+      color: #ffffff;
+      background-color: $color-primary-hover;
+    }
+  }
+}
+
+.crm-sidebar__nav-icon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  color: $color-text-muted;
+  background-color: rgba($color-text-muted, 0.1);
+  border-radius: $radius-md;
+  transition: $transition-fast;
+}
+
+.crm-sidebar__nav-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// ─── Profile footer ───────────────────────────────────────────────────────────
+.crm-sidebar__footer {
+  flex-shrink: 0;
+  padding: $space-md;
+  border-top: 1px solid $color-border-subtle;
+}
+
+.crm-sidebar__profile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 3.5rem;
+  padding: 0.625rem;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: $radius-lg;
+  box-shadow: inset 0 0 0 1px rgba($color-border-accent, 0.2);
+
+  &--collapsed {
+    justify-content: center;
+  }
+}
+
+.crm-sidebar__profile-info {
+  display: flex;
+  gap: $space-md;
+  align-items: center;
+  min-width: 0;
+}
+
+.crm-sidebar__avatar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $color-text-accent;
+  background-color: $color-bg-taupe-light;
+  border-radius: $radius-md;
+  box-shadow: inset 0 0 0 1px rgba($color-border-accent, 0.3);
+}
+
+.crm-sidebar__profile-text {
+  min-width: 0;
+}
+
+.crm-sidebar__profile-name {
+  margin: 0;
+  overflow: hidden;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  color: $color-text-heading;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.crm-sidebar__profile-role {
+  margin: 0;
+  overflow: hidden;
+  font-size: 0.625rem;
+  font-weight: $font-weight-medium;
+  color: $color-text-muted;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.crm-sidebar__logout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.375rem;
+  color: $color-text-muted;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  border-radius: $radius-md;
+  transition: $transition-fast;
+
+  &--centered {
+    margin-inline: auto;
+  }
+
+  &:hover {
+    color: $color-danger;
+    background-color: rgba($color-danger, 0.08);
+  }
+
+  &:focus-visible {
+    @include focus-ring($color-danger);
+  }
+}
+
+// ─── Mobile drawer ────────────────────────────────────────────────────────────
+.crm-sidebar__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background-color: $color-overlay;
+  backdrop-filter: blur(4px);
+  animation: crm-fade-in 0.3s ease-in-out;
+
+  @include md-up {
+    display: none;
+  }
+}
+
+.crm-sidebar__drawer {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 50;
+  width: $sidebar-width;
+  height: 100vh;
+  background-color: $color-bg-sidebar;
+  box-shadow: $shadow-xl;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
+
+  @include md-up {
+    display: none;
+  }
+
+  &--open {
+    transform: translateX(0);
+  }
+}
+
+.crm-sidebar__drawer-header {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  height: $mobile-header-height;
+  padding: 0 $space-xl;
+  border-bottom: 1px solid $color-border-subtle;
+}
+
+.crm-sidebar__drawer-title {
+  font-size: $font-size-base;
+  font-weight: $font-weight-extrabold;
+  color: $color-text-accent;
+}
+
+.crm-sidebar__drawer-nav {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: $space-xs;
+  padding: $space-lg $space-md;
+  overflow-y: auto;
+}
+
+.crm-sidebar__drawer-footer {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  padding: $space-lg;
+  background-color: rgba($color-bg-taupe-light, 0.5);
+  border-top: 1px solid $color-border-subtle;
+}
+
+.crm-sidebar__drawer-profile {
+  min-width: 0;
+}
+
+.crm-sidebar__logout-text {
+  flex-shrink: 0;
+  padding: $space-xs $space-sm;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: $color-danger;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  border-radius: $radius-md;
+  transition: $transition-fast;
+
+  &:hover {
+    color: $color-danger-hover;
+  }
+
+  &:focus-visible {
+    @include focus-ring($color-danger);
+  }
+}

@@ -1,0 +1,36 @@
+<div class="crm-dashboard__panel">
+  <div class="crm-dashboard__panel-header">
+    <h3 class="crm-dashboard__panel-title">Recent Active Clients</h3>
+    <p class="crm-dashboard__panel-subtitle">Latest B2B accounts and contract values</p>
+  </div>
+  <div class="crm-dashboard__table-wrap">
+    <table class="crm-dashboard__table">
+      <thead class="crm-dashboard__table-head">
+      <tr>
+        <th scope="col">Company Name</th>
+        <th scope="col">Contract Value</th>
+        <th scope="col">Phone</th>
+        <th scope="col">Status</th>
+      </tr>
+      </thead>
+      <tbody class="crm-dashboard__table-body">
+        @for (client of clients(); track client.companyName) {
+          <tr class="crm-dashboard__table-row">
+            <td>
+              <p class="crm-dashboard__company-name">{{ client.companyName }}</p>
+            </td>
+            <td class="crm-dashboard__cell-value">
+              {{ client.contractValue | currency: 'USD' : 'symbol' : '1.0-0' }}
+            </td>
+            <td class="crm-dashboard__cell-muted">{{ client.phone }}</td>
+            <td>
+                  <span [class]="statusBadgeClasses(client.status)">
+                    {{ client.status === 'active' ? 'Active' : 'Lead' }}
+                  </span>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

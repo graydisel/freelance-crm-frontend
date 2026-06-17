@@ -2,10 +2,11 @@ import { Component, inject, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { Router } from '@angular/router';
+import {CrmButtonComponent} from '../../../shared/components/crm-button/crm-button';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CrmButtonComponent],
   templateUrl: './login.page.html',
   styleUrl: './login.page.scss',
 })

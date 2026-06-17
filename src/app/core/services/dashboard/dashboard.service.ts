@@ -12,7 +12,7 @@ export class DashboardService {
   private apiUrl = environment.apiUrl;
 
   getDashboardData(): Observable<DashboardMetrics> {
-    return this.http.get<DashboardMetrics>(`${this.apiUrl}/client/dashboard/stats`);
+    return this.http.get<DashboardMetrics>(`${this.apiUrl}/dashboard/stats`);
   }
 
 }

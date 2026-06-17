@@ -1,0 +1,124 @@
+@use 'variables' as *;
+
+.crm-not-found {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: $space-lg;
+  background-color: $color-bg-main;
+
+  &__panel {
+    width: 100%;
+    max-width: 28rem;
+    padding: 2.5rem;
+    text-align: center;
+    background-color: $color-bg-sidebar;
+    border: 1px solid $color-border-taupe;
+    border-radius: $radius-xl;
+    box-shadow: $shadow-xl;
+  }
+
+  &__hero {
+    position: relative;
+    margin-bottom: $space-xl;
+  }
+
+  &__code {
+    margin: 0;
+    font-size: clamp(5rem, 18vw, 8rem);
+    font-weight: 900;
+    line-height: 1;
+    color: rgba($color-primary, 0.2);
+    letter-spacing: -0.05em;
+    user-select: none;
+  }
+
+  &__label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: $space-lg 0 0;
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: $color-text-accent;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: $space-sm;
+    margin-bottom: $space-xl;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $color-text-dark;
+  }
+
+  &__description {
+    max-width: 20rem;
+    margin: 0 auto;
+    font-size: $font-size-sm;
+    line-height: 1.625;
+    color: $color-text-muted;
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: $space-md;
+    justify-content: center;
+    padding-top: $space-lg;
+
+    @include md-up {
+      flex-direction: row;
+    }
+  }
+}
+
+.crm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem 1.25rem;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  line-height: 1.25;
+  cursor: pointer;
+  border-radius: $radius-md;
+  box-shadow: $shadow-sm;
+  transition: $transition-base;
+
+  &:focus-visible {
+    @include focus-ring($color-primary-focus);
+  }
+
+  &--primary {
+    color: #ffffff;
+    background-color: $color-primary;
+    border: 1px solid transparent;
+
+    &:hover {
+      background-color: $color-primary-hover;
+    }
+  }
+
+  &--secondary {
+    color: $color-text-dark;
+    background-color: $color-bg-card;
+    border: 1px solid $color-border-accent;
+
+    &:hover {
+      background-color: $color-bg-main;
+    }
+
+    &:focus-visible {
+      @include focus-ring($color-focus-mauve);
+    }
+  }
+}
