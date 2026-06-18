@@ -1,0 +1,59 @@
+@use '../../../styles/variables' as *;
+
+.crm-dashboard {
+  display: flex;
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-color: $color-bg-main;
+}
+
+.crm-clients {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  padding: 5rem $space-sm $space-lg;
+  max-width: 1200px;
+  margin: 0 auto;
+  transition: padding-left 0.3s ease-in-out;
+
+  @include md-up {
+    padding: $space-2xl;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: $space-xl;
+  }
+
+  &__title {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: $color-text-heading;
+    margin: 0 0 $space-xs 0;
+  }
+
+  &__subtitle {
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+    margin: 0;
+  }
+
+  &__add-btn {
+    background-color: $color-primary;
+    color: white;
+    border: none;
+    border-radius: $radius-md;
+    padding: $space-sm $space-lg;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: $color-primary-hover;
+    }
+  }
+}

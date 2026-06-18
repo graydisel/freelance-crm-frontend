@@ -1,0 +1,22 @@
+<main class="crm-dashboard">
+  <app-sidebar></app-sidebar>
+  <div class="crm-clients">
+    <div class="crm-clients__header">
+      <div>
+        <h1 class="crm-clients__title">Clients</h1>
+        <p class="crm-clients__subtitle">9 active accounts total &mdash; $1 146 000 in active contracts</p>
+      </div>
+      <button class="crm-clients__add-btn">
+        <span>+ Add Client</span>
+      </button>
+    </div>
+
+    <app-client-metrics></app-client-metrics>
+
+    <app-client-filters (searchChange)="onSearchChange($event)" (statusChange)="onStatusChange($event)"></app-client-filters>
+
+    <app-clients-table [clients]="paginatedClients()" [currentPage]="currentPage()" [pageSize]="pageSize()"
+      [totalItems]="totalItems()" (pageChange)="onPageChange($event)">
+    </app-clients-table>
+  </div>
+</main>

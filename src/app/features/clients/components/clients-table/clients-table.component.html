@@ -1,0 +1,129 @@
+<div class="crm-table-container">
+  <div class="crm-table-wrapper">
+    <table class="crm-table">
+      <thead>
+        <tr>
+          <th>Company Name</th>
+          <th>Contact Person</th>
+          <th>Phone Number</th>
+          <th>Contract Value</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (client of clients(); track client.id){
+          <tr>
+            <td>
+              <div class="crm-table__cell-content">
+                <div class="crm-table__avatar crm-table__avatar--company">{{ client.initialsCompany }}</div>
+                <div>
+                  <div class="crm-table__primary-text">{{ client.companyName }}</div>
+                  <div class="crm-table__secondary-text">{{ client.date }}</div>
+                </div>
+              </div>
+            </td>
+
+            <td>
+              <div class="crm-table__cell-content">
+                <div class="crm-table__avatar crm-table__avatar--contact">{{ client.initialsContact }}</div>
+                <div>
+                  <div class="crm-table__primary-text">{{ client.contactPerson }}</div>
+                  <div class="crm-table__secondary-text">
+                    <svg class="crm-table__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                      <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    {{ client.contactEmail }}
+                  </div>
+                </div>
+              </div>
+            </td>
+
+            <td>
+              <div class="crm-table__cell-content">
+                <svg class="crm-table__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                </svg>
+                <span class="crm-table__text-muted">{{ client.phone }}</span>
+              </div>
+            </td>
+
+            <td>
+              @if (client.contractValue) {
+                <span class="crm-table__primary-text" >{{ client.contractValue | currency:'USD':'symbol':'1.0-0' }}</span>
+              } @else {
+                <span class="crm-table__text-muted" >&mdash;</span>
+              }
+            </td>
+            <td>
+              <span class="crm-table__status crm-table__status--{{ client.status}}">
+                <span class="crm-table__status-dot"></span>
+                {{ client.status.toUpperCase() }}
+              </span>
+            </td>
+          </tr>
+        }
+
+        @if (clients().length === 0) {
+          <tr>
+            <td colspan="5" class="crm-table__empty">No clients found matching criteria.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="crm-table__pagination">
+    <div class="crm-pagination__info">
+      Showing {{ rangeStart() }}&ndash;{{ rangeEnd() }} of {{ totalItems() }} entries
+    </div>
+
+    <div class="crm-pagination__controls">
+      <button
+        type="button"
+        class="crm-pagination__btn crm-pagination__btn--nav"
+        [disabled]="currentPage() === 1"
+        (click)="onFirst()"
+        title="First Page">
+        &laquo;
+      </button>
+
+      <button
+        type="button"
+        class="crm-pagination__btn crm-pagination__btn--nav"
+        [disabled]="currentPage() === 1"
+        (click)="onPrev()"
+        title="Previous Page">
+        &lt;
+      </button>
+
+      @for (page of pages(); track page) {
+        <button
+          type="button"
+          class="crm-pagination__btn"
+          [class.crm-pagination__btn--active]="page === currentPage()"
+          (click)="onPage(page)">
+          {{ page }}
+        </button>
+      }
+
+      <button
+        type="button"
+        class="crm-pagination__btn crm-pagination__btn--nav"
+        [disabled]="currentPage() === totalPages() || totalPages() === 0"
+        (click)="onNext()"
+        title="Next Page">
+        &gt;
+      </button>
+
+      <button
+        type="button"
+        class="crm-pagination__btn crm-pagination__btn--nav"
+        [disabled]="currentPage() === totalPages() || totalPages() === 0"
+        (click)="onLast()"
+        title="Last Page">
+        &raquo;
+      </button>
+    </div>
+  </div>
+</div>

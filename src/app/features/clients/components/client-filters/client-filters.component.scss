@@ -1,0 +1,149 @@
+@use '../../../../../../src/styles/variables' as *;
+
+.crm-filters {
+  display: flex;
+  flex-direction: column;
+  gap: $space-md;
+  background-color: $color-bg-card;
+  border: 1px solid $color-border-taupe;
+  border-radius: $radius-md $radius-md 0 0;
+  padding: $space-md $space-lg;
+  border-bottom: 0;
+
+  @include md-up {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__search {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  &__search-icon {
+    position: absolute;
+    left: $space-md;
+    width: 1.25rem;
+    height: 1.25rem;
+    color: $color-text-placeholder;
+  }
+
+  &__search-input {
+    width: 100%;
+    padding: $space-sm $space-md $space-sm 2.5rem;
+    border: 1px solid $color-border-taupe;
+    border-radius: $radius-md;
+    font-size: $font-size-sm;
+    color: $color-text-dark;
+    background-color: $color-bg-main;
+    outline: none;
+    transition: $transition-fast;
+
+    &:focus {
+      @include focus-ring;
+    }
+
+    &::placeholder {
+      color: $color-text-placeholder;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: $space-lg;
+    justify-content: space-between;
+
+    @include md-up {
+      justify-content: flex-end;
+    }
+  }
+
+  &__status-dropdown {
+    position: relative;
+  }
+
+  &__select {
+    appearance: none;
+    padding: $space-sm 2rem $space-sm $space-lg;
+    border: 1px solid $color-border-taupe;
+    border-radius: $radius-md;
+    font-size: $font-size-sm;
+    color: $color-text-dark;
+    background-color: transparent;
+    cursor: pointer;
+    outline: none;
+
+    &:focus {
+      @include focus-ring;
+    }
+  }
+
+  &__results {
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+  }
+
+  &__chips {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+    padding: $space-md $space-lg;
+    background-color: $color-bg-card;
+    border: 1px solid $color-border-taupe;
+    border-radius: 0 0 $radius-md $radius-md;
+    margin-bottom: $space-xl;
+    overflow-x: auto;
+  }
+
+  &__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-xs;
+    padding: 0.25rem $space-md;
+    border-radius: $radius-full;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $color-text-muted;
+    background-color: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: $transition-fast;
+    white-space: nowrap;
+
+    &:hover {
+      background-color: $color-bg-muted;
+    }
+
+    &--active {
+      background-color: $color-primary;
+      color: white;
+
+      .crm-filters__badge {
+        background-color: rgba(255, 255, 255, 0.2);
+        color: white;
+      }
+
+      &:hover {
+        background-color: $color-primary-hover;
+      }
+    }
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.25rem;
+    height: 1.25rem;
+    border-radius: $radius-full;
+    background-color: $color-bg-taupe-light;
+    color: $color-text-muted;
+    font-size: 0.7rem;
+    font-weight: $font-weight-bold;
+    padding: 0 0.25rem;
+  }
+}

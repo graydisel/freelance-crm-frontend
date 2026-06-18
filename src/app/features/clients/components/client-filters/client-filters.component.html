@@ -1,0 +1,74 @@
+<div class="crm-filters" [formGroup]="searchForm">
+  <div class="crm-filters__search">
+    <svg class="crm-filters__search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"></circle>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </svg>
+    <input
+      formControlName="text"
+      type="text"
+      class="crm-filters__search-input"
+      placeholder="Search by company, phone, or contact person..."
+      (keydown.enter)="search()" />
+  </div>
+
+  <div class="crm-filters__actions">
+    <div class="crm-filters__status-dropdown">
+      <select formControlName="status" class="crm-filters__select">
+        <option value="all">All Statuses ({{ totalResults() }})</option>
+        <option [value]="ClientStatusEnum.ACTIVE">Active</option>
+        <option [value]="ClientStatusEnum.LEAD">Lead</option>
+        <option [value]="ClientStatusEnum.ARCHIVED">Archived</option>
+      </select>
+    </div>
+
+    <div class="crm-filters__results">
+      {{ totalResults() }} results found
+    </div>
+
+    <button
+      crm-btn
+      type="button"
+      variant="primary"
+      size="md"
+      [loading]="isLoading()"
+      (click)="search()"
+      title="Search">
+      Search
+    </button>
+  </div>
+</div>
+
+<div class="crm-filters__chips">
+  <button
+    type="button"
+    class="crm-filters__chip"
+    [class.crm-filters__chip--active]="currentStatus() === 'all'"
+    (click)="onStatusChange('all')">
+    All <span class="crm-filters__badge">{{ activeCount() + leadsCount() + archivedCount() }}</span>
+  </button>
+
+  <button
+    type="button"
+    class="crm-filters__chip"
+    [class.crm-filters__chip--active]="currentStatus() === ClientStatusEnum.ACTIVE"
+    (click)="onStatusChange(ClientStatusEnum.ACTIVE)">
+    Active <span class="crm-filters__badge">{{ activeCount() }}</span>
+  </button>
+
+  <button
+    type="button"
+    class="crm-filters__chip"
+    [class.crm-filters__chip--active]="currentStatus() === ClientStatusEnum.LEAD"
+    (click)="onStatusChange(ClientStatusEnum.LEAD)">
+    Lead <span class="crm-filters__badge">{{ leadsCount() }}</span>
+  </button>
+
+  <button
+    type="button"
+    class="crm-filters__chip"
+    [class.crm-filters__chip--active]="currentStatus() === ClientStatusEnum.ARCHIVED"
+    (click)="onStatusChange(ClientStatusEnum.ARCHIVED)">
+    Archived <span class="crm-filters__badge">{{ archivedCount() }}</span>
+  </button>
+</div>

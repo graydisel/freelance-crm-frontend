@@ -9,12 +9,20 @@ export const routes: Routes = [
   },
   {
     path: 'login',
+    title: 'Login',
     loadComponent: () => import('./features/auth/login/login.page').then((m) => m.LoginPage),
   },
   {
     path: 'dashboard',
+    title: 'Dashboard',
     canActivate: [dashboardGuard],
     loadComponent: () => import('./features/dashboard/dashboard.page').then((m) => m.DashboardPage),
+  },
+  {
+    path: 'clients',
+    title: 'Clients',
+    canActivate: [dashboardGuard],
+    loadComponent: () => import('./features/clients/clients.page').then((m) => m.ClientsPageComponent),
   },
   {
     path: '**',

@@ -1,12 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../core/services/auth/auth.service';
-
-interface NavItem {
-  label: string;
-  route: string;
-  icon: 'dashboard' | 'clients' | 'projects' | 'tasks';
-}
+import {navItems} from '../../core/routes/sidebar.route';
 
 @Component({
   selector: 'app-sidebar',
@@ -25,13 +20,6 @@ export class SidebarComponent {
 
   protected readonly isMobileMenuOpen = signal(false);
   protected readonly isDesktopCollapsed = signal(false);
-
-  protected readonly navItems: NavItem[] = [
-    { label: 'Dashboard', route: '/dashboard', icon: 'dashboard' },
-    { label: 'Clients', route: '/clients', icon: 'clients' },
-    { label: 'Projects', route: '/projects', icon: 'projects' },
-    { label: 'Tasks', route: '/tasks', icon: 'tasks' },
-  ];
 
   protected readonly userDisplayName = computed(() => {
     const user = this.authService.currentUser();
@@ -60,4 +48,6 @@ export class SidebarComponent {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
+
+  protected readonly navItems = navItems;
 }
