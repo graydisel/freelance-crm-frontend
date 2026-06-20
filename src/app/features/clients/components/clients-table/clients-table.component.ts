@@ -1,11 +1,13 @@
 import {Component, computed, input, output} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ClientProfile} from '../../../../core/models/client.model';
+import {CrmAvatarComponent} from '../../../../shared/components/crm-avatar/crm-avatar.component';
+import {CrmStatusBadgeComponent} from '../../../../shared/components/crm-status-badge/crm-status-badge.component';
 
 @Component({
   selector: 'app-clients-table',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CrmAvatarComponent, CrmStatusBadgeComponent],
   templateUrl: './clients-table.component.html',
   styleUrls: ['./clients-table.component.scss']
 })

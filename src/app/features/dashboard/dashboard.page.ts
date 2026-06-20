@@ -2,17 +2,17 @@ import { CurrencyPipe, PercentPipe } from '@angular/common';
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { DashboardService } from '../../core/services/dashboard/dashboard.service';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
-import { MetricCard } from './components/metric-card/metric-card';
 import { RecentClientsTable } from './components/recent-clients-table/recent-clients-table';
 import { ProjectProgressList } from './components/project-progress-list/project-progress-list';
 import { CrmButtonComponent } from '../../shared/components/crm-button/crm-button';
 import { DashboardMetrics } from '../../core/models/dashboard.model';
 import { createEmptyMetrics } from './creators/metrics-creator';
+import { CrmMetricCard } from '../../shared/components/crm-metric-card/crm-metric-card';
 
 @Component({
   selector: 'app-dashboard',
   imports: [CurrencyPipe, PercentPipe, SidebarComponent,
-    MetricCard, RecentClientsTable, ProjectProgressList, CrmButtonComponent
+    CrmMetricCard, RecentClientsTable, ProjectProgressList, CrmButtonComponent
   ],
   templateUrl: './dashboard.page.html',
   styleUrl: './dashboard.page.scss',

@@ -1,11 +1,11 @@
-import {Component, computed, effect, inject, OnInit, signal} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {SidebarComponent} from '../../shared/sidebar/sidebar.component';
-import {ClientMetricsComponent} from './components/client-metrics/client-metrics.component';
-import {ClientFiltersComponent} from './components/client-filters/client-filters.component';
-import {ClientsTableComponent} from './components/clients-table/clients-table.component';
-import {ClientProfile, ClientsServerResponse} from '../../core/models/client.model';
-import {ClientsService} from '../../core/services/clients/clients.service';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
+import { ClientFiltersComponent } from './components/client-filters/client-filters.component';
+import { ClientsTableComponent } from './components/clients-table/clients-table.component';
+import { ClientProfile, ClientsServerResponse } from '../../core/models/client.model';
+import { ClientsService } from '../../core/services/clients/clients.service';
+import { CrmMetricCard } from '../../shared/components/crm-metric-card/crm-metric-card';
 
 @Component({
   selector: 'app-clients-page',
@@ -13,7 +13,7 @@ import {ClientsService} from '../../core/services/clients/clients.service';
   imports: [
     CommonModule,
     SidebarComponent,
-    ClientMetricsComponent,
+    CrmMetricCard,
     ClientFiltersComponent,
     ClientsTableComponent,
   ],
@@ -36,7 +36,7 @@ export class ClientsPageComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   private loadClients(): void {
     this.clientsService.getClients(
@@ -80,7 +80,7 @@ export class ClientsPageComponent implements OnInit {
 
   protected onSearchChange(query: string): void {
     this.searchQuery.set(query);
-    this.currentPage.set(1); // При поиске всегда сбрасываем на 1 страницу
+    this.currentPage.set(1);
   }
 
   protected onStatusChange(status: string): void {

@@ -1,0 +1,39 @@
+@use 'variables' as *;
+
+:host {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-xs;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+
+  &.crm-status-badge--active {
+    color: $color-success-text;
+
+    .crm-status-badge__dot {
+      background-color: $color-success-text;
+    }
+  }
+
+  &.crm-status-badge--lead {
+    color: $color-warning-dark;
+
+    .crm-status-badge__dot {
+      background-color: $color-warning-dark;
+    }
+  }
+
+  &.crm-status-badge--archived {
+    color: $color-text-muted;
+
+    .crm-status-badge__dot {
+      background-color: $color-text-muted;
+    }
+  }
+}
+
+.crm-status-badge__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: $radius-full;
+}

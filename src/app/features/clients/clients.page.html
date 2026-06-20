@@ -7,13 +7,26 @@
         <p class="crm-clients__subtitle">9 active accounts total &mdash; $1 146 000 in active contracts</p>
       </div>
       <button class="crm-clients__add-btn">
-        <span>+ Add Client</span>
+        <span>+ Add</span>
       </button>
     </div>
 
-    <app-client-metrics></app-client-metrics>
+    <div class="crm-clients__metrics-grid">
+      <crm-metric-card label="Total Clients" [value]="totalItems()" hint="Total number of contracts">
+      </crm-metric-card>
 
-    <app-client-filters (searchChange)="onSearchChange($event)" (statusChange)="onStatusChange($event)"></app-client-filters>
+      <crm-metric-card label="Active Accounts" [value]="activeClientsCount()" hint="Current active contracts">
+      </crm-metric-card>
+
+      <crm-metric-card label="Leads" [value]="leadsClientsCount()" hint="Potential opportunities">
+      </crm-metric-card>
+
+      <crm-metric-card label="Archived" [value]="archivedClientsCount()" hint="Past collaborations">
+      </crm-metric-card>
+    </div>
+
+    <app-client-filters (searchChange)="onSearchChange($event)"
+      (statusChange)="onStatusChange($event)"></app-client-filters>
 
     <app-clients-table [clients]="paginatedClients()" [currentPage]="currentPage()" [pageSize]="pageSize()"
       [totalItems]="totalItems()" (pageChange)="onPageChange($event)">

@@ -1,0 +1,26 @@
+@use 'variables' as *;
+
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $radius-full;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+  
+  &.crm-avatar--company {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: $font-size-sm;
+    background-color: $color-bg-taupe-light;
+    color: $color-text-accent;
+  }
+
+  &.crm-avatar--contact {
+    width: 2rem;
+    height: 2rem;
+    font-size: $font-size-xs;
+    background-color: $color-bg-muted;
+    color: $color-text-muted;
+  }
+}

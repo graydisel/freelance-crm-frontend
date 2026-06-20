@@ -9,24 +9,22 @@
           <h2 class="crm-dashboard__title">Dashboard</h2>
           <p class="crm-dashboard__summary">{{ summaryText() }}</p>
         </div>
-        <button
-          crm-btn
-          type="button"
-          variant="primary"
-          size="md"
-          (click)="refreshData()"
-          [loading]="isRefreshing()">
+        <button crm-btn type="button" variant="primary" size="md" (click)="refreshData()" [loading]="isRefreshing()">
           {{ isRefreshing() ? 'Refreshing…' : 'Refresh data' }}
         </button>
       </header>
 
       <section class="crm-dashboard__metrics" aria-label="Key metrics">
 
-        <app-metric-card label="Active Clients" [value]="metrics().activeClientsCount" [isLive]="true" hint="active companies" />
+        <crm-metric-card label="Active Clients" [value]="metrics().activeClientsCount" [isLive]="true"
+          hint="active companies">
+        </crm-metric-card>
 
-        <app-metric-card label="Total Active Revenue" [value]="metrics().totalRevenue | currency: 'USD' : 'symbol' : '1.0-0'" hint="across active contracts" />
+        <crm-metric-card label="Total Active Revenue"
+          [value]="metrics().totalRevenue | currency: 'USD' : 'symbol' : '1.0-0'" hint="across active contracts">
+        </crm-metric-card>
 
-        <app-metric-card label="Projects Pipeline" value="">
+        <crm-metric-card label="Projects Pipeline">
           <p class="crm-dashboard__pipeline">
             <span class="crm-dashboard__pipeline-segment--planning">{{ metrics().projectsPlanning }} Planning</span>
             <span class="crm-dashboard__pipeline-divider">/</span>
@@ -34,9 +32,9 @@
             <span class="crm-dashboard__pipeline-divider">/</span>
             <span class="crm-dashboard__pipeline-segment--done">{{ metrics().projectsDone }} Done</span>
           </p>
-        </app-metric-card>
+        </crm-metric-card>
 
-        <app-metric-card label="Tasks Overview" [value]="metrics().tasksCompleted" [total]="metrics().tasksTotal">
+        <crm-metric-card label="Tasks Overview">
           <div class="crm-dashboard__progress">
             <div class="crm-dashboard__progress-meta">
               <span>Completion</span>
@@ -46,7 +44,7 @@
               <div class="crm-dashboard__progress-fill" [style.width.%]="tasksProgress() * 100"></div>
             </div>
           </div>
-        </app-metric-card>
+        </crm-metric-card>
 
       </section>
 

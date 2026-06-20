@@ -1,0 +1,21 @@
+<div class="crm-metric-card__header">
+    <span class="crm-metric-card__label">{{ label() }}</span>
+
+    @if (isLive()) {
+    <span class="crm-metric-card__live-indicator" aria-label="Live data">
+        <span class="crm-metric-card__live-pulse"></span>
+    </span>
+    }
+</div>
+
+<div class="crm-metric-card__body">
+    @if (value() !== '' && value() !== null) {
+    <div class="crm-metric-card__value">{{ value() }}</div>
+    }
+
+    <ng-content></ng-content>
+</div>
+
+@if (hint()) {
+<div class="crm-metric-card__hint">{{ hint() }}</div>
+}
