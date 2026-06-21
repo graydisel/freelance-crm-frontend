@@ -25,4 +25,13 @@ export class ClientsService {
 
     return this.http.get<ClientsServerResponse>(this.API_URL, { params });
   }
+
+  getSearchPreview(search: string): Observable<ClientsServerResponse> {
+    const params = new HttpParams()
+      .set('page', '1')
+      .set('limit', '5')
+      .set('search', search);
+
+    return this.http.get<ClientsServerResponse>(this.API_URL, { params });
+  }
 }

@@ -1,4 +1,9 @@
-@use '../../../../../../src/styles/variables' as *;
+@use 'variables' as *;
+
+:host {
+  display: block;
+  width: 100%;
+}
 
 .crm-filters {
   display: flex;
@@ -6,7 +11,7 @@
   gap: $space-md;
   background-color: $color-bg-card;
   border: 1px solid $color-border-taupe;
-  border-radius: $radius-md $radius-md 0 0;
+  border-radius: $radius-md $radius-md 0 0; // Скругляем только верхние углы, так как снизу прилипает таблица
   padding: $space-md $space-lg;
   border-bottom: 0;
 
@@ -16,119 +21,97 @@
     justify-content: space-between;
   }
 
-  &__search {
-    position: relative;
+  crm-search-input {
     flex: 1;
-    display: flex;
-    align-items: center;
-  }
-
-  &__search-icon {
-    position: absolute;
-    left: $space-md;
-    width: 1.25rem;
-    height: 1.25rem;
-    color: $color-text-placeholder;
-  }
-
-  &__search-input {
-    width: 100%;
-    padding: $space-sm $space-md $space-sm 2.5rem;
-    border: 1px solid $color-border-taupe;
-    border-radius: $radius-md;
-    font-size: $font-size-sm;
-    color: $color-text-dark;
-    background-color: $color-bg-main;
-    outline: none;
-    transition: $transition-fast;
-
-    &:focus {
-      @include focus-ring;
-    }
-
-    &::placeholder {
-      color: $color-text-placeholder;
-    }
   }
 
   &__actions {
     display: flex;
-    align-items: center;
-    gap: $space-lg;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: stretch;
+    gap: $space-md;
 
-    @include md-up {
+    @include sm-up {
+      flex-direction: row;
+      align-items: center;
       justify-content: flex-end;
     }
   }
 
   &__status-dropdown {
-    position: relative;
+    min-width: 12rem;
   }
 
   &__select {
-    appearance: none;
-    padding: $space-sm 2rem $space-sm $space-lg;
+    width: 100%;
+    padding: $space-sm $space-md;
     border: 1px solid $color-border-taupe;
     border-radius: $radius-md;
     font-size: $font-size-sm;
     color: $color-text-dark;
-    background-color: transparent;
+    background-color: $color-bg-card;
     cursor: pointer;
-    outline: none;
+    transition: border-color $transition-fast;
 
     &:focus {
-      @include focus-ring;
+      outline: none;
+      border-color: $color-primary;
     }
   }
 
   &__results {
     font-size: $font-size-sm;
     color: $color-text-muted;
+    white-space: nowrap;
+    text-align: right;
   }
 
+  // --- Блок быстрых чипсов под инпутом ---
   &__chips {
     display: flex;
     align-items: center;
     gap: $space-sm;
-    padding: $space-md $space-lg;
     background-color: $color-bg-card;
     border: 1px solid $color-border-taupe;
-    border-radius: 0 0 $radius-md $radius-md;
-    margin-bottom: $space-xl;
-    overflow-x: auto;
+    border-top: 0;
+    padding: 0 $space-lg $space-md $space-lg;
+    border-radius: 0 0 $radius-md $radius-md; // Скругляем нижние углы фильтров
+    overflow-x: auto; // Скролл на мобилках, если чипсы не влезают
+    white-space: nowrap;
   }
 
   &__chip {
     display: inline-flex;
     align-items: center;
     gap: $space-xs;
-    padding: 0.25rem $space-md;
+    padding: $space-xs $space-md;
+    border: 1px solid $color-border-taupe;
     border-radius: $radius-full;
-    font-size: $font-size-sm;
+    font-size: $font-size-xs;
     font-weight: $font-weight-medium;
     color: $color-text-muted;
-    background-color: transparent;
-    border: 1px solid transparent;
+    background-color: $color-bg-main;
     cursor: pointer;
-    transition: $transition-fast;
-    white-space: nowrap;
+    transition: all $transition-fast;
 
     &:hover {
-      background-color: $color-bg-muted;
+      border-color: $color-text-muted;
+      color: $color-text-dark;
     }
 
     &--active {
-      background-color: $color-primary;
-      color: white;
-
-      .crm-filters__badge {
-        background-color: rgba(255, 255, 255, 0.2);
-        color: white;
-      }
+      background-color: rgba($color-primary, 0.1);
+      border-color: $color-primary;
+      color: $color-primary;
 
       &:hover {
-        background-color: $color-primary-hover;
+        border-color: $color-primary;
+        color: $color-primary;
+      }
+
+      .crm-filters__badge {
+        background-color: $color-primary;
+        color: #ffffff;
       }
     }
   }
@@ -137,13 +120,12 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 1.25rem;
-    height: 1.25rem;
-    border-radius: $radius-full;
+    padding: 2px 6px;
     background-color: $color-bg-taupe-light;
     color: $color-text-muted;
-    font-size: 0.7rem;
+    border-radius: $radius-full;
+    font-size: 10px;
     font-weight: $font-weight-bold;
-    padding: 0 0.25rem;
+    transition: all $transition-fast;
   }
 }

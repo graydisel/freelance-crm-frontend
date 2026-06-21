@@ -1,7 +1,12 @@
-import {Component, inject, input, output, signal} from '@angular/core';
-import {ClientStatusEnum} from '../../../../core/enums/client-status.enum';
-import {CrmButtonComponent} from '../../../../shared/components/crm-button/crm-button';
-import {FormBuilder, NonNullableFormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
+import { Component, inject, input, output, signal } from '@angular/core';
+import { ClientStatusEnum } from '../../../../core/enums/client-status.enum';
+import { CrmButtonComponent } from '../../../../shared/components/crm-button/crm-button';
+import { FormBuilder, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { catchError, debounceTime, distinctUntilChanged, filter, of, switchMap, tap } from 'rxjs';
+import { ClientsService } from '../../../../core/services/clients/clients.service';
+import { ClientProfile } from '../../../../core/models/client.model';
+import {CrmSearchInput} from '../../../../shared/components/crm-search-input/crm-search-input';
 
 @Component({
   selector: 'app-client-filters',
@@ -9,11 +14,13 @@ import {FormBuilder, NonNullableFormBuilder, ReactiveFormsModule, Validators} fr
   templateUrl: './client-filters.component.html',
   imports: [
     CrmButtonComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CrmSearchInput
   ],
   styleUrls: ['./client-filters.component.scss']
 })
 export class ClientFiltersComponent {
+  protected readonly fb = inject(NonNullableFormBuilder);
   totalResults = input<number>(0);
   activeCount = input<number>(0);
   leadsCount = input<number>(0);
@@ -25,10 +32,9 @@ export class ClientFiltersComponent {
   protected readonly isLoading = signal(false);
   protected readonly currentStatus = signal<string>('all');
 
-  protected readonly fb = inject(NonNullableFormBuilder);
   searchForm = this.fb.group({
     text: [''],
-    status: [''],
+    status: ['all'],
   });
 
   constructor() {
@@ -44,9 +50,7 @@ export class ClientFiltersComponent {
     this.isLoading.set(true);
     const searchValues = this.searchForm.getRawValue();
     this.searchChange.emit(searchValues.text);
-    this.statusChange.emit(searchValues.status);
     this.isLoading.set(false);
-    console.log(searchValues);
   }
 
   onStatusChange(status: string) {

@@ -1,0 +1,39 @@
+<div class="crm-search-input">
+  <svg class="crm-search-input__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <circle cx="11" cy="11" r="8"></circle>
+    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+  </svg>
+
+  <input
+    [formControl]="searchControl"
+    type="text"
+    class="crm-search-input__field"
+    placeholder="Search by company, phone, or contact person..."
+    (focus)="onInputFocus()"
+    (keydown.enter)="onInputKeydownEnter()" />
+
+  @if (searchControl.value) {
+    <button type="button" class="crm-search-input__clear-btn" (click)="clearSearch()" title="Clear text">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  }
+
+  @if (showDropdown() && searchResultsPreview().length > 0) {
+    <div class="crm-search-input__dropdown">
+      @for (client of searchResultsPreview(); track client.id) {
+        <div class="crm-search-input__dropdown-item" (click)="selectPreviewClient(client)">
+          <div class="crm-search-input__dropdown-avatar">
+            {{ client.initialsCompany }}
+          </div>
+          <div class="crm-search-input__dropdown-info">
+            <div class="crm-search-input__dropdown-title">{{ client.companyName }}</div>
+            <div class="crm-search-input__dropdown-subtitle">{{ client.contactPerson }}</div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

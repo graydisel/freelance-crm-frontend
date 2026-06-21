@@ -1,0 +1,141 @@
+@use 'variables' as *;
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.crm-search-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  &__icon {
+    position: absolute;
+    left: $space-md;
+    width: 1.25rem;
+    height: 1.25rem;
+    color: $color-text-placeholder;
+    pointer-events: none; // Чтобы клик сквозь иконку попадал в инпут
+    z-index: 2;
+  }
+
+  &__field {
+    width: 100%;
+    padding: $space-sm 2.5rem $space-sm 2.5rem; // Отступы под лупу слева и крестик справа
+    border: 1px solid $color-border-taupe;
+    border-radius: $radius-md;
+    font-size: $font-size-sm;
+    color: $color-text-dark;
+    background-color: $color-bg-card;
+    transition: border-color $transition-fast, box-shadow $transition-fast;
+
+    &:focus {
+      outline: none;
+      border-color: $color-primary;
+      box-shadow: 0 0 0 3px rgba($color-primary, 0.1);
+    }
+
+    &:disabled {
+      background-color: $color-bg-main;
+      color: $color-text-muted;
+      cursor: not-allowed;
+    }
+  }
+
+  &__clear-btn {
+    position: absolute;
+    right: $space-md;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    padding: 0;
+    border: none;
+    background: none;
+    color: $color-text-muted;
+    cursor: pointer;
+    transition: color $transition-fast;
+    z-index: 2;
+
+    &:hover {
+      color: $color-text-dark;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  // --- Выпадающий список живого поиска ---
+  &__dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    width: 100%;
+    background-color: $color-bg-card;
+    border: 1px solid $color-border-taupe;
+    border-radius: $radius-md;
+    box-shadow: $shadow-md;
+    z-index: 50;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  &__dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: $space-md;
+    padding: $space-sm $space-md;
+    cursor: pointer;
+    transition: background-color $transition-fast;
+
+    &:hover {
+      background-color: rgba($color-bg-taupe-light, 0.4);
+    }
+
+    &:not(:last-child) {
+      border-bottom: 1px solid $color-border-taupe;
+    }
+  }
+
+  &__dropdown-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: $radius-full;
+    background-color: $color-bg-taupe-light;
+    color: $color-text-muted;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    flex-shrink: 0;
+  }
+
+  &__dropdown-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0; // Защита от переполнения текста
+  }
+
+  &__dropdown-title {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $color-text-dark;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__dropdown-subtitle {
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

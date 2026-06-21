@@ -84,9 +84,16 @@ $transition-fast: all 0.2s ease-in-out;
 $transition-progress: width 0.5s ease-in-out;
 
 // ─── Breakpoints ─────────────────────────────────────────────────────────────
+$breakpoint-sm: 640px;
 $breakpoint-md: 768px;
 $breakpoint-lg: 1024px;
 $breakpoint-xl: 1280px;
+
+@mixin sm-up {
+  @media (min-width: $breakpoint-sm) {
+    @content;
+  }
+}
 
 @mixin md-up {
   @media (min-width: $breakpoint-md) {

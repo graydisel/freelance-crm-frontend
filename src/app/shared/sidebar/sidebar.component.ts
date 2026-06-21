@@ -1,7 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../core/services/auth/auth.service';
-import {navItems} from '../../core/routes/sidebar.route';
+import { navItems } from '../../core/routes/sidebar.route';
 
 @Component({
   selector: 'app-sidebar',
@@ -23,7 +23,7 @@ export class SidebarComponent {
 
   protected readonly userDisplayName = computed(() => {
     const user = this.authService.currentUser();
-    return user ? `${user.firstName} ${user.lastName}` : 'Elena Smirnova';
+    return user ? `${user.firstName} ${user.lastName}` : 'Eleonora';
   });
 
   protected readonly userRole = computed(() => {
