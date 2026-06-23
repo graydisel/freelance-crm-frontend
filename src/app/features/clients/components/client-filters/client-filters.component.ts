@@ -1,12 +1,8 @@
 import { Component, inject, input, output, signal } from '@angular/core';
 import { ClientStatusEnum } from '../../../../core/enums/client-status.enum';
 import { CrmButtonComponent } from '../../../../shared/components/crm-button/crm-button';
-import { FormBuilder, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { catchError, debounceTime, distinctUntilChanged, filter, of, switchMap, tap } from 'rxjs';
-import { ClientsService } from '../../../../core/services/clients/clients.service';
-import { ClientProfile } from '../../../../core/models/client.model';
-import {CrmSearchInput} from '../../../../shared/components/crm-search-input/crm-search-input';
+import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { CrmSearchInput } from '../../../../shared/components/crm-search-input/crm-search-input';
 
 @Component({
   selector: 'app-client-filters',

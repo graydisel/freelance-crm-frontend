@@ -1,215 +1,43 @@
 @use 'variables' as *;
 
-.crm-table-container {
-  background-color: $color-bg-card;
-  border-radius: $radius-lg;
-  border: 1px solid $color-border-taupe;
-  box-shadow: $shadow-sm;
-  overflow: hidden;
-}
-
-.crm-table-wrapper {
-  width: 100%;
-  min-width: 0;
-  overflow-x: auto;
-}
-
-.crm-table {
-  width: 100%;
-  min-width: 50rem;
-  border-collapse: collapse;
-  text-align: left;
-
-  th {
-    padding: $space-lg;
-    font-size: $font-size-xs;
-    font-weight: $font-weight-semibold;
-    color: $color-text-muted;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    border-bottom: 1px solid $color-border-taupe;
-    background-color: $color-bg-main;
-  }
-
-  td {
-    padding: $space-lg;
-    border-bottom: 1px solid $color-border-taupe;
-    vertical-align: middle;
-  }
-
-  tbody tr {
-    transition: background-color $transition-fast;
-
-    &:hover {
-      background-color: rgba($color-bg-taupe-light, 0.3);
-    }
-  }
-
-  &__cell-content {
+.crm-table-cell-custom-content {
     display: flex;
     align-items: center;
     gap: $space-md;
-  }
+}
 
-  &__avatar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: $radius-full;
-    font-size: $font-size-sm;
-    font-weight: $font-weight-bold;
-
-    &--company {
-      background-color: $color-bg-taupe-light;
-      color: $color-text-accent;
-    }
-
-    &--contact {
-      background-color: $color-bg-muted;
-      color: $color-text-muted;
-      width: 2rem;
-      height: 2rem;
-      font-size: $font-size-xs;
-    }
-  }
-
-  &__primary-text {
+.crm-table-primary-text {
     font-size: $font-size-sm;
     font-weight: $font-weight-medium;
     color: $color-text-heading;
     margin-bottom: $space-xs;
-  }
+}
 
-  &__secondary-text {
+.crm-table-secondary-text {
     display: flex;
     align-items: center;
     gap: $space-xs;
     font-size: $font-size-xs;
     color: $color-text-muted;
-  }
+}
 
-  &__icon {
+.crm-table-icon-mail {
     width: 1rem;
     height: 1rem;
     color: $color-text-placeholder;
-  }
-
-  &__text-muted {
-    font-size: $font-size-sm;
-    color: $color-text-muted;
-  }
-
-  &__status {
-    display: inline-flex;
-    align-items: center;
-    gap: $space-xs;
-    font-size: $font-size-sm;
-    font-weight: $font-weight-medium;
-
-    &--active {
-      color: $color-success-text;
-
-      .crm-table__status-dot {
-        background-color: $color-success-text;
-      }
-    }
-
-    &--lead {
-      color: $color-warning-dark;
-
-      .crm-table__status-dot {
-        background-color: $color-warning-dark;
-      }
-    }
-
-    &--archived {
-      color: $color-text-muted;
-
-      .crm-table__status-dot {
-        background-color: $color-text-muted;
-      }
-    }
-  }
-
-  &__status-dot {
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: $radius-full;
-  }
-
-  &__empty {
-    text-align: center;
-    color: $color-text-muted;
-    padding: $space-2xl;
-  }
-
-  // --- Pagination ---
-  &__pagination {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding: $space-lg;
-    gap: $space-md;
-    background-color: $color-bg-card;
-
-    @include md-up {
-      flex-direction: row;
-    }
-  }
 }
 
-.crm-pagination {
-  &__info {
+.crm-table-text-dark {
     font-size: $font-size-sm;
-    color: $color-text-muted;
-  }
+    color: $color-text-dark;
+}
 
-  &__controls {
-    display: flex;
-    align-items: center;
-    gap: $space-xs;
-  }
-
-  &__btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 2rem;
-    height: 2rem;
-    padding: 0 $space-xs;
-    border-radius: $radius-md;
+.crm-table-contract-badge {
     font-size: $font-size-sm;
     font-weight: $font-weight-medium;
+}
+
+.crm-table-text-muted {
+    font-size: $font-size-sm;
     color: $color-text-muted;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    transition: $transition-fast;
-
-    &:hover:not(:disabled) {
-      background-color: $color-bg-muted;
-      color: $color-text-heading;
-    }
-
-    &--active {
-      background-color: $color-primary;
-      color: white;
-
-      &:hover {
-        background-color: $color-primary-hover;
-      }
-    }
-
-    &--nav {
-      font-size: $font-size-base;
-    }
-
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-  }
 }

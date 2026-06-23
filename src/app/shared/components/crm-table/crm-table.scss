@@ -1,0 +1,126 @@
+@use 'variables' as *;
+
+.crm-table-shared-root {
+  display: block;
+  width: 100%;
+
+  .crm-table-container {
+    background-color: $color-bg-card;
+    border-radius: $radius-lg;
+    border: 1px solid $color-border-taupe;
+    box-shadow: $shadow-sm;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .crm-table-wrapper {
+    width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    display: block;
+  }
+
+  .crm-table {
+    width: 100%;
+    min-width: 44rem;
+    border-collapse: collapse;
+    text-align: left;
+
+    tr[crm-table-header] {
+      background-color: $color-bg-main;
+
+      th {
+        padding: $space-lg;
+        font-size: $font-size-xs;
+        font-weight: $font-weight-semibold;
+        color: $color-text-muted;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        border-bottom: 1px solid $color-border-taupe;
+      }
+    }
+
+    tr {
+      transition: background-color $transition-fast;
+
+      &:hover {
+        background-color: rgba($color-bg-taupe-light, 0.3);
+      }
+
+      td {
+        padding: $space-lg;
+        border-bottom: 1px solid $color-border-taupe;
+        vertical-align: middle;
+        font-size: $font-size-sm;
+      }
+    }
+
+    &__empty {
+      text-align: center;
+      color: $color-text-muted;
+      padding: $space-2xl;
+    }
+  }
+
+  .crm-table__pagination {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: $space-lg;
+    gap: $space-md;
+    background-color: $color-bg-card;
+    border-top: 1px solid $color-border-taupe;
+
+    @include md-up {
+      flex-direction: row;
+    }
+  }
+
+  .crm-pagination {
+    &__info {
+      font-size: $font-size-sm;
+      color: $color-text-muted;
+    }
+
+    &__controls {
+      display: flex;
+      align-items: center;
+      gap: $space-xs;
+    }
+
+    &__btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 2rem;
+      height: 2rem;
+      padding: 0 $space-xs;
+      border-radius: $radius-md;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-medium;
+      color: $color-text-muted;
+      background-color: transparent;
+      border: 1px solid $color-border-taupe;
+      cursor: pointer;
+      transition: all $transition-fast;
+
+      &:hover:not([disabled]) {
+        border-color: $color-text-muted;
+        color: $color-text-dark;
+        background-color: $color-bg-main;
+      }
+
+      &[disabled] {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      &--active {
+        background-color: rgba($color-primary, 0.1);
+        border-color: $color-primary;
+        color: $color-primary;
+      }
+    }
+  }
+}

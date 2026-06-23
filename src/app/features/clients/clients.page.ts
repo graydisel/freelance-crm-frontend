@@ -1,5 +1,5 @@
 import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 import { ClientFiltersComponent } from './components/client-filters/client-filters.component';
 import { ClientsTableComponent } from './components/clients-table/clients-table.component';
@@ -16,6 +16,7 @@ import { CrmMetricCard } from '../../shared/components/crm-metric-card/crm-metri
     CrmMetricCard,
     ClientFiltersComponent,
     ClientsTableComponent,
+    CurrencyPipe
   ],
   templateUrl: './clients.page.html',
   styleUrls: ['./clients.page.scss']

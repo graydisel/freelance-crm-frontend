@@ -1,13 +1,11 @@
 <div class="crm-filters" [formGroup]="searchForm">
-  <crm-search-input
-    formControlName="text"
-    (enterPressed)="search()">
+  <crm-search-input formControlName="text" (enterPressed)="search()">
   </crm-search-input>
 
   <div class="crm-filters__actions">
     <div class="crm-filters__status-dropdown">
       <select formControlName="status" class="crm-filters__select">
-        <option value="all">All Statuses ({{ totalResults() }})</option>
+        <option value="all">All Statuses</option>
         <option [value]="ClientStatusEnum.ACTIVE">Active</option>
         <option [value]="ClientStatusEnum.LEAD">Lead</option>
         <option [value]="ClientStatusEnum.ARCHIVED">Archived</option>
@@ -27,7 +25,7 @@
 <div class="crm-filters__chips">
   <button type="button" class="crm-filters__chip" [class.crm-filters__chip--active]="currentStatus() === 'all'"
     (click)="onStatusChange('all')">
-    All <span class="crm-filters__badge">{{ activeCount() + leadsCount() + archivedCount() }}</span>
+    All <span class="crm-filters__badge">{{ totalResults() }}</span>
   </button>
 
   <button type="button" class="crm-filters__chip"

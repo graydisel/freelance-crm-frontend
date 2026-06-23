@@ -4,7 +4,8 @@
     <div class="crm-clients__header">
       <div>
         <h1 class="crm-clients__title">Clients</h1>
-        <p class="crm-clients__subtitle">9 active accounts total &mdash; $1 146 000 in active contracts</p>
+        <p class="crm-clients__subtitle">{{ activeClientsCount() }} active accounts total &mdash; {{ totalRevenue() |
+          currency: 'USD' : 'symbol' : '1.0-0' }} in active contracts</p>
       </div>
       <button class="crm-clients__add-btn">
         <span>+ Add</span>
@@ -25,7 +26,8 @@
       </crm-metric-card>
     </div>
 
-    <app-client-filters (searchChange)="onSearchChange($event)"
+    <app-client-filters (searchChange)="onSearchChange($event)" [totalResults]="totalItems()"
+      [activeCount]="activeClientsCount()" [leadsCount]="leadsClientsCount()" [archivedCount]="archivedClientsCount()"
       (statusChange)="onStatusChange($event)"></app-client-filters>
 
     <app-clients-table [clients]="paginatedClients()" [currentPage]="currentPage()" [pageSize]="pageSize()"

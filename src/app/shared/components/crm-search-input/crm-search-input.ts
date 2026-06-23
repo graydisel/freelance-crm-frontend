@@ -1,6 +1,6 @@
-import { Component, ElementRef, HostListener, Provider, computed, forwardRef, inject, input, output, signal } from '@angular/core';
+import { Component, ElementRef, HostListener, Provider, forwardRef, inject, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { NG_VALUE_ACCESSOR, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { catchError, debounceTime, distinctUntilChanged, filter, of, switchMap, tap } from 'rxjs';
 import { ClientsService } from '../../../core/services/clients/clients.service';
@@ -32,8 +32,8 @@ export class CrmSearchInput {
   protected readonly showDropdown = signal<boolean>(false);
   protected readonly isDisabled = signal<boolean>(false);
 
-  private onChange: (value: string) => void = () => {};
-  private onTouched: () => void = () => {};
+  private onChange: (value: string) => void = () => { };
+  private onTouched: () => void = () => { };
 
   constructor() {
     this.searchControl.valueChanges.pipe(
