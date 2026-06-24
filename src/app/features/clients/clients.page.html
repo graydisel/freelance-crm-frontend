@@ -1,3 +1,7 @@
+<crm-drawer [isOpen]="isDrawerOpen()" (closed)="isDrawerOpen.set(false)">
+  <app-client-create-form (saved)="onClientSaved()"></app-client-create-form>
+</crm-drawer>
+
 <main class="crm-dashboard">
   <app-sidebar></app-sidebar>
   <div class="crm-clients">
@@ -7,7 +11,7 @@
         <p class="crm-clients__subtitle">{{ activeClientsCount() }} active accounts total &mdash; {{ totalRevenue() |
           currency: 'USD' : 'symbol' : '1.0-0' }} in active contracts</p>
       </div>
-      <button class="crm-clients__add-btn">
+      <button class="crm-clients__add-btn" (click)="isDrawerOpen.set(true)">
         <span>+ Add</span>
       </button>
     </div>

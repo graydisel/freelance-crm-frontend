@@ -1,0 +1,50 @@
+<form [formGroup]="form" (ngSubmit)="submit()" class="crm-form">
+  <div class="crm-form__header">
+    <h2 class="crm-form__title">Add New Client</h2>
+    <p class="crm-form__subtitle">Enter the details for the new client.</p>
+  </div>
+
+  <div class="crm-form__group">
+    <label for="companyName" class="crm-form__label">Company Name</label>
+    <input id="companyName" type="text" formControlName="companyName" class="crm-form__input"
+      placeholder="e.g. Acme Corp">
+  </div>
+
+  <div class="crm-form__group">
+    <label for="contractValue" class="crm-form__label">Contract Value ($)</label>
+    <input id="contractValue" type="number" formControlName="contractValue" class="crm-form__input" placeholder="0">
+  </div>
+
+  <div class="crm-form__group">
+    <label for="contactPerson" class="crm-form__label">Contact Person</label>
+    <input id="contactPerson" type="text" formControlName="contactPerson" class="crm-form__input"
+      placeholder="John Doe">
+  </div>
+
+  <div class="crm-form__group">
+    <label for="contactEmail" class="crm-form__label">Contact Email</label>
+    <input id="contactEmail" type="email" formControlName="contactEmail" class="crm-form__input"
+      placeholder="john@example.com">
+    <p class="crm-form__hint">If email does not exist, a new user account will be generated automatically</p>
+  </div>
+
+  <div class="crm-form__group">
+    <label for="phone" class="crm-form__label">Phone Number</label>
+    <input id="phone" type="tel" formControlName="phone" class="crm-form__input" placeholder="+1 (555) 000-0000">
+  </div>
+
+  <div class="crm-form__group">
+    <label for="status" class="crm-form__label">Status</label>
+    <select id="status" formControlName="status" class="crm-form__select">
+      <option value="lead">Lead</option>
+      <option value="active">Active</option>
+      <option value="archived">Archived</option>
+    </select>
+  </div>
+
+  <div class="crm-form__actions">
+    <button crm-btn type="submit" variant="primary" size="md" [disabled]="form.invalid" [loading]="isSubmitting()">
+      {{ isSubmitting() ? 'Creating...' : 'Create Client' }}
+    </button>
+  </div>
+</form>

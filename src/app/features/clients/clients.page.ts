@@ -6,6 +6,8 @@ import { ClientsTableComponent } from './components/clients-table/clients-table.
 import { ClientProfile, ClientsServerResponse } from '../../core/models/client.model';
 import { ClientsService } from '../../core/services/clients/clients.service';
 import { CrmMetricCard } from '../../shared/components/crm-metric-card/crm-metric-card';
+import { CrmDrawerComponent } from '../../shared/components/crm-drawer/crm-drawer.component';
+import { ClientCreateFormComponent } from './components/client-create-form/client-create-form.component';
 
 @Component({
   selector: 'app-clients-page',
@@ -16,7 +18,9 @@ import { CrmMetricCard } from '../../shared/components/crm-metric-card/crm-metri
     CrmMetricCard,
     ClientFiltersComponent,
     ClientsTableComponent,
-    CurrencyPipe
+    CurrencyPipe,
+    CrmDrawerComponent,
+    ClientCreateFormComponent
   ],
   templateUrl: './clients.page.html',
   styleUrls: ['./clients.page.scss']
@@ -24,6 +28,7 @@ import { CrmMetricCard } from '../../shared/components/crm-metric-card/crm-metri
 export class ClientsPageComponent implements OnInit {
   private readonly clientsService = inject(ClientsService);
 
+  protected readonly isDrawerOpen = signal<boolean>(false);
   protected readonly currentPage = signal<number>(1);
   protected readonly pageSize = signal<number>(10);
   protected readonly searchQuery = signal<string>('');
@@ -87,5 +92,10 @@ export class ClientsPageComponent implements OnInit {
   protected onStatusChange(status: string): void {
     this.statusFilter.set(status);
     this.currentPage.set(1);
+  }
+
+  protected onClientSaved(): void {
+    this.isDrawerOpen.set(false);
+    this.loadClients();
   }
 }

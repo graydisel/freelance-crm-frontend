@@ -1,0 +1,77 @@
+@use 'variables' as *;
+
+:host {
+  display: block;
+}
+
+.crm-drawer__backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: $color-overlay;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.crm-drawer__panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 450px;
+  background-color: $color-bg-card;
+  z-index: 1001;
+  box-shadow: $shadow-xl;
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+:host.is-open {
+  .crm-drawer__backdrop {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .crm-drawer__panel {
+    transform: translateX(0);
+  }
+}
+
+.crm-drawer__header {
+  padding: $space-lg;
+  display: flex;
+  justify-content: flex-end;
+  border-bottom: 1px solid $color-border-taupe;
+}
+
+.crm-drawer__close-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: $color-text-muted;
+  padding: $space-xs;
+  border-radius: $radius-md;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: $transition-fast;
+
+  &:hover {
+    background-color: $color-bg-muted;
+    color: $color-text-heading;
+  }
+
+  &:focus-visible {
+    @include focus-ring();
+  }
+}
+
+.crm-drawer__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: $space-xl;
+}
