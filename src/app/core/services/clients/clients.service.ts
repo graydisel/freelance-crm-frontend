@@ -2,7 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
 import {Observable} from 'rxjs';
-import {ClientsServerResponse} from '../../models/client.model';
+import {ClientProfile, ClientsServerResponse, UpdateClientDto} from '../../models/client.model';
 
 @Injectable({
   providedIn: 'root',
@@ -33,5 +33,13 @@ export class ClientsService {
       .set('search', search);
 
     return this.http.get<ClientsServerResponse>(this.API_URL, { params });
+  }
+
+  getClient(id: string): Observable<ClientProfile> {
+    return this.http.get<ClientProfile>(`${this.API_URL}/${id}`);
+  }
+
+  updateClient(id: string, dto: UpdateClientDto): Observable<ClientProfile> {
+    return this.http.patch<ClientProfile>(`${this.API_URL}/${id}`, dto);
   }
 }

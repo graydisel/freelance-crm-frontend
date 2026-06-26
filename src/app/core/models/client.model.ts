@@ -11,6 +11,16 @@ export interface ClientProfile {
   status: ClientStatusEnum;
   initialsCompany: string;
   initialsContact: string;
+  projects?: any[];
+}
+
+export interface UpdateClientDto {
+  companyName?: string;
+  contactPerson?: string;
+  contactEmail?: string;
+  phone?: string;
+  contractValue?: number;
+  status?: ClientStatusEnum;
 }
 
 export interface ClientsServerResponse {

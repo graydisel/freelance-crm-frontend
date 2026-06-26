@@ -14,7 +14,7 @@
 
   <ng-container crm-table-body>
     @for (client of clients(); track client.id) {
-      <tr>
+      <tr (click)="rowClicked.emit(client)" style="cursor: pointer;">
         <td>
           <div class="crm-table-cell-custom-content"> <crm-avatar [initials]="client.initialsCompany" variant="company"></crm-avatar>
             <div>

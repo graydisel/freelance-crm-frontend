@@ -23,4 +23,5 @@ export class ClientsTableComponent {
   totalItems = input<number>(0);
 
   pageChange = output<number>();
+  rowClicked = output<ClientProfile>();
 }

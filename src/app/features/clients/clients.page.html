@@ -2,6 +2,12 @@
   <app-client-create-form (saved)="onClientSaved()"></app-client-create-form>
 </crm-drawer>
 
+<crm-drawer [isOpen]="!!selectedClient()" (closed)="selectedClient.set(null)">
+  @if (selectedClient(); as activeClient) {
+    <app-client-details [clientId]="activeClient.id" (saved)="onClientUpdated()"></app-client-details>
+  }
+</crm-drawer>
+
 <main class="crm-dashboard">
   <app-sidebar></app-sidebar>
   <div class="crm-clients">
@@ -35,7 +41,7 @@
       (statusChange)="onStatusChange($event)"></app-client-filters>
 
     <app-clients-table [clients]="paginatedClients()" [currentPage]="currentPage()" [pageSize]="pageSize()"
-      [totalItems]="totalItems()" (pageChange)="onPageChange($event)">
+      [totalItems]="totalItems()" (pageChange)="onPageChange($event)" (rowClicked)="selectedClient.set($event)">
     </app-clients-table>
   </div>
-</main>
+</main>

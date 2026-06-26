@@ -1,0 +1,99 @@
+@if (isLoading()) {
+<div class="crm-client-details-loading">Loading client details...</div>
+} @else if (client(); as activeClient) {
+<div class="crm-client-details">
+
+  <div class="crm-client-details__profile">
+    <crm-avatar [initials]="companyInitials()" variant="company"></crm-avatar>
+    <div class="crm-client-details__header-info">
+      @if (!isEditMode()) {
+      <h2>{{ activeClient.companyName }}</h2>
+      <crm-status-badge [status]="activeClient.status"></crm-status-badge>
+      } @else {
+      <div [formGroup]="editForm" class="crm-client-details__edit-row">
+        <input formControlName="companyName" class="crm-form__input" placeholder="Company Name" />
+        <select formControlName="status" class="crm-form__select">
+          @for (status of statusOptions; track status) {
+          <option [value]="status">{{ status }}</option>
+          }
+        </select>
+      </div>
+      }
+    </div>
+  </div>
+
+  <form [formGroup]="editForm" (ngSubmit)="onSubmit()" class="crm-client-details__body">
+
+    <div class="crm-client-details__section">
+      <h3>Contact Details</h3>
+      <div class="crm-client-details__grid">
+
+        <div class="crm-client-details__field">
+          <label>Contact Person</label>
+          @if (!isEditMode()) {
+          <p>{{ activeClient.contactPerson }}</p>
+          } @else {
+          <input formControlName="contactPerson" class="crm-form__input" />
+          }
+        </div>
+
+        <div class="crm-client-details__field">
+          <label>Email</label>
+          @if (!isEditMode()) {
+          <p><a [href]="'mailto:' + activeClient.contactEmail">{{ activeClient.contactEmail }}</a></p>
+          } @else {
+          <input formControlName="contactEmail" class="crm-form__input" type="email" />
+          }
+        </div>
+
+        <div class="crm-client-details__field">
+          <label>Phone</label>
+          @if (!isEditMode()) {
+          <p><a [href]="'tel:' + activeClient.phone">{{ activeClient.phone || '—' }}</a></p>
+          } @else {
+          <input formControlName="phone" class="crm-form__input" />
+          }
+        </div>
+
+        <div class="crm-client-details__field">
+          <label>Contract Value</label>
+          @if (!isEditMode()) {
+          <p>{{ (activeClient.contractValue || 0) | currency:'USD':'symbol':'1.0-0' }}</p>
+          } @else {
+          <input formControlName="contractValue" class="crm-form__input" type="number" />
+          }
+        </div>
+
+      </div>
+    </div>
+
+    <div class="crm-client-details__section">
+      <h3>Projects</h3>
+      <div class="crm-client-details__projects-list">
+        @for (project of activeClient.projects; track project.id) {
+        <a [routerLink]="['/projects', project.id]" class="crm-client-details__project-card">
+          <div class="crm-client-details__project-name">{{ project.name }}</div>
+          <div class="crm-client-details__project-status">{{ project.status }}</div>
+        </a>
+        } @empty {
+        <div class="crm-client-details__no-projects">No projects found for this client.</div>
+        }
+      </div>
+    </div>
+
+  </form>
+
+  <div class="crm-client-details__footer">
+    @if (!isEditMode()) {
+    <button crm-btn variant="primary" (click)="toggleEditMode()">Edit Details</button>
+    } @else {
+    <button crm-btn variant="secondary" (click)="toggleEditMode()">Cancel</button>
+    <button crm-btn variant="primary" (click)="onSubmit()" [disabled]="isSubmitting() || editForm.invalid"
+      [loading]="isSubmitting()">
+      Save Changes
+    </button>
+    }
+  </div>
+
+</div>
+}
