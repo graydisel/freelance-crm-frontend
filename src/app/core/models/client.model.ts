@@ -14,7 +14,7 @@ export interface ClientProfile {
   projects?: any[];
 }
 
-export interface UpdateClientDto {
+export interface CreateClientDto {
   companyName?: string;
   contactPerson?: string;
   contactEmail?: string;
@@ -22,6 +22,8 @@ export interface UpdateClientDto {
   contractValue?: number;
   status?: ClientStatusEnum;
 }
+
+export interface UpdateClientDto extends CreateClientDto { }
 
 export interface ClientsServerResponse {
   data: ClientProfile[];

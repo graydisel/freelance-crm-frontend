@@ -28,40 +28,6 @@
     gap: $space-xs;
   }
 
-  &__label {
-    font-size: $font-size-sm;
-    font-weight: $font-weight-medium;
-    color: $color-text-dark;
-  }
-
-  &__input,
-  &__select {
-    width: 100%;
-    padding: $space-sm $space-md;
-    border: 1px solid $color-border-accent;
-    border-radius: $radius-md;
-    font-size: $font-size-sm;
-    color: $color-text-dark;
-    background-color: $color-bg-card;
-    transition: $transition-fast;
-
-    &::placeholder {
-      color: $color-text-placeholder;
-    }
-
-    &:focus {
-      @include focus-ring();
-      border-color: $color-primary;
-    }
-  }
-
-  &__hint {
-    font-size: $font-size-xs;
-    color: $color-text-muted;
-    margin: $space-xs 0 0 0;
-    font-style: italic;
-  }
-
   &__actions {
     margin-top: $space-xl;
     display: flex;

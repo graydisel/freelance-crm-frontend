@@ -1,8 +1,8 @@
-import {inject, Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {environment} from '../../../../environments/environment';
-import {Observable} from 'rxjs';
-import {ClientProfile, ClientsServerResponse, UpdateClientDto} from '../../models/client.model';
+import { inject, Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
+import { Observable } from 'rxjs';
+import { ClientProfile, ClientsServerResponse, CreateClientDto, UpdateClientDto } from '../../models/client.model';
 
 @Injectable({
   providedIn: 'root',
@@ -37,6 +37,10 @@ export class ClientsService {
 
   getClient(id: string): Observable<ClientProfile> {
     return this.http.get<ClientProfile>(`${this.API_URL}/${id}`);
+  }
+
+  createClient(dto: CreateClientDto): Observable<ClientProfile> {
+    return this.http.post<ClientProfile>(this.API_URL, dto);
   }
 
   updateClient(id: string, dto: UpdateClientDto): Observable<ClientProfile> {

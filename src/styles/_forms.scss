@@ -1,0 +1,50 @@
+@use './variables' as *;
+
+.crm-form__group {
+  margin-bottom: $space-md;
+}
+
+.crm-form__label {
+  display: block;
+  margin-bottom: 0.375rem;
+  color: $color-text-muted;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+}
+
+.crm-form__input,
+.crm-form__select {
+  width: 100%;
+  border-radius: $radius-md;
+  background-color: $color-bg-card;
+  border: 1px solid $color-border-taupe;
+  color: $color-text-dark;
+  padding: $space-sm $space-md;
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &:focus {
+    outline: none;
+    border-color: $color-primary;
+    box-shadow: 0 0 0 3px rgba($color-primary, 0.15);
+  }
+
+  &:disabled {
+    background-color: $color-bg-muted;
+    cursor: not-allowed;
+  }
+}
+
+.crm-form__hint {
+  display: block;
+  margin-top: 0.25rem;
+  color: $color-text-muted;
+  font-size: $font-size-xs;
+}
+
+.crm-alert-danger {
+  background-color: rgba(#ef4444, 0.1);
+  color: #b91c1c;
+  border: 1px solid rgba(#ef4444, 0.2);
+  padding: $space-md;
+  border-radius: $radius-md;
+}

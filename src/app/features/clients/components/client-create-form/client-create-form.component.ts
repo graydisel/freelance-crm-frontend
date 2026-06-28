@@ -1,9 +1,10 @@
 import { Component, inject, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, NonNullableFormBuilder, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../../environments/environment';
+import { ClientsService } from '../../../../core/services/clients/clients.service';
 import { CrmButtonComponent } from '../../../../shared/components/crm-button/crm-button';
+import { ClientStatusEnum } from '../../../../core/enums/client-status.enum';
+import { CreateClientDto } from '../../../../core/models/client.model';
 
 @Component({
   selector: 'app-client-create-form',
@@ -14,10 +15,11 @@ import { CrmButtonComponent } from '../../../../shared/components/crm-button/crm
 })
 export class ClientCreateFormComponent {
   private readonly fb = inject(NonNullableFormBuilder);
-  private readonly http = inject(HttpClient);
+  private readonly clientsService = inject(ClientsService);
 
   saved = output<void>();
   isSubmitting = signal(false);
+  errorMessage = signal<string | null>(null);
 
   form = this.fb.group({
     companyName: ['', Validators.required],
@@ -25,7 +27,7 @@ export class ClientCreateFormComponent {
     contactPerson: ['', Validators.required],
     contactEmail: ['', [Validators.required, Validators.email]],
     phone: ['', Validators.required],
-    status: ['lead', Validators.required]
+    status: [ClientStatusEnum.LEAD, Validators.required]
   });
 
   submit() {
@@ -35,17 +37,24 @@ export class ClientCreateFormComponent {
     }
 
     this.isSubmitting.set(true);
-    const dto = this.form.getRawValue();
+    const dto: CreateClientDto = {
+      ...this.form.getRawValue(),
+      contractValue: Number(this.form.controls.contractValue.value) || 0
+    };
 
-    this.http.post(`${environment.apiUrl}/client`, dto).subscribe({
+    this.clientsService.createClient(dto).subscribe({
       next: () => {
         this.isSubmitting.set(false);
-        this.form.reset({ status: 'lead', contractValue: 0 });
+        this.form.reset({ status: ClientStatusEnum.LEAD, contractValue: 0 });
         this.saved.emit();
       },
       error: (err) => {
-        console.error('Error creating client:', err);
         this.isSubmitting.set(false);
+        if (err.status === 409 || err?.error?.statusCode === 409) {
+          this.errorMessage.set(err.error?.message || 'This email is already taken by another company.');
+        } else {
+          this.errorMessage.set('An unexpected error occurred while saving.');
+        }
       }
     });
   }

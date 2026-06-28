@@ -24,6 +24,12 @@
 
   <form [formGroup]="editForm" (ngSubmit)="onSubmit()" class="crm-client-details__body">
 
+    @if (errorMessage()) {
+    <div class="crm-alert-danger">
+      {{ errorMessage() }}
+    </div>
+    }
+
     <div class="crm-client-details__section">
       <h3>Contact Details</h3>
       <div class="crm-client-details__grid">
@@ -60,7 +66,7 @@
           @if (!isEditMode()) {
           <p>{{ (activeClient.contractValue || 0) | currency:'USD':'symbol':'1.0-0' }}</p>
           } @else {
-          <input formControlName="contractValue" class="crm-form__input" type="number" />
+          <input type="number" formControlName="contractValue" class="crm-form__input" />
           }
         </div>
 

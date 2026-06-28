@@ -31,6 +31,7 @@ export class ClientDetailsComponent {
   isEditMode = signal<boolean>(false);
   isLoading = signal<boolean>(false);
   isSubmitting = signal<boolean>(false);
+  errorMessage = signal<string | null>(null);
 
   private clientsService = inject(ClientsService);
   private fb = inject(NonNullableFormBuilder);
@@ -59,6 +60,12 @@ export class ClientDetailsComponent {
   statusOptions = Object.values(ClientStatusEnum);
 
   constructor() {
+    this.editForm.valueChanges.subscribe(() => {
+      if (this.errorMessage()) {
+        this.errorMessage.set(null);
+      }
+    });
+
     effect(() => {
       const id = this.clientId();
       if (id) {
@@ -83,6 +90,7 @@ export class ClientDetailsComponent {
 
   toggleEditMode() {
     this.isEditMode.set(!this.isEditMode());
+    this.errorMessage.set(null);
     if (!this.isEditMode()) {
       this.resetForm();
     }
@@ -103,10 +111,14 @@ export class ClientDetailsComponent {
   }
 
   onSubmit() {
-    if (this.editForm.invalid || !this.client()) return;
+    if (this.editForm.invalid || !this.client() || this.isSubmitting()) return;
 
     this.isSubmitting.set(true);
-    const dto: UpdateClientDto = this.editForm.getRawValue();
+    this.errorMessage.set(null);
+    const dto: UpdateClientDto = {
+      ...this.editForm.getRawValue(),
+      contractValue: Number(this.editForm.controls.contractValue.value) || 0
+    };
 
     this.clientsService.updateClient(this.client()!.id, dto).subscribe({
       next: (updatedClient) => {
@@ -115,8 +127,13 @@ export class ClientDetailsComponent {
         this.isEditMode.set(false);
         this.saved.emit();
       },
-      error: () => {
+      error: (err) => {
         this.isSubmitting.set(false);
+        if (err.status === 409 || err?.error?.statusCode === 409) {
+          this.errorMessage.set(err.error?.message || 'This email is already taken by another company.');
+        } else {
+          this.errorMessage.set('An unexpected error occurred while saving.');
+        }
       }
     });
   }
