@@ -57,7 +57,7 @@
           @if (!isEditMode()) {
           <p><a [href]="'tel:' + activeClient.phone">{{ activeClient.phone || '—' }}</a></p>
           } @else {
-          <input formControlName="phone" class="crm-form__input" />
+          <input formControlName="phone" class="crm-form__input" mask="+0 (000) 000-00-00" [dropSpecialCharacters]="false" />
           }
         </div>
 

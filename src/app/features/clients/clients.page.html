@@ -23,7 +23,7 @@
     </div>
 
     <div class="crm-clients__metrics-grid">
-      <crm-metric-card label="Total Clients" [value]="totalItems()" hint="Total number of contracts">
+      <crm-metric-card label="Total Clients" [value]="totalClientsGlobal()" hint="Total number of contracts">
       </crm-metric-card>
 
       <crm-metric-card label="Active Accounts" [value]="activeClientsCount()" hint="Current active contracts">
@@ -36,12 +36,17 @@
       </crm-metric-card>
     </div>
 
-    <app-client-filters (searchChange)="onSearchChange($event)" [totalResults]="totalItems()"
-      [activeCount]="activeClientsCount()" [leadsCount]="leadsClientsCount()" [archivedCount]="archivedClientsCount()"
-      (statusChange)="onStatusChange($event)"></app-client-filters>
+    <app-client-filters
+      [totalResults]="totalItems()"
+      [activeCount]="filteredActiveCount()"
+      [leadsCount]="filteredLeadsCount()"
+      [archivedCount]="filteredArchivedCount()"
+      (searchChange)="onSearchChange($event)"
+      (statusChange)="onStatusChange($event)">
+    </app-client-filters>
 
     <app-clients-table [clients]="paginatedClients()" [currentPage]="currentPage()" [pageSize]="pageSize()"
-      [totalItems]="totalItems()" (pageChange)="onPageChange($event)" (rowClicked)="selectedClient.set($event)">
+                       [totalItems]="totalItems()" (pageChange)="onPageChange($event)" (rowClicked)="selectedClient.set($event)">
     </app-clients-table>
   </div>
-</main>
+</main>

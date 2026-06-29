@@ -8,6 +8,8 @@ import { CrmStatusBadgeComponent } from '../../../../shared/components/crm-statu
 import { CrmButtonComponent } from '../../../../shared/components/crm-button/crm-button';
 import { ClientStatusEnum } from '../../../../core/enums/client-status.enum';
 import { RouterLink } from '@angular/router';
+import { CrmValidators } from '../../../../core/validators/custom-validators';
+import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({
   selector: 'app-client-details',
@@ -19,7 +21,8 @@ import { RouterLink } from '@angular/router';
     CrmAvatarComponent,
     CrmStatusBadgeComponent,
     CrmButtonComponent,
-    RouterLink
+    RouterLink,
+    NgxMaskDirective
   ],
   templateUrl: './client-details.component.html',
   styleUrls: ['./client-details.component.scss']
@@ -49,11 +52,11 @@ export class ClientDetailsComponent {
   });
 
   editForm = this.fb.group({
-    companyName: ['', Validators.required],
-    contactPerson: ['', Validators.required],
+    companyName: ['', [CrmValidators.requiredNoWhitespace]],
+    contactPerson: ['', [CrmValidators.requiredNoWhitespace]],
     contactEmail: ['', [Validators.required, Validators.email]],
-    phone: ['', Validators.required],
-    contractValue: [0, Validators.required],
+    phone: ['', [Validators.required]],
+    contractValue: [0, [Validators.required, Validators.min(0)]],
     status: [ClientStatusEnum.LEAD, Validators.required]
   });
 

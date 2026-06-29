@@ -32,10 +32,17 @@ export interface ClientsServerResponse {
     currentPage: number;
     pageSize: number;
     totalPages: number;
-    metrics: {
+    filteredMetrics: {
       activeCount: number;
       leadsCount: number;
       archivedCount: number;
+      totalCount: number;
+    };
+    globalMetrics: {
+      activeCount: number;
+      leadsCount: number;
+      archivedCount: number;
+      totalGlobal: number;
       totalActiveRevenue: number;
     }
   };

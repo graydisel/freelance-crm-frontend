@@ -1,3 +1,5 @@
+@use '../../../../../styles/variables' as *;
+
 .crm-client-details {
   display: flex;
   flex-direction: column;
@@ -7,7 +9,7 @@
     align-items: center;
     gap: 1.5rem;
     padding-bottom: 1.5rem;
-    border-bottom: 1px solid var(--crm-border);
+    border-bottom: 1px solid $color-border-taupe;
     margin-bottom: 1.5rem;
   }
 
@@ -20,7 +22,7 @@
       margin: 0;
       font-size: 1.25rem;
       font-weight: 600;
-      color: var(--crm-text-primary);
+      color: $color-text-heading;
     }
   }
 
@@ -45,7 +47,7 @@
       margin: 0;
       font-size: 0.875rem;
       font-weight: 600;
-      color: var(--crm-text-primary);
+      color: $color-text-dark;
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
@@ -64,16 +66,16 @@
 
     label {
       font-size: 0.875rem;
-      color: var(--crm-text-muted);
+      color: $color-text-muted;
     }
 
     p {
       margin: 0;
       font-size: 0.9375rem;
-      color: var(--crm-text-primary);
+      color: $color-text-dark;
 
       a {
-        color: var(--crm-primary);
+        color: $color-primary;
         text-decoration: none;
 
         &:hover {
@@ -97,36 +99,36 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem;
-    background: var(--crm-surface);
-    border: 1px solid var(--crm-border);
+    background: $color-bg-card;
+    border: 1px solid $color-border-taupe;
     border-radius: 6px;
     text-decoration: none;
     color: inherit;
     transition: background 0.2s, border-color 0.2s;
 
     &:hover {
-      background: var(--crm-surface-hover);
-      border-color: var(--crm-primary);
+      background: $color-bg-muted;
+      border-color: $color-primary;
     }
   }
 
   &__project-name {
     font-weight: 500;
-    color: var(--crm-text-primary);
+    color: $color-text-dark;
   }
 
   &__project-status {
     font-size: 0.875rem;
-    color: var(--crm-text-muted);
+    color: $color-text-muted;
   }
 
   &__no-projects {
     padding: 2rem;
     text-align: center;
-    color: var(--crm-text-muted);
-    background: var(--crm-surface-alt, #f9fafb);
+    color: $color-text-muted;
+    background: $color-bg-muted;
     border-radius: 6px;
-    border: 1px dashed var(--crm-border);
+    border: 1px dashed $color-border-accent;
   }
 
   &__footer {
@@ -134,7 +136,7 @@
     justify-content: flex-end;
     gap: 1rem;
     padding-top: 1.5rem;
-    border-top: 1px solid var(--crm-border);
+    border-top: 1px solid $color-border-taupe;
     margin-top: 1.5rem;
   }
 }
@@ -144,5 +146,5 @@
   align-items: center;
   justify-content: center;
   height: 100%;
-  color: var(--crm-text-muted);
+  color: $color-text-muted;
 }

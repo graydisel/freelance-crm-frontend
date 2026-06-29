@@ -5,11 +5,13 @@ import { ClientsService } from '../../../../core/services/clients/clients.servic
 import { CrmButtonComponent } from '../../../../shared/components/crm-button/crm-button';
 import { ClientStatusEnum } from '../../../../core/enums/client-status.enum';
 import { CreateClientDto } from '../../../../core/models/client.model';
+import { CrmValidators } from '../../../../core/validators/custom-validators';
+import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({
   selector: 'app-client-create-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, CrmButtonComponent],
+  imports: [CommonModule, ReactiveFormsModule, CrmButtonComponent, NgxMaskDirective],
   templateUrl: './client-create-form.component.html',
   styleUrls: ['./client-create-form.component.scss']
 })
@@ -22,11 +24,11 @@ export class ClientCreateFormComponent {
   errorMessage = signal<string | null>(null);
 
   form = this.fb.group({
-    companyName: ['', Validators.required],
+    companyName: ['', [CrmValidators.requiredNoWhitespace]],
     contractValue: [0, [Validators.required, Validators.min(0)]],
-    contactPerson: ['', Validators.required],
+    contactPerson: ['', [CrmValidators.requiredNoWhitespace]],
     contactEmail: ['', [Validators.required, Validators.email]],
-    phone: ['', Validators.required],
+    phone: ['', [Validators.required]],
     status: [ClientStatusEnum.LEAD, Validators.required]
   });
 

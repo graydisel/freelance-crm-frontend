@@ -30,7 +30,7 @@
 
   <div class="crm-form__group">
     <label for="phone" class="crm-form__label">Phone Number</label>
-    <input id="phone" type="tel" formControlName="phone" class="crm-form__input" placeholder="+1 (555) 000-0000">
+    <input id="phone" type="tel" formControlName="phone" class="crm-form__input" placeholder="+1 (555) 000-0000" mask="+0 (000) 000-00-00" [dropSpecialCharacters]="false">
   </div>
 
   <div class="crm-form__group">

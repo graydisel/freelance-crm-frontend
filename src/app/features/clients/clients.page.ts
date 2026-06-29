@@ -32,7 +32,7 @@ export class ClientsPageComponent implements OnInit {
 
   protected readonly isDrawerOpen = signal<boolean>(false);
   protected readonly selectedClient = signal<ClientProfile | null>(null);
-  
+
   protected readonly currentPage = signal<number>(1);
   protected readonly pageSize = signal<number>(10);
   protected readonly searchQuery = signal<string>('');
@@ -64,24 +64,41 @@ export class ClientsPageComponent implements OnInit {
     return this.serverResponse()?.data ?? [];
   });
 
-  protected readonly totalItems = computed<number>(() => {
-    return this.serverResponse()?.meta.totalItems ?? 0;
-  });
-
   protected readonly activeClientsCount = computed<number>(() => {
-    return this.serverResponse()?.meta.metrics?.activeCount ?? 0;
+    return this.serverResponse()?.meta.globalMetrics?.activeCount ?? 0;
   });
 
   protected readonly leadsClientsCount = computed<number>(() => {
-    return this.serverResponse()?.meta.metrics?.leadsCount ?? 0;
+    return this.serverResponse()?.meta.globalMetrics?.leadsCount ?? 0;
   });
 
   protected readonly archivedClientsCount = computed<number>(() => {
-    return this.serverResponse()?.meta.metrics?.archivedCount ?? 0;
+    return this.serverResponse()?.meta.globalMetrics?.archivedCount ?? 0;
+  });
+
+  protected readonly totalClientsGlobal = computed<number>(() => {
+    return this.serverResponse()?.meta.globalMetrics?.totalGlobal ?? 0;
   });
 
   protected readonly totalRevenue = computed<number>(() => {
-    return this.serverResponse()?.meta.metrics?.totalActiveRevenue ?? 0;
+    return this.serverResponse()?.meta.globalMetrics?.totalActiveRevenue ?? 0;
+  });
+
+
+  protected readonly filteredActiveCount = computed<number>(() => {
+    return this.serverResponse()?.meta.filteredMetrics?.activeCount ?? 0;
+  });
+
+  protected readonly filteredLeadsCount = computed<number>(() => {
+    return this.serverResponse()?.meta.filteredMetrics?.leadsCount ?? 0;
+  });
+
+  protected readonly filteredArchivedCount = computed<number>(() => {
+    return this.serverResponse()?.meta.filteredMetrics?.archivedCount ?? 0;
+  });
+
+  protected readonly totalItems = computed<number>(() => {
+    return this.serverResponse()?.meta.totalItems ?? 0;
   });
 
   protected onPageChange(newPage: number): void {
