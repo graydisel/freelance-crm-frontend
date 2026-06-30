@@ -1,0 +1,130 @@
+@use 'variables' as *;
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.crm-filters {
+  display: flex;
+  flex-direction: column;
+  gap: $space-md;
+  background-color: $color-bg-card;
+  border: 1px solid $color-border-taupe;
+  border-radius: $radius-md $radius-md 0 0;
+  padding: $space-md $space-lg;
+  border-bottom: 0;
+
+  @include md-up {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  crm-search-input {
+    flex: 1;
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: $space-md;
+
+    @include sm-up {
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+    }
+  }
+
+  &__status-dropdown {
+    min-width: 12rem;
+  }
+
+  &__select {
+    width: 100%;
+    padding: $space-sm $space-md;
+    border: 1px solid $color-border-taupe;
+    border-radius: $radius-md;
+    font-size: $font-size-sm;
+    color: $color-text-dark;
+    background-color: $color-bg-card;
+    cursor: pointer;
+    transition: border-color $transition-fast;
+
+    &:focus {
+      outline: none;
+      border-color: $color-primary;
+    }
+  }
+
+  &__results {
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+    white-space: nowrap;
+    text-align: right;
+  }
+
+  &__chips {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+    background-color: $color-bg-card;
+    border: 1px solid $color-border-taupe;
+    border-top: 0;
+    padding: 0 $space-lg $space-md $space-lg;
+    border-radius: 0 0 $radius-md $radius-md;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  &__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-xs;
+    padding: $space-xs $space-md;
+    border: 1px solid $color-border-taupe;
+    border-radius: $radius-full;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    color: $color-text-muted;
+    background-color: $color-bg-main;
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    &:hover {
+      border-color: $color-text-muted;
+      color: $color-text-dark;
+    }
+
+    &--active {
+      background-color: rgba($color-primary, 0.1);
+      border-color: $color-primary;
+      color: $color-primary;
+
+      &:hover {
+        border-color: $color-primary;
+        color: $color-primary;
+      }
+
+      .crm-filters__badge {
+        background-color: $color-primary;
+        color: #ffffff;
+      }
+    }
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 6px;
+    background-color: $color-bg-taupe-light;
+    color: $color-text-muted;
+    border-radius: $radius-full;
+    font-size: 10px;
+    font-weight: $font-weight-bold;
+    transition: all $transition-fast;
+  }
+}

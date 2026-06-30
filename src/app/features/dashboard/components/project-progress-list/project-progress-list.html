@@ -5,23 +5,22 @@
   </div>
   <ul class="crm-dashboard__project-list">
     @for (project of projects(); track project.name) {
-      <li class="crm-dashboard__project-item">
-        <div class="crm-dashboard__project-header">
-          <div class="crm-dashboard__project-info">
-            <p class="crm-dashboard__project-name">{{ project.name }}</p>
-            <p class="crm-dashboard__project-client">{{ project.client }}</p>
-          </div>
-          <span class="crm-dashboard__project-count">
-                {{ project.completedTasks }}/{{ project.totalTasks }}
-              </span>
+    <li class="crm-dashboard__project-item">
+      <div class="crm-dashboard__project-header">
+        <div class="crm-dashboard__project-info">
+          <p class="crm-dashboard__project-name">{{ project.name }}</p>
+          <p class="crm-dashboard__project-client">{{ project.client }}</p>
         </div>
-        <div class="crm-dashboard__progress-track crm-dashboard__progress-track--compact">
-          <div
-            class="crm-dashboard__progress-fill"
-            [style.width.%]="projectProgress(project.completedTasks, project.totalTasks) * 100">
-          </div>
+        <span class="crm-dashboard__project-count">
+          {{ project.completedTasks }}/{{ project.totalTasks }}
+        </span>
+      </div>
+      <div class="crm-dashboard__progress-track crm-dashboard__progress-track--compact">
+        <div class="crm-dashboard__progress-fill"
+          [style.width.%]="projectProgress(project.completedTasks, project.totalTasks) * 100">
         </div>
-      </li>
+      </div>
+    </li>
     }
   </ul>
 </div>

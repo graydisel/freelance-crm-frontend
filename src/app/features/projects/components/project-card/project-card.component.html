@@ -1,0 +1,22 @@
+<a [routerLink]="['/projects', project().id]" class="crm-project-card">
+  <div class="crm-project-card__header">
+    <h3 class="crm-project-card__title">{{ project().name }}</h3>
+    <span class="crm-project-card__badge" [ngClass]="'crm-project-card__badge--' + project().status">
+      {{ project().status.replace('_', ' ') }}
+    </span>
+  </div>
+  
+  <div class="crm-project-card__body">
+    <p class="crm-project-card__client">Client: <strong>{{ project().client.companyName }}</strong></p>
+    <p class="crm-project-card__manager">Manager: {{ project().manager.fullName }}</p>
+  </div>
+  
+  <div class="crm-project-card__footer">
+    <div class="crm-project-card__date">
+      {{ project().date | date:'mediumDate' }}
+    </div>
+    <div class="crm-project-card__tasks">
+      Tasks linked: {{ project().tasksCount }}
+    </div>
+  </div>
+</a>

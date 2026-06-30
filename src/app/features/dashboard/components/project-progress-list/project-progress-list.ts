@@ -1,5 +1,5 @@
-import {Component, input} from '@angular/core';
-import {ProjectProgress} from '../../../../core/models/project.model';
+import { Component, input } from '@angular/core';
+import { ProjectProgress } from '../../../../core/models/project.model';
 
 @Component({
   selector: 'app-project-progress-list',
@@ -11,6 +11,6 @@ export class ProjectProgressList {
   projects = input.required<ProjectProgress[]>();
 
   protected projectProgress(completed: number, total: number): number {
-    return total === 0 ? 0: completed / total;
+    return total === 0 ? 0 : completed / total;
   }
 }

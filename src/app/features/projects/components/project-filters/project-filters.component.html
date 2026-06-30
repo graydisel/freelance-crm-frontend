@@ -1,0 +1,48 @@
+<div class="crm-filters" [formGroup]="searchForm">
+  <crm-search-input formControlName="text" (enterPressed)="search()">
+  </crm-search-input>
+
+  <div class="crm-filters__actions">
+    <div class="crm-filters__status-dropdown">
+      <select formControlName="status" class="crm-filters__select">
+        <option value="all">All Statuses</option>
+        <option [value]="ProjectStatusEnum.PLANNING">Planning</option>
+        <option [value]="ProjectStatusEnum.IN_PROGRESS">In Progress</option>
+        <option [value]="ProjectStatusEnum.DONE">Done</option>
+      </select>
+    </div>
+
+    <div class="crm-filters__results">
+      {{ totalResults() }} results found
+    </div>
+
+    <button crm-btn type="button" variant="primary" size="md" [loading]="isLoading()" (click)="search()" title="Search">
+      Search
+    </button>
+  </div>
+</div>
+
+<div class="crm-filters__chips">
+  <button type="button" class="crm-filters__chip" [class.crm-filters__chip--active]="currentStatus() === 'all'"
+    (click)="onStatusChange('all')">
+    All <span class="crm-filters__badge">{{ totalResults() }}</span>
+  </button>
+
+  <button type="button" class="crm-filters__chip"
+    [class.crm-filters__chip--active]="currentStatus() === ProjectStatusEnum.PLANNING"
+    (click)="onStatusChange(ProjectStatusEnum.PLANNING)">
+    Planning <span class="crm-filters__badge">{{ planningCount() }}</span>
+  </button>
+
+  <button type="button" class="crm-filters__chip"
+    [class.crm-filters__chip--active]="currentStatus() === ProjectStatusEnum.IN_PROGRESS"
+    (click)="onStatusChange(ProjectStatusEnum.IN_PROGRESS)">
+    In Progress <span class="crm-filters__badge">{{ inProgressCount() }}</span>
+  </button>
+
+  <button type="button" class="crm-filters__chip"
+    [class.crm-filters__chip--active]="currentStatus() === ProjectStatusEnum.DONE"
+    (click)="onStatusChange(ProjectStatusEnum.DONE)">
+    Done <span class="crm-filters__badge">{{ doneCount() }}</span>
+  </button>
+</div>
