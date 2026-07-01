@@ -1,0 +1,69 @@
+@use 'variables' as *;
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.crm-table-primary-text {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $color-text-heading;
+  text-decoration: none;
+
+  &:hover {
+    color: $color-primary;
+    text-decoration: underline;
+  }
+}
+
+.crm-table-text-dark {
+  font-size: $font-size-sm;
+  color: $color-text-dark;
+}
+
+.crm-table-text-muted {
+  font-size: $font-size-sm;
+  color: $color-text-muted;
+}
+
+.crm-project-status-badge {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  padding: $space-xs $space-sm;
+  border-radius: $radius-full;
+  text-transform: uppercase;
+  display: inline-block;
+
+  &--planning {
+    background-color: $color-warning-bg;
+    color: $color-warning-text;
+  }
+
+  &--active {
+    background-color: $color-primary-light;
+    color: $color-primary-text;
+  }
+
+  &--completed {
+    background-color: $color-success-bg;
+    color: $color-success-text;
+  }
+
+  &--review {
+    background-color: $color-warning-bg;
+    color: $color-warning-text;
+  }
+
+  &--paused {
+    background-color: $color-bg-muted;
+    color: $color-text-dark;
+  }
+}
+
+.crm-projects__empty {
+  text-align: center;
+  padding: $space-xl;
+  color: $color-text-muted;
+  font-size: $font-size-sm;
+}

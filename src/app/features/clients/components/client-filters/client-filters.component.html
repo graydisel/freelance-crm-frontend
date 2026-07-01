@@ -1,5 +1,10 @@
 <div class="crm-filters" [formGroup]="searchForm">
-  <crm-search-input formControlName="text" (enterPressed)="search()">
+  <crm-search-input
+    formControlName="text"
+    placeholder="Search by company, phone, or contact person..."
+    labelKey="companyName"
+    [searchFn]="clientSearchFn"
+    (enterPressed)="search()">
   </crm-search-input>
 
   <div class="crm-filters__actions">
@@ -22,27 +27,8 @@
   </div>
 </div>
 
-<div class="crm-filters__chips">
-  <button type="button" class="crm-filters__chip" [class.crm-filters__chip--active]="currentStatus() === 'all'"
-    (click)="onStatusChange('all')">
-    All <span class="crm-filters__badge">{{ totalResults() }}</span>
-  </button>
-
-  <button type="button" class="crm-filters__chip"
-    [class.crm-filters__chip--active]="currentStatus() === ClientStatusEnum.ACTIVE"
-    (click)="onStatusChange(ClientStatusEnum.ACTIVE)">
-    Active <span class="crm-filters__badge">{{ activeCount() }}</span>
-  </button>
-
-  <button type="button" class="crm-filters__chip"
-    [class.crm-filters__chip--active]="currentStatus() === ClientStatusEnum.LEAD"
-    (click)="onStatusChange(ClientStatusEnum.LEAD)">
-    Lead <span class="crm-filters__badge">{{ leadsCount() }}</span>
-  </button>
-
-  <button type="button" class="crm-filters__chip"
-    [class.crm-filters__chip--active]="currentStatus() === ClientStatusEnum.ARCHIVED"
-    (click)="onStatusChange(ClientStatusEnum.ARCHIVED)">
-    Archived <span class="crm-filters__badge">{{ archivedCount() }}</span>
-  </button>
-</div>
+<crm-filter-chips
+  [items]="filterChips()"
+  [currentStatus]="currentStatus()"
+  (statusChange)="onStatusChange($event)">
+</crm-filter-chips>

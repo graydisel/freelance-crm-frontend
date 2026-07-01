@@ -9,24 +9,4 @@
       </tbody>
     </table>
   </div>
-
-  @if (hasPagination()) {
-    <div class="crm-table__pagination crm-pagination">
-      <div class="crm-pagination__info">
-        Showing <strong>{{ rangeStart() }}</strong>&ndash;<strong>{{ rangeEnd() }}</strong> of <strong>{{ totalItems() }}</strong> entries
-      </div>
-
-      <div class="crm-pagination__controls">
-        <button type="button" class="crm-pagination__btn crm-pagination__btn--nav" [disabled]="currentPage() === 1" (click)="onFirst()" title="First Page">&laquo;</button>
-        <button type="button" class="crm-pagination__btn crm-pagination__btn--nav" [disabled]="currentPage() === 1" (click)="onPrev()" title="Previous Page">&lt;</button>
-
-        @for (page of pages(); track page) {
-          <button type="button" class="crm-pagination__btn" [class.crm-pagination__btn--active]="page === currentPage()" (click)="onPage(page)">{{ page }}</button>
-        }
-
-        <button type="button" class="crm-pagination__btn crm-pagination__btn--nav" [disabled]="currentPage() === totalPages() || totalPages() === 0" (click)="onNext()" title="Next Page">&gt;</button>
-        <button type="button" class="crm-pagination__btn crm-pagination__btn--nav" [disabled]="currentPage() === totalPages() || totalPages() === 0" (click)="onLast()" title="Last Page">&raquo;</button>
-      </div>
-    </div>
-  }
 </div>

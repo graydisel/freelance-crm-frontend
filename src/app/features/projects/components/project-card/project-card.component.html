@@ -1,22 +1,24 @@
-<a [routerLink]="['/projects', project().id]" class="crm-project-card">
-  <div class="crm-project-card__header">
-    <h3 class="crm-project-card__title">{{ project().name }}</h3>
-    <span class="crm-project-card__badge" [ngClass]="'crm-project-card__badge--' + project().status">
-      {{ project().status.replace('_', ' ') }}
-    </span>
-  </div>
-  
-  <div class="crm-project-card__body">
-    <p class="crm-project-card__client">Client: <strong>{{ project().client.companyName }}</strong></p>
-    <p class="crm-project-card__manager">Manager: {{ project().manager.fullName }}</p>
-  </div>
-  
-  <div class="crm-project-card__footer">
-    <div class="crm-project-card__date">
-      {{ project().date | date:'mediumDate' }}
+  <crm-metric-card
+    [routerLink]="['/projects', project().id]"
+    class="crm-metric-card--hero-header crm-metric-card--clickable"
+    [hint]="'Created: ' + project().date"
+    [isLive]="project().status === ProjectStatusEnum.ACTIVE"
+  >
+    <h2 crm-card-header>
+      {{ project().name }}
+    </h2>
+
+    <span crm-card-label>
+    {{ project().client.companyName }}
+  </span>
+
+    <div class="project-card-meta">
+      <span class="project-badge project-badge--{{ project().status }}">
+        {{ project().status }}
+      </span>
+      <div class="project-tasks-count">
+        Tasks linked: <strong>{{ project().tasksCount }}</strong>
+      </div>
     </div>
-    <div class="crm-project-card__tasks">
-      Tasks linked: {{ project().tasksCount }}
-    </div>
-  </div>
-</a>
+
+  </crm-metric-card>

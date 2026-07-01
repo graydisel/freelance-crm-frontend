@@ -6,17 +6,17 @@
         <h1 class="crm-projects__title">Projects</h1>
         <p class="crm-projects__subtitle">Manage your client projects</p>
       </div>
-      
+
       <div class="crm-projects__view-toggler">
-        <button type="button" 
-                class="crm-projects__toggler-btn" 
-                [class.crm-projects__toggler-btn--active]="viewMode() === 'grid'" 
+        <button type="button"
+                class="crm-projects__toggler-btn"
+                [class.crm-projects__toggler-btn--active]="viewMode() === 'grid'"
                 (click)="setViewMode('grid')" title="Grid View">
           Grid
         </button>
-        <button type="button" 
-                class="crm-projects__toggler-btn" 
-                [class.crm-projects__toggler-btn--active]="viewMode() === 'table'" 
+        <button type="button"
+                class="crm-projects__toggler-btn"
+                [class.crm-projects__toggler-btn--active]="viewMode() === 'table'"
                 (click)="setViewMode('table')" title="Table View">
           Table
         </button>
@@ -24,10 +24,12 @@
     </div>
 
     <app-project-filters
-      [totalResults]="totalItems()"
+      [totalSearchCount]="filteredTotalCount()"
       [planningCount]="filteredPlanningCount()"
-      [inProgressCount]="filteredInProgressCount()"
-      [doneCount]="filteredDoneCount()"
+      [activeCount]="filteredActiveCount()"
+      [reviewCount]="filteredReviewCount()"
+      [completedCount]="filteredCompletedCount()"
+      [pausedCount]="filteredPausedCount()"
       (searchChange)="onSearchChange($event)"
       (statusChange)="onStatusChange($event)">
     </app-project-filters>
@@ -42,60 +44,18 @@
           </div>
         }
       </div>
-
-      @if (totalItems() > 0) {
-        <div class="crm-projects__pagination crm-pagination">
-          <div class="crm-pagination__info">
-            Showing <strong>{{ rangeStart() }}</strong>&ndash;<strong>{{ rangeEnd() }}</strong> of <strong>{{ totalItems() }}</strong> entries
-          </div>
-
-          <div class="crm-pagination__controls">
-            <button type="button" class="crm-pagination__btn crm-pagination__btn--nav" [disabled]="currentPage() === 1" (click)="onFirst()" title="First Page">&laquo;</button>
-            <button type="button" class="crm-pagination__btn crm-pagination__btn--nav" [disabled]="currentPage() === 1" (click)="onPrev()" title="Previous Page">&lt;</button>
-
-            @for (page of pages(); track page) {
-              <button type="button" class="crm-pagination__btn" [class.crm-pagination__btn--active]="page === currentPage()" (click)="onPageChange(page)">{{ page }}</button>
-            }
-
-            <button type="button" class="crm-pagination__btn crm-pagination__btn--nav" [disabled]="currentPage() === totalPages() || totalPages() === 0" (click)="onNext()" title="Next Page">&gt;</button>
-            <button type="button" class="crm-pagination__btn crm-pagination__btn--nav" [disabled]="currentPage() === totalPages() || totalPages() === 0" (click)="onLast()" title="Last Page">&raquo;</button>
-          </div>
-        </div>
-      }
     } @else {
-      <crm-table [currentPage]="currentPage()" [pageSize]="pageSize()" [totalItems]="totalItems()" (pageChange)="onPageChange($event)">
-        <tr crm-table-header>
-          <th>Project Name</th>
-          <th>Client</th>
-          <th>Manager</th>
-          <th>Status</th>
-          <th>Date</th>
-          <th>Tasks</th>
-        </tr>
-        
-        <ng-container crm-table-body>
-          @for (project of paginatedProjects(); track project.id) {
-            <tr>
-              <td>
-                <a [routerLink]="['/projects', project.id]" class="crm-table-primary-text">{{ project.name }}</a>
-              </td>
-              <td class="crm-table-text-dark">{{ project.client.companyName }}</td>
-              <td class="crm-table-text-muted">{{ project.manager.fullName }}</td>
-              <td>
-                <span class="crm-project-status-badge crm-project-status-badge--{{ project.status }}">
-                  {{ project.status.replace('_', ' ') }}
-                </span>
-              </td>
-              <td class="crm-table-text-muted">{{ project.date | date:'mediumDate' }}</td>
-              <td class="crm-table-text-muted">{{ project.tasksCount }}</td>
-            </tr>
-          } @empty {
-            <tr>
-              <td colspan="6" class="crm-projects__empty">No projects found.</td>
-            </tr>
-          }
-        </ng-container>
-      </crm-table>
+      <app-project-table [projects]="paginatedProjects()"></app-project-table>
+    }
+    @if (totalItems() > 0) {
+      <div class="crm-projects__pagination">
+        <crm-pagination
+          [currentPage]="currentPage()"
+          [pageSize]="pageSize()"
+          [totalItems]="totalItems()"
+          (pageChange)="onPageChange($event)">
+        </crm-pagination>
+      </div>
     }
   </div>
 </main>

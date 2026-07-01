@@ -45,8 +45,18 @@
       (statusChange)="onStatusChange($event)">
     </app-client-filters>
 
-    <app-clients-table [clients]="paginatedClients()" [currentPage]="currentPage()" [pageSize]="pageSize()"
-                       [totalItems]="totalItems()" (pageChange)="onPageChange($event)" (rowClicked)="selectedClient.set($event)">
+    <app-clients-table [clients]="paginatedClients()" (rowClicked)="selectedClient.set($event)">
     </app-clients-table>
+
+    @if (totalItems() > 0) {
+      <div class="crm-clients__pagination" style="margin-top: 1.5rem;">
+        <crm-pagination
+          [currentPage]="currentPage()"
+          [pageSize]="pageSize()"
+          [totalItems]="totalItems()"
+          (pageChange)="onPageChange($event)">
+        </crm-pagination>
+      </div>
+    }
   </div>
 </main>

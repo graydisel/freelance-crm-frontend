@@ -9,6 +9,7 @@ import { CrmMetricCard } from '../../shared/components/crm-metric-card/crm-metri
 import { CrmDrawerComponent } from '../../shared/components/crm-drawer/crm-drawer.component';
 import { ClientCreateFormComponent } from './components/client-create-form/client-create-form.component';
 import { ClientDetailsComponent } from './components/client-details/client-details.component';
+import {CrmPagination} from '../../shared/components/crm-pagination/crm-pagination';
 
 @Component({
   selector: 'app-clients-page',
@@ -22,7 +23,8 @@ import { ClientDetailsComponent } from './components/client-details/client-detai
     CurrencyPipe,
     CrmDrawerComponent,
     ClientCreateFormComponent,
-    ClientDetailsComponent
+    ClientDetailsComponent,
+    CrmPagination
   ],
   templateUrl: './clients.page.html',
   styleUrls: ['./clients.page.scss']
@@ -98,7 +100,7 @@ export class ClientsPageComponent implements OnInit {
   });
 
   protected readonly totalItems = computed<number>(() => {
-    return this.serverResponse()?.meta.totalItems ?? 0;
+    return this.serverResponse()?.meta.filteredMetrics?.totalCount ?? 0;
   });
 
   protected onPageChange(newPage: number): void {

@@ -1,8 +1,4 @@
-export enum ProjectStatusEnum {
-  PLANNING = 'planning',
-  IN_PROGRESS = 'in_progress',
-  DONE = 'done'
-}
+import { ProjectStatusEnum } from "../enums/project-status.enum";
 
 export interface Project {
   id: string;
@@ -22,25 +18,19 @@ export interface Project {
 export interface ProjectsServerResponse {
   data: Project[];
   meta: {
-    totalItems: number;
+    totalItems: number; // Matches the active status tab + search query for pagination
     currentPage: number;
-    pageSize: number;
+    itemsPerPage: number;
     totalPages: number;
-    filteredMetrics?: {
+    filteredMetrics: {
       planningCount: number;
-      inProgressCount: number;
-      doneCount: number;
-      totalCount: number;
-    };
-    globalMetrics?: {
-      planningCount: number;
-      inProgressCount: number;
-      doneCount: number;
-      totalGlobal: number;
+      activeCount: number;
+      reviewCount: number;
+      completedCount: number;
+      pausedCount: number;
+      totalCount: number; // Sum of all statuses matching the current search string
     };
   };
-
-
 }
 
 export interface ProjectProgress {

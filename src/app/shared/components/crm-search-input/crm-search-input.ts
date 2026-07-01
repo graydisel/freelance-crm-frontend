@@ -1,10 +1,8 @@
-import { Component, ElementRef, HostListener, Provider, forwardRef, inject, output, signal } from '@angular/core';
+import { Component, ElementRef, HostListener, Provider, forwardRef, inject, output, signal, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NG_VALUE_ACCESSOR, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { catchError, debounceTime, distinctUntilChanged, filter, of, switchMap, tap } from 'rxjs';
-import { ClientsService } from '../../../core/services/clients/clients.service';
-import { ClientProfile } from '../../../core/models/client.model';
+import { catchError, debounceTime, distinctUntilChanged, filter, of, switchMap, tap, Observable } from 'rxjs';
 
 const CRM_SEARCH_INPUT_PROVIDER: Provider = {
   provide: NG_VALUE_ACCESSOR,
@@ -22,13 +20,16 @@ const CRM_SEARCH_INPUT_PROVIDER: Provider = {
 })
 export class CrmSearchInput {
   private readonly fb = inject(NonNullableFormBuilder);
-  private readonly clientsService = inject(ClientsService);
   private readonly elementRef = inject(ElementRef);
+
+  placeholder = input<string>('Search...');
+  labelKey = input<string>('name');
+  searchFn = input<((term: string) => Observable<{ data: any[] }>) | null>(null);
 
   enterPressed = output<string>();
 
   protected readonly searchControl = this.fb.control('');
-  protected readonly searchResultsPreview = signal<ClientProfile[]>([]);
+  protected readonly searchResultsPreview = signal<any[]>([]);
   protected readonly showDropdown = signal<boolean>(false);
   protected readonly isDisabled = signal<boolean>(false);
 
@@ -48,12 +49,19 @@ export class CrmSearchInput {
       debounceTime(300),
       distinctUntilChanged(),
       filter(text => !!text && text.trim().length > 0),
-      switchMap(text => this.clientsService.getSearchPreview(text).pipe(
-        catchError(() => of({ data: [] }))
-      ))
+      switchMap(term => {
+        if (!term.trim()) {
+          return of({ data: [] });
+        }
+        const fetchPreview = this.searchFn();
+        return fetchPreview
+          ? fetchPreview(term).pipe(catchError(() => of({ data: [] })))
+          : of({ data: [] });
+      })
     ).subscribe((res: any) => {
-      this.searchResultsPreview.set(res.data || []);
-      this.showDropdown.set((res.data || []).length > 0);
+      const data = res?.data ?? [];
+      this.searchResultsPreview.set(data);
+      this.showDropdown.set(data.length > 0);
     });
   }
 
@@ -90,11 +98,12 @@ export class CrmSearchInput {
     this.enterPressed.emit(this.searchControl.value);
   }
 
-  protected selectPreviewClient(client: ClientProfile): void {
-    this.searchControl.setValue(client.companyName);
+  protected selectPreviewClient(item: any): void {
+    const label = item[this.labelKey()];
+    this.searchControl.setValue(label);
     this.searchResultsPreview.set([]);
     this.showDropdown.set(false);
-    this.enterPressed.emit(client.companyName);
+    this.enterPressed.emit(label);
   }
 
   protected clearSearch(): void {

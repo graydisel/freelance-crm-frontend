@@ -11,7 +11,7 @@
   gap: $space-md;
   background-color: $color-bg-card;
   border: 1px solid $color-border-taupe;
-  border-radius: $radius-md $radius-md 0 0; // Скругляем только верхние углы, так как снизу прилипает таблица
+  border-radius: $radius-md $radius-md 0 0;
   padding: $space-md $space-lg;
   border-bottom: 0;
 
@@ -64,68 +64,5 @@
     color: $color-text-muted;
     white-space: nowrap;
     text-align: right;
-  }
-
-  // --- Блок быстрых чипсов под инпутом ---
-  &__chips {
-    display: flex;
-    align-items: center;
-    gap: $space-sm;
-    background-color: $color-bg-card;
-    border: 1px solid $color-border-taupe;
-    border-top: 0;
-    padding: 0 $space-lg $space-md $space-lg;
-    border-radius: 0 0 $radius-md $radius-md; // Скругляем нижние углы фильтров
-    overflow-x: auto; // Скролл на мобилках, если чипсы не влезают
-    white-space: nowrap;
-  }
-
-  &__chip {
-    display: inline-flex;
-    align-items: center;
-    gap: $space-xs;
-    padding: $space-xs $space-md;
-    border: 1px solid $color-border-taupe;
-    border-radius: $radius-full;
-    font-size: $font-size-xs;
-    font-weight: $font-weight-medium;
-    color: $color-text-muted;
-    background-color: $color-bg-main;
-    cursor: pointer;
-    transition: all $transition-fast;
-
-    &:hover {
-      border-color: $color-text-muted;
-      color: $color-text-dark;
-    }
-
-    &--active {
-      background-color: rgba($color-primary, 0.1);
-      border-color: $color-primary;
-      color: $color-primary;
-
-      &:hover {
-        border-color: $color-primary;
-        color: $color-primary;
-      }
-
-      .crm-filters__badge {
-        background-color: $color-primary;
-        color: #ffffff;
-      }
-    }
-  }
-
-  &__badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2px 6px;
-    background-color: $color-bg-taupe-light;
-    color: $color-text-muted;
-    border-radius: $radius-full;
-    font-size: 10px;
-    font-weight: $font-weight-bold;
-    transition: all $transition-fast;
   }
 }

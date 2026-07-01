@@ -69,15 +69,16 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: $space-xl;
+    align-items: stretch;
 
     @include md-up {
       grid-template-columns: repeat(2, 1fr);
     }
-    
+
     @include lg-up {
       grid-template-columns: repeat(3, 1fr);
     }
-    
+
     @include xl-up {
       grid-template-columns: repeat(4, 1fr);
     }
@@ -92,114 +93,5 @@
     border-radius: $radius-lg;
     color: $color-text-muted;
     font-size: $font-size-lg;
-  }
-
-  &__pagination {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding: $space-lg;
-    gap: $space-md;
-    background-color: $color-bg-card;
-    border-radius: $radius-md;
-    border: 1px solid $color-border-taupe;
-
-    @include md-up {
-      flex-direction: row;
-    }
-  }
-}
-
-// Grid pagination styles
-.crm-pagination {
-  &__info {
-    font-size: $font-size-sm;
-    color: $color-text-muted;
-  }
-
-  &__controls {
-    display: flex;
-    align-items: center;
-    gap: $space-xs;
-  }
-
-  &__btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 2rem;
-    height: 2rem;
-    padding: 0 $space-xs;
-    border-radius: $radius-md;
-    font-size: $font-size-sm;
-    font-weight: $font-weight-medium;
-    color: $color-text-muted;
-    background-color: transparent;
-    border: 1px solid $color-border-taupe;
-    cursor: pointer;
-    transition: all $transition-fast;
-
-    &:hover:not([disabled]) {
-      border-color: $color-text-muted;
-      color: $color-text-dark;
-      background-color: $color-bg-main;
-    }
-
-    &[disabled] {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
-
-    &--active {
-      background-color: rgba($color-primary, 0.1);
-      border-color: $color-primary;
-      color: $color-primary;
-    }
-  }
-}
-
-// Table cell styles (copied for Projects page)
-.crm-table-primary-text {
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
-  color: $color-text-heading;
-  text-decoration: none;
-  &:hover {
-    color: $color-primary;
-    text-decoration: underline;
-  }
-}
-
-.crm-table-text-dark {
-  font-size: $font-size-sm;
-  color: $color-text-dark;
-}
-
-.crm-table-text-muted {
-  font-size: $font-size-sm;
-  color: $color-text-muted;
-}
-
-.crm-project-status-badge {
-  font-size: $font-size-xs;
-  font-weight: $font-weight-medium;
-  padding: $space-xs $space-sm;
-  border-radius: $radius-full;
-  text-transform: uppercase;
-  
-  &--planning {
-    background-color: $color-warning-bg;
-    color: $color-warning-text;
-  }
-  
-  &--in_progress {
-    background-color: $color-primary-light;
-    color: $color-primary-text;
-  }
-  
-  &--done {
-    background-color: $color-success-bg;
-    color: $color-success-text;
   }
 }

@@ -1,0 +1,67 @@
+@use 'variables' as *;
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.crm-pagination {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: $space-lg;
+  gap: $space-md;
+  background-color: $color-bg-card;
+  border-radius: $radius-md;
+  border: 1px solid $color-border-taupe;
+
+  @include md-up {
+    flex-direction: row;
+  }
+
+  &__info {
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+  }
+
+  &__controls {
+    display: flex;
+    align-items: center;
+    gap: $space-xs;
+  }
+
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    height: 2rem;
+    padding: 0 $space-xs;
+    border-radius: $radius-md;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $color-text-muted;
+    background-color: transparent;
+    border: 1px solid $color-border-taupe;
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    &:hover:not([disabled]) {
+      border-color: $color-text-muted;
+      color: $color-text-dark;
+      background-color: $color-bg-main;
+    }
+
+    &[disabled] {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    &--active {
+      background-color: rgba($color-primary, 0.1);
+      border-color: $color-primary;
+      color: $color-primary;
+    }
+  }
+}

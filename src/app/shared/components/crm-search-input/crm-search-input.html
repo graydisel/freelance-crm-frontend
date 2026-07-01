@@ -8,7 +8,7 @@
     [formControl]="searchControl"
     type="text"
     class="crm-search-input__field"
-    placeholder="Search by company, phone, or contact person..."
+    [placeholder]="placeholder()"
     (focus)="onInputFocus()"
     (keydown.enter)="onInputKeydownEnter()" />
 
@@ -23,14 +23,10 @@
 
   @if (showDropdown() && searchResultsPreview().length > 0) {
     <div class="crm-search-input__dropdown">
-      @for (client of searchResultsPreview(); track client.id) {
-        <div class="crm-search-input__dropdown-item" (click)="selectPreviewClient(client)">
-          <div class="crm-search-input__dropdown-avatar">
-            {{ client.initialsCompany }}
-          </div>
+      @for (item of searchResultsPreview(); track $index) {
+        <div class="crm-search-input__dropdown-item" (click)="selectPreviewClient(item)">
           <div class="crm-search-input__dropdown-info">
-            <div class="crm-search-input__dropdown-title">{{ client.companyName }}</div>
-            <div class="crm-search-input__dropdown-subtitle">{{ client.contactPerson }}</div>
+            <div class="crm-search-input__dropdown-title">{{ item[labelKey()] }}</div>
           </div>
         </div>
       }

@@ -1,0 +1,35 @@
+<crm-table>
+  <tr crm-table-header>
+    <th>Project Name</th>
+    <th>Client</th>
+    <th>Manager</th>
+    <th>Status</th>
+    <th>Date</th>
+    <th>Tasks</th>
+  </tr>
+
+  <ng-container crm-table-body>
+    @for (project of projects(); track project.id) {
+      <tr>
+        <td>
+          <a [routerLink]="['/projects', project.id]" class="crm-table-primary-text">
+            {{ project.name }}
+          </a>
+        </td>
+        <td class="crm-table-text-dark">{{ project.client.companyName || '—' }}</td>
+        <td class="crm-table-text-muted">{{ project.manager.fullName || '—' }}</td>
+        <td>
+          <span class="crm-project-status-badge crm-project-status-badge--{{ project.status }}">
+            {{ project.status.replace('_', ' ') }}
+          </span>
+        </td>
+        <td class="crm-table-text-muted">{{ project.date }}</td>
+        <td class="crm-table-text-muted">{{ project.tasksCount }}</td>
+      </tr>
+    } @empty {
+      <tr>
+        <td colspan="6" class="crm-projects__empty">No projects found.</td>
+      </tr>
+    }
+  </ng-container>
+</crm-table>

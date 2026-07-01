@@ -1,0 +1,12 @@
+<div class="crm-filters__chips">
+  @for (chip of items(); track chip.value) {
+    <button
+      type="button"
+      class="crm-filters__chip"
+      [class.crm-filters__chip--active]="currentStatus() === chip.value"
+      (click)="onChipClick(chip.value)">
+      {{ chip.label }}
+      <span class="crm-filters__badge">{{ chip.count }}</span>
+    </button>
+  }
+</div>

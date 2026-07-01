@@ -18,10 +18,5 @@ import { CRM_TABLE_DECORATORS } from '../../../../shared/components/crm-table/cr
 })
 export class ClientsTableComponent {
   clients = input.required<ClientProfile[]>();
-  currentPage = input<number>(1);
-  pageSize = input<number>(10);
-  totalItems = input<number>(0);
-
-  pageChange = output<number>();
   rowClicked = output<ClientProfile>();
 }
