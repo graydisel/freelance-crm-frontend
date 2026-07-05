@@ -39,7 +39,17 @@
           @if (!isEditMode()) {
           <p>{{ activeClient.contactPerson }}</p>
           } @else {
-          <input formControlName="contactPerson" class="crm-form__input" />
+          <crm-dropdown formControlName="contactPerson" [searchable]="true" [allowCustomAdd]="true"
+            (searchChange)="onContactSearch($event)">
+            <div crm-dropdown-trigger>
+              {{ editForm.value.contactPerson || 'Search or add contact person' }}
+            </div>
+            @for (user of searchResults(); track user.id) {
+            <div crm-dropdown-option [value]="`${user.firstName} ${user.lastName}`">{{ user.firstName }} {{
+              user.lastName
+              }} ({{ user.email }})</div>
+            }
+          </crm-dropdown>
           }
         </div>
 
@@ -57,7 +67,8 @@
           @if (!isEditMode()) {
           <p><a [href]="'tel:' + activeClient.phone">{{ activeClient.phone || '—' }}</a></p>
           } @else {
-          <input formControlName="phone" class="crm-form__input" mask="+0 (000) 000-00-00" [dropSpecialCharacters]="false" />
+          <input formControlName="phone" class="crm-form__input" mask="+0 (000) 000-00-00"
+            [dropSpecialCharacters]="false" />
           }
         </div>
 

@@ -1,5 +1,7 @@
 <crm-drawer [isOpen]="isDrawerOpen()" (closed)="isDrawerOpen.set(false)">
-  <app-client-create-form (saved)="onClientSaved()"></app-client-create-form>
+  @if (isDrawerOpen()) {
+    <app-client-create-form (saved)="onClientSaved()"></app-client-create-form>
+  }
 </crm-drawer>
 
 <crm-drawer [isOpen]="!!selectedClient()" (closed)="selectedClient.set(null)">

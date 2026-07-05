@@ -1,0 +1,112 @@
+@use '../../../../styles/variables' as *;
+
+.crm-dropdown-container {
+  position: relative;
+  width: 100%;
+  font-family: $font-family-base;
+
+  &--disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+}
+
+.crm-dropdown-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $space-sm $space-md;
+  background-color: $color-bg-card;
+  border: 1px solid $color-border-taupe;
+  border-radius: $radius-md;
+  cursor: pointer;
+  min-height: 2.5rem;
+  transition: $transition-fast;
+
+  &:hover {
+    border-color: $color-border-accent;
+  }
+
+  &__content {
+    flex: 1;
+    overflow: hidden;
+  }
+
+  &__placeholder {
+    color: $color-text-placeholder;
+    font-size: $font-size-sm;
+  }
+
+  &__caret {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $color-text-muted;
+    transition: transform $transition-duration-fast $transition-timing-function;
+
+    &--open {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.crm-dropdown-panel {
+  position: absolute;
+  top: calc(100% + $space-xs);
+  left: 0;
+  width: 100%;
+  background-color: $color-bg-card;
+  border: 1px solid $color-border-taupe;
+  border-radius: $radius-md;
+  box-shadow: $shadow-lg;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  max-height: 300px;
+
+  &__search {
+    padding: $space-sm;
+    border-bottom: 1px solid $color-border-taupe;
+  }
+
+  &__search-input {
+    width: 100%;
+    padding: $space-sm;
+    border: 1px solid $color-border-taupe;
+    border-radius: $radius-md;
+    outline: none;
+    font-size: $font-size-sm;
+    transition: $transition-fast;
+
+    &:focus {
+      border-color: $color-primary-focus;
+      @include focus-ring();
+    }
+  }
+
+  &__list {
+    overflow-y: auto;
+    flex: 1;
+    padding: $space-xs 0;
+  }
+}
+
+.crm-dropdown-option {
+  display: block;
+  padding: $space-sm $space-md;
+  cursor: pointer;
+  transition: $transition-fast;
+  font-size: $font-size-sm;
+
+  &:hover {
+    background-color: $color-bg-muted;
+  }
+
+  &--custom {
+    color: $color-primary;
+    font-weight: $font-weight-medium;
+    border-top: 1px solid $color-border-taupe;
+    margin-top: $space-xs;
+    padding-top: $space-sm;
+  }
+}

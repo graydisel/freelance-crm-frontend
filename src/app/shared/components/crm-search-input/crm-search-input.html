@@ -23,13 +23,15 @@
 
   @if (showDropdown() && searchResultsPreview().length > 0) {
     <div class="crm-search-input__dropdown">
-      @for (item of searchResultsPreview(); track $index) {
-        <div class="crm-search-input__dropdown-item" (click)="selectPreviewClient(item)">
-          <div class="crm-search-input__dropdown-info">
-            <div class="crm-search-input__dropdown-title">{{ item[labelKey()] }}</div>
+      <div class="crm-search-input__dropdown-list">
+        @for (item of searchResultsPreview(); track $index) {
+          <div class="crm-search-input__dropdown-item" (click)="selectPreviewClient(item)">
+            <div class="crm-search-input__dropdown-info">
+              <div class="crm-search-input__dropdown-title">{{ item[labelKey()] }}</div>
+            </div>
           </div>
-        </div>
-      }
+        }
+      </div>
     </div>
   }
 </div>

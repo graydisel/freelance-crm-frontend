@@ -6,6 +6,7 @@ import { CrmSearchInput } from '../../../../shared/components/crm-search-input/c
 import { ClientsService } from '../../../../core/services/clients/clients.service';
 import {CrmFilterChipItem} from '../../../../shared/interfaces/crm-filter.interface';
 import {CrmFilterChips} from '../../../../shared/components/crm-filter-chips/crm-filter-chips';
+import { CrmDropdownComponent, CrmDropdownOptionComponent } from '../../../../shared/components/crm-dropdown';
 
 @Component({
   selector: 'app-client-filters',
@@ -15,7 +16,9 @@ import {CrmFilterChips} from '../../../../shared/components/crm-filter-chips/crm
     CrmButtonComponent,
     ReactiveFormsModule,
     CrmSearchInput,
-    CrmFilterChips
+    CrmFilterChips,
+    CrmDropdownComponent,
+    CrmDropdownOptionComponent
   ],
   styleUrls: ['./client-filters.component.scss']
 })

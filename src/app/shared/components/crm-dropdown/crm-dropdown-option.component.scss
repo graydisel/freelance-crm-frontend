@@ -1,0 +1,13 @@
+@use '../../../../styles/variables' as *;
+
+:host {
+  display: block;
+  padding: $space-sm $space-md;
+  cursor: pointer;
+  transition: $transition-fast;
+  font-size: $font-size-sm;
+
+  &:hover {
+    background-color: $color-bg-muted;
+  }
+}

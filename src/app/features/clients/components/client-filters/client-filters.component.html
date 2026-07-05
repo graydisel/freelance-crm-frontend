@@ -9,12 +9,20 @@
 
   <div class="crm-filters__actions">
     <div class="crm-filters__status-dropdown">
-      <select formControlName="status" class="crm-filters__select">
-        <option value="all">All Statuses</option>
-        <option [value]="ClientStatusEnum.ACTIVE">Active</option>
-        <option [value]="ClientStatusEnum.LEAD">Lead</option>
-        <option [value]="ClientStatusEnum.ARCHIVED">Archived</option>
-      </select>
+      <crm-dropdown formControlName="status">
+        <div crm-dropdown-trigger>
+          @switch (searchForm.value.status) {
+            @case ('all') { All Statuses }
+            @case (ClientStatusEnum.ACTIVE) { Active }
+            @case (ClientStatusEnum.LEAD) { Lead }
+            @case (ClientStatusEnum.ARCHIVED) { Archived }
+          }
+        </div>
+        <div crm-dropdown-option [value]="'all'">All Statuses</div>
+        <div crm-dropdown-option [value]="ClientStatusEnum.ACTIVE">Active</div>
+        <div crm-dropdown-option [value]="ClientStatusEnum.LEAD">Lead</div>
+        <div crm-dropdown-option [value]="ClientStatusEnum.ARCHIVED">Archived</div>
+      </crm-dropdown>
     </div>
 
     <div class="crm-filters__results">

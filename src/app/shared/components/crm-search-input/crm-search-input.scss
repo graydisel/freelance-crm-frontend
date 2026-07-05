@@ -73,32 +73,35 @@
   // --- Выпадающий список живого поиска ---
   &__dropdown {
     position: absolute;
-    top: calc(100% + 4px);
+    top: calc(100% + $space-xs);
     left: 0;
     width: 100%;
     background-color: $color-bg-card;
     border: 1px solid $color-border-taupe;
     border-radius: $radius-md;
-    box-shadow: $shadow-md;
-    z-index: 50;
+    box-shadow: $shadow-lg;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
     max-height: 300px;
-    overflow-y: auto;
+    
+    // Add inner list wrapper style matching crm-dropdown-panel__list
+    &-list {
+      overflow-y: auto;
+      flex: 1;
+      padding: $space-xs 0;
+    }
   }
 
   &__dropdown-item {
-    display: flex;
-    align-items: center;
-    gap: $space-md;
+    display: block;
     padding: $space-sm $space-md;
     cursor: pointer;
-    transition: background-color $transition-fast;
+    transition: $transition-fast;
+    font-size: $font-size-sm;
 
     &:hover {
-      background-color: rgba($color-bg-taupe-light, 0.4);
-    }
-
-    &:not(:last-child) {
-      border-bottom: 1px solid $color-border-taupe;
+      background-color: $color-bg-muted;
     }
   }
 

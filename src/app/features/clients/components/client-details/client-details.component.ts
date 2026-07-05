@@ -10,6 +10,11 @@ import { ClientStatusEnum } from '../../../../core/enums/client-status.enum';
 import { RouterLink } from '@angular/router';
 import { CrmValidators } from '../../../../core/validators/custom-validators';
 import { NgxMaskDirective } from 'ngx-mask';
+import { CrmDropdownComponent, CrmDropdownOptionComponent } from '../../../../shared/components/crm-dropdown';
+import { Subject, catchError, debounceTime, distinctUntilChanged, of, switchMap } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { UsersService } from '../../../../core/services/users/users.service';
+import { UserRoleEnum } from '../../../../core/enums/user-role.enum';
 
 @Component({
   selector: 'app-client-details',
@@ -22,7 +27,9 @@ import { NgxMaskDirective } from 'ngx-mask';
     CrmStatusBadgeComponent,
     CrmButtonComponent,
     RouterLink,
-    NgxMaskDirective
+    NgxMaskDirective,
+    CrmDropdownComponent,
+    CrmDropdownOptionComponent
   ],
   templateUrl: './client-details.component.html',
   styleUrls: ['./client-details.component.scss']
@@ -38,6 +45,7 @@ export class ClientDetailsComponent {
 
   private clientsService = inject(ClientsService);
   private fb = inject(NonNullableFormBuilder);
+  private usersService = inject(UsersService);
 
   client = signal<ClientProfile | null>(null);
 
@@ -60,12 +68,40 @@ export class ClientDetailsComponent {
     status: [ClientStatusEnum.LEAD, Validators.required]
   });
 
+  searchResults = signal<any[]>([]);
+  private searchSubject = new Subject<string>();
+
   statusOptions = Object.values(ClientStatusEnum);
 
   constructor() {
+    this.searchSubject.pipe(
+      takeUntilDestroyed(),
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(term => {
+        if (!term.trim()) return of([]);
+        return this.usersService.getAvailableUsers(term, UserRoleEnum.CLIENT).pipe(
+          catchError(() => of([]))
+        );
+      })
+    ).subscribe((res: any) => {
+      this.searchResults.set(Array.isArray(res) ? res : (res?.data || []));
+    });
+
     this.editForm.valueChanges.subscribe(() => {
       if (this.errorMessage()) {
         this.errorMessage.set(null);
+      }
+    });
+
+    this.editForm.get('contactPerson')?.valueChanges.subscribe(fullName => {
+      if (fullName) {
+        const selectedUser = this.searchResults().find(
+          user => `${user.firstName} ${user.lastName}` === fullName
+        );
+        if (selectedUser) {
+          this.editForm.patchValue({ contactEmail: selectedUser.email }, { emitEvent: false });
+        }
       }
     });
 
@@ -89,6 +125,10 @@ export class ClientDetailsComponent {
         this.isLoading.set(false);
       }
     });
+  }
+
+  onContactSearch(term: string) {
+    this.searchSubject.next(term);
   }
 
   toggleEditMode() {

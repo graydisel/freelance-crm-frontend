@@ -7,18 +7,24 @@
         <p class="crm-projects__subtitle">Manage your client projects</p>
       </div>
 
-      <div class="crm-projects__view-toggler">
-        <button type="button"
-                class="crm-projects__toggler-btn"
-                [class.crm-projects__toggler-btn--active]="viewMode() === 'grid'"
-                (click)="setViewMode('grid')" title="Grid View">
-          Grid
-        </button>
-        <button type="button"
-                class="crm-projects__toggler-btn"
-                [class.crm-projects__toggler-btn--active]="viewMode() === 'table'"
-                (click)="setViewMode('table')" title="Table View">
-          Table
+      <div class="crm-projects__actions">
+        <div class="crm-projects__view-toggler">
+          <button type="button"
+                  class="crm-projects__toggler-btn"
+                  [class.crm-projects__toggler-btn--active]="viewMode() === 'grid'"
+                  (click)="setViewMode('grid')" title="Grid View">
+            Grid
+          </button>
+          <button type="button"
+                  class="crm-projects__toggler-btn"
+                  [class.crm-projects__toggler-btn--active]="viewMode() === 'table'"
+                  (click)="setViewMode('table')" title="Table View">
+            Table
+          </button>
+        </div>
+        
+        <button class="crm-projects__add-btn">
+          <span>+ Add Project</span>
         </button>
       </div>
     </div>

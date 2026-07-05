@@ -1,0 +1,41 @@
+<div class="crm-dropdown-container" [class.crm-dropdown-container--disabled]="isDisabled()">
+  <!-- Trigger Box -->
+  <div class="crm-dropdown-trigger" (click)="toggle()">
+    <div class="crm-dropdown-trigger__content">
+      <ng-content select="[crm-dropdown-trigger]">
+        <span class="crm-dropdown-trigger__placeholder">{{ placeholder() }}</span>
+      </ng-content>
+    </div>
+    <span class="crm-dropdown-trigger__caret" [class.crm-dropdown-trigger__caret--open]="isOpen()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+      </svg>
+    </span>
+  </div>
+
+  <!-- Options Panel -->
+  @if (isOpen()) {
+    <div class="crm-dropdown-panel" (click)="$event.stopPropagation()">
+      <!-- Search Header -->
+      @if (searchable()) {
+        <div class="crm-dropdown-panel__search">
+          <input 
+            type="text" 
+            [placeholder]="'Search...'" 
+            (input)="onSearchInput($event)"
+            class="crm-dropdown-panel__search-input"
+          >
+        </div>
+      }
+      <!-- Options List -->
+      <div class="crm-dropdown-panel__list">
+        <ng-content></ng-content>
+        @if (allowCustomAdd() && currentSearchTerm().trim()) {
+          <div class="crm-dropdown-option crm-dropdown-option--custom" (click)="selectOption(currentSearchTerm().trim())">
+            + Add "{{ currentSearchTerm().trim() }}"
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

@@ -7,21 +7,61 @@ import { ClientStatusEnum } from '../../../../core/enums/client-status.enum';
 import { CreateClientDto } from '../../../../core/models/client.model';
 import { CrmValidators } from '../../../../core/validators/custom-validators';
 import { NgxMaskDirective } from 'ngx-mask';
+import { CrmDropdownComponent, CrmDropdownOptionComponent } from '../../../../shared/components/crm-dropdown';
+import { Subject, catchError, debounceTime, distinctUntilChanged, of, switchMap } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { UsersService } from '../../../../core/services/users/users.service';
+import { UserRoleEnum } from '../../../../core/enums/user-role.enum';
 
 @Component({
   selector: 'app-client-create-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, CrmButtonComponent, NgxMaskDirective],
+  imports: [CommonModule, ReactiveFormsModule, CrmButtonComponent, NgxMaskDirective, CrmDropdownComponent, CrmDropdownOptionComponent],
   templateUrl: './client-create-form.component.html',
   styleUrls: ['./client-create-form.component.scss']
 })
 export class ClientCreateFormComponent {
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly clientsService = inject(ClientsService);
+  private readonly usersService = inject(UsersService);
 
   saved = output<void>();
   isSubmitting = signal(false);
   errorMessage = signal<string | null>(null);
+
+  searchResults = signal<any[]>([]);
+  private searchSubject = new Subject<string>();
+
+  constructor() {
+    this.searchSubject.pipe(
+      takeUntilDestroyed(),
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(term => {
+        if (!term.trim()) return of([]);
+        return this.usersService.getAvailableUsers(term, UserRoleEnum.CLIENT).pipe(
+          catchError(() => of([]))
+        );
+      })
+    ).subscribe((res: any) => {
+      this.searchResults.set(Array.isArray(res) ? res : (res?.data || []));
+    });
+
+    this.form.get('contactPerson')?.valueChanges.subscribe(fullName => {
+      if (fullName) {
+        const selectedUser = this.searchResults().find(
+          user => `${user.firstName} ${user.lastName}` === fullName
+        );
+        if (selectedUser) {
+          this.form.patchValue({ contactEmail: selectedUser.email });
+        }
+      }
+    });
+  }
+
+  onContactSearch(term: string) {
+    this.searchSubject.next(term);
+  }
 
   form = this.fb.group({
     companyName: ['', [CrmValidators.requiredNoWhitespace]],

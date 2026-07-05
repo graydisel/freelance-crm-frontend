@@ -35,6 +35,28 @@
     margin: 0;
   }
 
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: $space-md;
+  }
+
+  &__add-btn {
+    background-color: $color-primary;
+    color: white;
+    border: none;
+    border-radius: $radius-md;
+    padding: $space-sm $space-lg;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: $color-primary-hover;
+    }
+  }
+
   &__view-toggler {
     display: flex;
     background-color: $color-bg-card;
