@@ -6,9 +6,12 @@ import { ProjectFiltersComponent } from './components/project-filters/project-fi
 import { ProjectCardComponent } from './components/project-card/project-card.component';
 import { Project, ProjectsServerResponse } from '../../core/models/project.model';
 import { ProjectsService } from '../../core/services/projects/projects.service';
-import { CRM_TABLE_DECORATORS } from '../../shared/components/crm-table/crm-table';
-import {ProjectTableComponent} from './components/project-table/project-table.component';
-import {CrmPagination} from '../../shared/components/crm-pagination/crm-pagination';
+import { ProjectTableComponent } from './components/project-table/project-table.component';
+import { CrmPagination } from '../../shared/components/crm-pagination/crm-pagination';
+import { CrmButtonComponent } from '../../shared/components/crm-button/crm-button';
+import { CrmDrawerComponent } from '../../shared/components/crm-drawer/crm-drawer.component';
+import { ProjectFormComponent } from './components/project-form/project-form.component';
+import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 
 @Component({
   selector: 'app-projects-page',
@@ -20,7 +23,11 @@ import {CrmPagination} from '../../shared/components/crm-pagination/crm-paginati
     ProjectCardComponent,
     RouterModule,
     ProjectTableComponent,
-    CrmPagination
+    CrmPagination,
+    CrmButtonComponent,
+    CrmDrawerComponent,
+    ProjectFormComponent,
+    ProjectDetailsComponent
   ],
   templateUrl: './projects.page.html',
   styleUrls: ['./projects.page.scss']
@@ -33,6 +40,9 @@ export class ProjectsPageComponent implements OnInit {
   protected readonly searchQuery = signal<string>('');
   protected readonly statusFilter = signal<string>('all');
   protected readonly viewMode = signal<'grid' | 'table'>('grid');
+  protected readonly isDrawerOpen = signal<boolean>(false);
+  protected readonly drawerMode = signal<'create' | 'details' | 'edit'>('create');
+  protected readonly selectedProject = signal<Project | null>(null);
 
   private readonly serverResponse = signal<ProjectsServerResponse | null>(null);
 
@@ -89,5 +99,34 @@ export class ProjectsPageComponent implements OnInit {
 
   protected setViewMode(mode: 'grid' | 'table'): void {
     this.viewMode.set(mode);
+  }
+
+  protected openAddProject(): void {
+    this.selectedProject.set(null);
+    this.drawerMode.set('create');
+    this.isDrawerOpen.set(true);
+  }
+
+  protected openProjectDetails(project: Project): void {
+    this.selectedProject.set(project);
+    this.drawerMode.set('details');
+    this.isDrawerOpen.set(true);
+  }
+
+  protected onEditProject(): void {
+    this.drawerMode.set('edit');
+  }
+
+  protected closeDrawer(): void {
+    this.isDrawerOpen.set(false);
+    setTimeout(() => {
+      this.selectedProject.set(null);
+      this.drawerMode.set('create');
+    }, 300);
+  }
+
+  protected onProjectSaved(): void {
+    this.closeDrawer();
+    this.loadProjects();
   }
 }

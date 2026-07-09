@@ -9,59 +9,63 @@
 
       <div class="crm-projects__actions">
         <div class="crm-projects__view-toggler">
-          <button type="button"
-                  class="crm-projects__toggler-btn"
-                  [class.crm-projects__toggler-btn--active]="viewMode() === 'grid'"
-                  (click)="setViewMode('grid')" title="Grid View">
+          <button type="button" class="crm-projects__toggler-btn"
+            [class.crm-projects__toggler-btn--active]="viewMode() === 'grid'" (click)="setViewMode('grid')"
+            title="Grid View">
             Grid
           </button>
-          <button type="button"
-                  class="crm-projects__toggler-btn"
-                  [class.crm-projects__toggler-btn--active]="viewMode() === 'table'"
-                  (click)="setViewMode('table')" title="Table View">
+          <button type="button" class="crm-projects__toggler-btn"
+            [class.crm-projects__toggler-btn--active]="viewMode() === 'table'" (click)="setViewMode('table')"
+            title="Table View">
             Table
           </button>
         </div>
-        
-        <button class="crm-projects__add-btn">
-          <span>+ Add Project</span>
-        </button>
+
+        <button crm-btn type="button" variant="primary" size="md" (click)="openAddProject()">Add Project</button>
       </div>
     </div>
 
-    <app-project-filters
-      [totalSearchCount]="filteredTotalCount()"
-      [planningCount]="filteredPlanningCount()"
-      [activeCount]="filteredActiveCount()"
-      [reviewCount]="filteredReviewCount()"
-      [completedCount]="filteredCompletedCount()"
-      [pausedCount]="filteredPausedCount()"
-      (searchChange)="onSearchChange($event)"
-      (statusChange)="onStatusChange($event)">
+    <app-project-filters [totalSearchCount]="filteredTotalCount()" [planningCount]="filteredPlanningCount()"
+      [activeCount]="filteredActiveCount()" [reviewCount]="filteredReviewCount()"
+      [completedCount]="filteredCompletedCount()" [pausedCount]="filteredPausedCount()"
+      (searchChange)="onSearchChange($event)" (statusChange)="onStatusChange($event)">
     </app-project-filters>
 
     @if (viewMode() === 'grid') {
-      <div class="crm-projects__grid">
-        @for (project of paginatedProjects(); track project.id) {
-          <app-project-card [project]="project"></app-project-card>
-        } @empty {
-          <div class="crm-projects__empty">
-            No projects found matching your criteria.
-          </div>
-        }
+    <div class="crm-projects__grid">
+      @for (project of paginatedProjects(); track project.id) {
+      <app-project-card [project]="project" (projectClick)="openProjectDetails($event)"></app-project-card>
+      } @empty {
+      <div class="crm-projects__empty">
+        No projects found matching your criteria.
       </div>
+      }
+    </div>
     } @else {
-      <app-project-table [projects]="paginatedProjects()"></app-project-table>
+    <app-project-table [projects]="paginatedProjects()" (projectClick)="openProjectDetails($event)"></app-project-table>
     }
     @if (totalItems() > 0) {
-      <div class="crm-projects__pagination">
-        <crm-pagination
-          [currentPage]="currentPage()"
-          [pageSize]="pageSize()"
-          [totalItems]="totalItems()"
-          (pageChange)="onPageChange($event)">
-        </crm-pagination>
-      </div>
+    <div class="crm-projects__pagination">
+      <crm-pagination [currentPage]="currentPage()" [pageSize]="pageSize()" [totalItems]="totalItems()"
+        (pageChange)="onPageChange($event)">
+      </crm-pagination>
+    </div>
     }
   </div>
+
+  <crm-drawer [isOpen]="isDrawerOpen()" (closed)="closeDrawer()">
+    @if (isDrawerOpen()) {
+      @if (drawerMode() === 'details' && selectedProject()) {
+        <app-project-details 
+          [project]="selectedProject()!" 
+          (edit)="onEditProject()">
+        </app-project-details>
+      } @else {
+        <app-project-form 
+          [project]="selectedProject()" 
+          (saved)="onProjectSaved()">
+        </app-project-form>
+      }
+    }
+  </crm-drawer>
 </main>

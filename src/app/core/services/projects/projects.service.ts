@@ -2,7 +2,12 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
-import { Project, ProjectsServerResponse } from '../../models/project.model';
+import {
+  CreateProjectDto,
+  Project,
+  ProjectsServerResponse,
+  UpdateProjectDto
+} from '../../models/project.model';
 
 @Injectable({
   providedIn: 'root',
@@ -28,5 +33,13 @@ export class ProjectsService {
 
   getProject(id: string): Observable<Project> {
     return this.http.get<Project>(`${this.API_URL}/${id}`);
+  }
+
+  createProject(dto: CreateProjectDto): Observable<Project> {
+    return this.http.post<Project>(this.API_URL, dto);
+  }
+
+  updateProject(id: string, dto: UpdateProjectDto): Observable<Project> {
+    return this.http.patch<Project>(`${this.API_URL}/${id}`, dto);
   }
 }

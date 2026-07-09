@@ -1,0 +1,22 @@
+<div 
+  class="expandable-text-container" 
+  [class.is-expanded]="isExpanded()"
+  [style.--max-height.px]="maxHeight()"
+  (click)="toggleExpand($event)">
+  
+  <div class="expandable-text-content">
+    @if (text()) {
+      {{ text() }}
+    } @else {
+      <ng-content></ng-content>
+    }
+  </div>
+
+  @if (!isExpanded()) {
+    <div class="fade-overlay"></div>
+  }
+</div>
+
+<button type="button" class="expand-toggle-btn" (click)="toggleExpand($event)">
+  {{ isExpanded() ? 'Show less' : 'Show more' }}
+</button>

@@ -1,0 +1,112 @@
+@use 'variables' as *;
+
+.project-details {
+  display: flex;
+  flex-direction: column;
+  gap: $space-lg;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid $color-border-taupe;
+    padding-bottom: $space-md;
+    margin-bottom: $space-sm;
+  }
+
+  &__title {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $color-text-heading;
+    margin: 0;
+  }
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: $space-xs;
+  }
+
+  &__section-title {
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    color: $color-text-dark;
+    margin: 0 0 $space-xs 0;
+  }
+
+  &__text {
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  &__info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $space-xs 0;
+    border-bottom: 1px solid rgba($color-border-taupe, 0.5);
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__info-label {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $color-text-muted;
+  }
+
+  &__info-value {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $color-text-dark;
+  }
+
+  &__actions {
+    margin-top: $space-lg;
+    display: flex;
+
+    & .crm-btn {
+      flex: 1;
+    }
+  }
+}
+
+/* Include status badge styles if not globally available, but they probably are */
+.crm-project-status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  text-transform: capitalize;
+
+  &--planning {
+    background-color: rgba(#3b82f6, 0.1);
+    color: #2563eb;
+  }
+
+  &--active {
+    background-color: rgba(#10b981, 0.1);
+    color: #059669;
+  }
+
+  &--review {
+    background-color: rgba(#f59e0b, 0.1);
+    color: #d97706;
+  }
+
+  &--completed {
+    background-color: rgba(#6b7280, 0.1);
+    color: #4b5563;
+  }
+
+  &--paused {
+    background-color: rgba(#ef4444, 0.1);
+    color: #dc2626;
+  }
+}

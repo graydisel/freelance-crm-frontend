@@ -1,0 +1,72 @@
+<form [formGroup]="form" (ngSubmit)="submit()" class="crm-form">
+  <div class="crm-form__header">
+    <h2 class="crm-form__title">{{ formTitle() }}</h2>
+    <p class="crm-form__subtitle">{{ formSubtitle() }}</p>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="crm-alert-danger">{{ errorMessage() }}</div>
+  }
+
+  <div class="crm-form__group">
+    <label for="projectName" class="crm-form__label">Project Name</label>
+    <input id="projectName" type="text" formControlName="name" class="crm-form__input"
+      placeholder="e.g. Website Redesign">
+  </div>
+
+  <div class="crm-form__group">
+    <label for="projectDescription" class="crm-form__label">Description</label>
+    <textarea id="projectDescription" formControlName="description" class="crm-form__input crm-form__textarea"
+      placeholder="Brief project description..." rows="3"></textarea>
+  </div>
+
+  <div class="crm-form__group">
+    <label for="projectStatus" class="crm-form__label">Status</label>
+    <select id="projectStatus" formControlName="status" class="crm-form__select">
+      <option [value]="ProjectStatusEnum.PLANNING">Planning</option>
+      <option [value]="ProjectStatusEnum.ACTIVE">Active</option>
+      <option [value]="ProjectStatusEnum.REVIEW">Review</option>
+      <option [value]="ProjectStatusEnum.COMPLETED">Completed</option>
+      <option [value]="ProjectStatusEnum.PAUSED">Paused</option>
+    </select>
+  </div>
+
+  <div class="crm-form__group">
+    <label class="crm-form__label">Client</label>
+    <crm-dropdown formControlName="clientId" [searchable]="true"
+      (searchChange)="onClientSearch($event)">
+      <div crm-dropdown-trigger>
+        {{ selectedClientName() || 'Search for a client...' }}
+      </div>
+      @for (client of clientSearchResults(); track client.id) {
+        <div crm-dropdown-option [value]="client.id"
+          (click)="onClientSelected(client.id)">
+          {{ client.companyName }}
+        </div>
+      }
+    </crm-dropdown>
+  </div>
+
+  <div class="crm-form__group">
+    <label class="crm-form__label">Manager</label>
+    <crm-dropdown formControlName="managerId" [searchable]="true"
+      (searchChange)="onManagerSearch($event)">
+      <div crm-dropdown-trigger>
+        {{ selectedManagerName() || 'Search for a manager...' }}
+      </div>
+      @for (user of managerSearchResults(); track user.id) {
+        <div crm-dropdown-option [value]="user.id"
+          (click)="onManagerSelected(user.id)">
+          {{ user.firstName }} {{ user.lastName }} ({{ user.email }})
+        </div>
+      }
+    </crm-dropdown>
+  </div>
+
+  <div class="crm-form__actions">
+    <button crm-btn type="submit" variant="primary" size="md"
+      [disabled]="form.invalid" [loading]="isSubmitting()">
+      {{ isSubmitting() ? submittingLabel() : submitLabel() }}
+    </button>
+  </div>
+</form>

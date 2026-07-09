@@ -1,4 +1,4 @@
-import { ProjectStatusEnum } from "../enums/project-status.enum";
+import { ProjectStatusEnum } from '../enums/project-status.enum';
 
 export interface Project {
   id: string;
@@ -8,11 +8,29 @@ export interface Project {
   date: string;
   tasksCount: number;
   client: {
+    id: string;
     companyName: string;
   };
   manager: {
+    id: string;
     fullName: string;
   };
+}
+
+export interface CreateProjectDto {
+  name: string;
+  description?: string;
+  status?: ProjectStatusEnum;
+  clientId: string;
+  managerId: string;
+}
+
+export interface UpdateProjectDto {
+  name?: string;
+  description?: string;
+  status?: ProjectStatusEnum;
+  clientId?: string;
+  managerId?: string;
 }
 
 export interface ProjectsServerResponse {

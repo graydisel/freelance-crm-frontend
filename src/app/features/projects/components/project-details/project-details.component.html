@@ -1,0 +1,45 @@
+<div class="project-details">
+  <div class="project-details__header">
+    <h2 class="project-details__title">{{ project().name }}</h2>
+    <span class="crm-project-status-badge crm-project-status-badge--{{ project().status }}">
+      {{ project().status.replace('_', ' ') }}
+    </span>
+  </div>
+
+  <div class="project-details__section">
+    <h3 class="project-details__section-title">Description</h3>
+    <p class="project-details__text">{{ project().description || 'No description provided.' }}</p>
+  </div>
+
+  <div class="project-details__section">
+    <h3 class="project-details__section-title">Client Information</h3>
+    <div class="project-details__info-row">
+      <span class="project-details__info-label">Company Name:</span>
+      <span class="project-details__info-value">{{ project().client.companyName || '—' }}</span>
+    </div>
+  </div>
+
+  <div class="project-details__section">
+    <h3 class="project-details__section-title">Manager Information</h3>
+    <div class="project-details__info-row">
+      <span class="project-details__info-label">Full Name:</span>
+      <span class="project-details__info-value">{{ project().manager.fullName || '—' }}</span>
+    </div>
+  </div>
+
+  <div class="project-details__section">
+    <h3 class="project-details__section-title">Metrics</h3>
+    <div class="project-details__info-row">
+      <span class="project-details__info-label">Date Created:</span>
+      <span class="project-details__info-value">{{ project().date }}</span>
+    </div>
+    <div class="project-details__info-row">
+      <span class="project-details__info-label">Tasks Linked:</span>
+      <span class="project-details__info-value">{{ project().tasksCount }}</span>
+    </div>
+  </div>
+
+  <div class="project-details__actions">
+    <button crm-btn type="button" variant="primary" size="md" (click)="onEditClick()">Edit Project</button>
+  </div>
+</div>

@@ -1,6 +1,6 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { RouterModule } from '@angular/router';
+// import { RouterModule } from '@angular/router';
 import { Project } from '../../../../core/models/project.model';
 import { CRM_TABLE_DECORATORS } from '../../../../shared/components/crm-table/crm-table';
 
@@ -9,7 +9,6 @@ import { CRM_TABLE_DECORATORS } from '../../../../shared/components/crm-table/cr
   standalone: true,
   imports: [
     CommonModule,
-    RouterModule,
     ...CRM_TABLE_DECORATORS
   ],
   templateUrl: './project-table.component.html',
@@ -17,4 +16,9 @@ import { CRM_TABLE_DECORATORS } from '../../../../shared/components/crm-table/cr
 })
 export class ProjectTableComponent {
   projects = input.required<Project[]>();
+  projectClick = output<Project>();
+
+  onRowClick(project: Project): void {
+    this.projectClick.emit(project);
+  }
 }

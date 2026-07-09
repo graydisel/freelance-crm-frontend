@@ -10,11 +10,11 @@
 
   <ng-container crm-table-body>
     @for (project of projects(); track project.id) {
-      <tr>
+      <tr (click)="onRowClick(project)" class="crm-table-row--clickable" style="cursor: pointer;">
         <td>
-          <a [routerLink]="['/projects', project.id]" class="crm-table-primary-text">
+          <span class="crm-table-primary-text" style="text-decoration: underline;">
             {{ project.name }}
-          </a>
+          </span>
         </td>
         <td class="crm-table-text-dark">{{ project.client.companyName || '—' }}</td>
         <td class="crm-table-text-muted">{{ project.manager.fullName || '—' }}</td>

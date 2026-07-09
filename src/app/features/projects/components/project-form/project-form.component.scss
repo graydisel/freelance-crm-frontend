@@ -1,0 +1,38 @@
+@use 'variables' as *;
+
+.crm-form {
+  display: flex;
+  flex-direction: column;
+  gap: $space-lg;
+
+  &__header {
+    margin-bottom: $space-md;
+  }
+
+  &__title {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $color-text-heading;
+    margin: 0 0 $space-xs 0;
+  }
+
+  &__subtitle {
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+    margin: 0;
+  }
+
+  &__textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+
+  &__actions {
+    margin-top: $space-xl;
+    display: flex;
+
+    & .crm-btn {
+      flex: 1;
+    }
+  }
+}
