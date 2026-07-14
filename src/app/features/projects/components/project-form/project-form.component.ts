@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, OnInit, output, signal } from '@angular/core';
+import { Component, computed, inject, input, OnInit, output, signal, DestroyRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { Subject, catchError, debounceTime, distinctUntilChanged, of, switchMap } from 'rxjs';
@@ -31,6 +31,7 @@ export class ProjectFormComponent implements OnInit {
   private readonly projectsService = inject(ProjectsService);
   private readonly clientsService = inject(ClientsService);
   private readonly usersService = inject(UsersService);
+  private readonly destroyRef = inject(DestroyRef);
 
   project = input<Project | null>(null);
   saved = output<void>();
@@ -163,7 +164,7 @@ export class ProjectFormComponent implements OnInit {
         clientId: formValue.clientId,
         managerId: formValue.managerId
       };
-      this.projectsService.updateProject(this.project()!.id, dto).subscribe({
+      this.projectsService.updateProject(this.project()!.id, dto).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: () => {
           this.isSubmitting.set(false);
           this.saved.emit();
@@ -183,7 +184,7 @@ export class ProjectFormComponent implements OnInit {
         clientId: formValue.clientId,
         managerId: formValue.managerId
       };
-      this.projectsService.createProject(dto).subscribe({
+      this.projectsService.createProject(dto).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: () => {
           this.isSubmitting.set(false);
           this.form.reset({

@@ -1,4 +1,5 @@
 import {Component, computed, inject, input, output, signal} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ClientStatusEnum } from '../../../../core/enums/client-status.enum';
 import { CrmButtonComponent } from '../../../../shared/components/crm-button/crm-button';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
@@ -45,7 +46,7 @@ export class ClientFiltersComponent {
   });
 
   constructor() {
-    this.searchForm.get('status')?.valueChanges.subscribe(status => {
+    this.searchForm.get('status')?.valueChanges.pipe(takeUntilDestroyed()).subscribe(status => {
       if (status) {
         this.currentStatus.set(status);
         this.statusChange.emit(status);

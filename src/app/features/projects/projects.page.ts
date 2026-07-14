@@ -1,5 +1,6 @@
-import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { Component, computed, effect, inject, signal, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 import { ProjectFiltersComponent } from './components/project-filters/project-filters.component';
@@ -32,8 +33,9 @@ import { ProjectDetailsComponent } from './components/project-details/project-de
   templateUrl: './projects.page.html',
   styleUrls: ['./projects.page.scss']
 })
-export class ProjectsPageComponent implements OnInit {
+export class ProjectsPageComponent {
   private readonly projectsService = inject(ProjectsService);
+  private readonly destroyRef = inject(DestroyRef);
 
   protected readonly currentPage = signal<number>(1);
   protected readonly pageSize = signal<number>(10);
@@ -52,15 +54,13 @@ export class ProjectsPageComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void { }
-
   private loadProjects(): void {
     this.projectsService.getProjects(
       this.currentPage(),
       this.pageSize(),
       this.searchQuery(),
       this.statusFilter()
-    ).subscribe({
+    ).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
         this.serverResponse.set(response)
       },

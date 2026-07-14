@@ -1,5 +1,6 @@
 import { CurrencyPipe, PercentPipe } from '@angular/common';
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DashboardService } from '../../core/services/dashboard/dashboard.service';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 import { RecentClientsTable } from './components/recent-clients-table/recent-clients-table';
@@ -19,6 +20,7 @@ import { CrmMetricCard } from '../../shared/components/crm-metric-card/crm-metri
 })
 export class DashboardPage implements OnInit {
   private readonly dashboardService = inject(DashboardService);
+  private readonly destroyRef = inject(DestroyRef);
 
   protected readonly isRefreshing = signal(false);
 
@@ -29,7 +31,7 @@ export class DashboardPage implements OnInit {
   }
 
   private loadData(): void {
-    this.dashboardService.getDashboardData().subscribe({
+    this.dashboardService.getDashboardData().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (metrics) => {
         this.metrics.set(metrics);
 

@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, output, signal, DestroyRef } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ClientProfile, UpdateClientDto } from '../../../../core/models/client.model';
@@ -46,6 +46,7 @@ export class ClientDetailsComponent {
   private clientsService = inject(ClientsService);
   private fb = inject(NonNullableFormBuilder);
   private usersService = inject(UsersService);
+  private destroyRef = inject(DestroyRef);
 
   client = signal<ClientProfile | null>(null);
 
@@ -88,13 +89,13 @@ export class ClientDetailsComponent {
       this.searchResults.set(Array.isArray(res) ? res : (res?.data || []));
     });
 
-    this.editForm.valueChanges.subscribe(() => {
+    this.editForm.valueChanges.pipe(takeUntilDestroyed()).subscribe(() => {
       if (this.errorMessage()) {
         this.errorMessage.set(null);
       }
     });
 
-    this.editForm.get('contactPerson')?.valueChanges.subscribe(fullName => {
+    this.editForm.get('contactPerson')?.valueChanges.pipe(takeUntilDestroyed()).subscribe(fullName => {
       if (fullName) {
         const selectedUser = this.searchResults().find(
           user => `${user.firstName} ${user.lastName}` === fullName
@@ -115,7 +116,7 @@ export class ClientDetailsComponent {
 
   private loadClient(id: string) {
     this.isLoading.set(true);
-    this.clientsService.getClient(id).subscribe({
+    this.clientsService.getClient(id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (data) => {
         this.client.set(data);
         this.resetForm();
@@ -163,7 +164,7 @@ export class ClientDetailsComponent {
       contractValue: Number(this.editForm.controls.contractValue.value) || 0
     };
 
-    this.clientsService.updateClient(this.client()!.id, dto).subscribe({
+    this.clientsService.updateClient(this.client()!.id, dto).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (updatedClient) => {
         this.client.set(updatedClient);
         this.isSubmitting.set(false);

@@ -2,6 +2,7 @@ import {Component, computed, inject, input, output, signal} from '@angular/core'
 import { CrmButtonComponent } from '../../../../shared/components/crm-button/crm-button';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { CrmSearchInput } from '../../../../shared/components/crm-search-input/crm-search-input';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ProjectStatusEnum } from '../../../../core/enums/project-status.enum';
 import { ProjectsService } from '../../../../core/services/projects/projects.service';
 import {CrmFilterChipItem} from '../../../../shared/interfaces/crm-filter.interface';
@@ -44,7 +45,7 @@ export class ProjectFiltersComponent {
   });
 
   constructor() {
-    this.searchForm.get('status')?.valueChanges.subscribe(status => {
+    this.searchForm.get('status')?.valueChanges.pipe(takeUntilDestroyed()).subscribe(status => {
       if (status) {
         this.currentStatus.set(status);
         this.statusChange.emit(status);

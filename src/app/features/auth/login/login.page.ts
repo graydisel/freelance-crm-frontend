@@ -1,4 +1,5 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { Router } from '@angular/router';
@@ -14,6 +15,7 @@ export class LoginPage {
   protected readonly fb = inject(NonNullableFormBuilder);
   protected readonly authService = inject(AuthService);
   protected readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
 
   isLoading = signal(false);
   errorMessage = '';
@@ -34,7 +36,7 @@ export class LoginPage {
 
     const { email, password } = this.loginForm.getRawValue();
 
-    this.authService.login(email, password).subscribe({
+    this.authService.login(email, password).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
         this.isLoading.set(false);
         this.router.navigate(['/dashboard']);

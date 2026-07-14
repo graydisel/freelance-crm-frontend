@@ -1,4 +1,5 @@
-import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 import { ClientFiltersComponent } from './components/client-filters/client-filters.component';
@@ -31,6 +32,7 @@ import {CrmPagination} from '../../shared/components/crm-pagination/crm-paginati
 })
 export class ClientsPageComponent implements OnInit {
   private readonly clientsService = inject(ClientsService);
+  private readonly destroyRef = inject(DestroyRef);
 
   protected readonly isDrawerOpen = signal<boolean>(false);
   protected readonly selectedClient = signal<ClientProfile | null>(null);
@@ -56,7 +58,7 @@ export class ClientsPageComponent implements OnInit {
       this.pageSize(),
       this.searchQuery(),
       this.statusFilter()
-    ).subscribe({
+    ).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => this.serverResponse.set(response),
       error: (err) => console.error('Error loading clients:', err)
     });

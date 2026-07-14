@@ -33,6 +33,28 @@ export const routes: Routes = [
     loadComponent: () => import('./features/projects/projects.page').then((m) => m.ProjectsPageComponent),
   },
   {
+    path: 'projects/:id',
+    canActivate: [projectsGuard],
+    loadComponent: () => import('./features/projects/project-layout/project-layout.page').then((m) => m.ProjectLayoutPage),
+    children: [
+      {
+        path: '',
+        redirectTo: 'tasks',
+        pathMatch: 'full'
+      },
+      {
+        path: 'tasks',
+        title: 'Project Tasks',
+        loadComponent: () => import('./features/projects/project-tasks/project-tasks.page').then((m) => m.ProjectTasksPage)
+      },
+      {
+        path: 'kanban',
+        title: 'Project Kanban',
+        loadComponent: () => import('./features/projects/kanban-desk/kanban-desk.page').then((m) => m.KanbanDeskPage)
+      }
+    ]
+  },
+  {
     path: '**',
     loadComponent: () => import('./features/not-found/not-found.page').then(m => m.NotFoundPage),
   }

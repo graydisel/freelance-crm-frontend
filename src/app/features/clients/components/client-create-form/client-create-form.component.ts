@@ -1,4 +1,4 @@
-import { Component, inject, output, signal } from '@angular/core';
+import { Component, inject, output, signal, DestroyRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { ClientsService } from '../../../../core/services/clients/clients.service';
@@ -24,6 +24,7 @@ export class ClientCreateFormComponent {
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly clientsService = inject(ClientsService);
   private readonly usersService = inject(UsersService);
+  private readonly destroyRef = inject(DestroyRef);
 
   saved = output<void>();
   isSubmitting = signal(false);
@@ -47,7 +48,7 @@ export class ClientCreateFormComponent {
       this.searchResults.set(Array.isArray(res) ? res : (res?.data || []));
     });
 
-    this.form.get('contactPerson')?.valueChanges.subscribe(fullName => {
+    this.form.get('contactPerson')?.valueChanges.pipe(takeUntilDestroyed()).subscribe(fullName => {
       if (fullName) {
         const selectedUser = this.searchResults().find(
           user => `${user.firstName} ${user.lastName}` === fullName
@@ -84,7 +85,7 @@ export class ClientCreateFormComponent {
       contractValue: Number(this.form.controls.contractValue.value) || 0
     };
 
-    this.clientsService.createClient(dto).subscribe({
+    this.clientsService.createClient(dto).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: () => {
         this.isSubmitting.set(false);
         this.form.reset({ status: ClientStatusEnum.LEAD, contractValue: 0 });
