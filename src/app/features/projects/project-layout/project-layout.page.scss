@@ -1,0 +1,138 @@
+.crm-dashboard {
+  display: flex;
+}
+
+.page-container {
+  flex: 1;
+  padding: 32px 40px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--crm-bg-body);
+}
+
+.kanban-header {
+  margin-bottom: 24px;
+  background: var(--crm-bg-surface);
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid var(--crm-border-color);
+
+  .kanban-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+
+    .title-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+
+      h1 {
+        font-size: 24px;
+        font-weight: 600;
+        color: var(--crm-text-primary);
+        margin: 0;
+      }
+    }
+
+    .actions-group {
+      display: flex;
+      gap: 12px;
+    }
+  }
+
+  .project-details-grid {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px dashed var(--crm-border-color);
+
+    .detail-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      .detail-label {
+        font-size: 12px;
+        color: var(--crm-text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .detail-value {
+        font-size: 14px;
+        color: var(--crm-text-primary);
+        font-weight: 500;
+      }
+    }
+  }
+
+  .project-description {
+    color: var(--crm-text-secondary);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 24px;
+  }
+}
+
+.project-tabs {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid var(--crm-border-color);
+  padding-bottom: 0;
+  
+  .tab-link {
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--crm-text-secondary);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s ease;
+    margin-bottom: -1px;
+    
+    &:hover {
+      color: var(--crm-primary);
+      background: var(--crm-bg-body);
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+    }
+    
+    &.active {
+      color: var(--crm-primary);
+      border-bottom-color: var(--crm-primary);
+    }
+  }
+}
+
+.project-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.loading-state, .error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  gap: 16px;
+  color: var(--crm-text-secondary);
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--crm-border-color);
+  border-top-color: var(--crm-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

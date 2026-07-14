@@ -1,0 +1,57 @@
+<main class="crm-dashboard">
+  <app-sidebar></app-sidebar>
+  <div class="page-container">
+    @if (isLoading()) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading project details...</p>
+      </div>
+    } @else if (errorMessage()) {
+      <div class="error-state">
+        <p>{{ errorMessage() }}</p>
+        <button crm-btn routerLink="/projects" variant="secondary">Back to Projects</button>
+      </div>
+    } @else if (project()) {
+      <div class="kanban-header">
+        <div class="kanban-header-top">
+          <div class="title-group">
+            <h1>{{ project()?.name }}</h1>
+            <crm-status-badge [status]="project()?.status || ''"></crm-status-badge>
+          </div>
+          <div class="actions-group">
+            <button crm-btn routerLink="/projects" variant="secondary">Back to Projects</button>
+            <button crm-btn variant="primary">Add Task</button>
+          </div>
+        </div>
+        
+        <div class="project-details-grid">
+          <div class="detail-item">
+            <span class="detail-label">Client</span>
+            <span class="detail-value">{{ project()?.client?.companyName }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Manager</span>
+            <span class="detail-value">{{ project()?.manager?.fullName }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Tasks</span>
+            <span class="detail-value">{{ project()?.tasksCount || 0 }}</span>
+          </div>
+        </div>
+      
+        <div class="project-description">
+          <crm-expandable-text [text]="project()?.description || 'No description available for this project.'"></crm-expandable-text>
+        </div>
+        
+        <div class="project-tabs">
+          <a routerLink="tasks" routerLinkActive="active" class="tab-link">Tasks Table</a>
+          <a routerLink="kanban" routerLinkActive="active" class="tab-link">Kanban Board</a>
+        </div>
+      </div>
+      
+      <div class="project-content">
+        <router-outlet></router-outlet>
+      </div>
+    }
+  </div>
+</main>
