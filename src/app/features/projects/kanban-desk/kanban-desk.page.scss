@@ -1,86 +1,101 @@
+@use 'variables' as *;
+
 .kanban-board-container {
-  padding: 24px 0;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+  padding: $space-lg;
+  overflow-x: auto;
+  height: 100%;
 }
 
-.kanban-board {
+.kanban-grid {
+  display: grid;
+  grid-template-columns: 80px repeat(4, minmax(200px, 1fr));
+  gap: $space-md;
+  background-color: $color-bg-muted;
+  padding: $space-md;
+  border-radius: $radius-lg;
+  border: 1px solid $color-border-taupe;
+}
+
+
+.grid-header-cell {
   display: flex;
-  gap: 24px;
-  flex: 1;
-  overflow-x: auto;
-  padding-bottom: 16px;
+  align-items: center;
+  justify-content: center;
+  padding: $space-sm $space-md;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-sm;
+  color: $color-text-dark;
+  background-color: $color-bg-card;
+  border-radius: $radius-md;
+  border: 1px solid $color-border-taupe;
 
-  .kanban-column {
-    flex: 0 0 320px;
-    display: flex;
-    flex-direction: column;
-    background: var(--crm-bg-surface);
-    border-radius: 12px;
-    border: 1px solid var(--crm-border-color);
-    max-height: calc(100vh - 350px);
+  &.corner {
+    font-style: italic;
+    background-color: transparent;
+    border: none;
+  }
 
-    .column-header {
-      padding: 16px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--crm-border-color);
+  &.status {
+    text-align: center;
+  }
 
-      h3 {
-        margin: 0;
-        font-size: 16px;
-        font-weight: 600;
-        color: var(--crm-text-primary);
-      }
-
-      .count {
-        background: var(--crm-bg-body);
-        color: var(--crm-text-secondary);
-        padding: 4px 8px;
-        border-radius: 12px;
-        font-size: 12px;
-        font-weight: 500;
-      }
-    }
-
-    .column-content {
-      padding: 16px;
-      flex: 1;
-      overflow-y: auto;
-      
-      .empty-state {
-        text-align: center;
-        color: var(--crm-text-secondary);
-        font-size: 14px;
-        padding: 32px 0;
-        border: 2px dashed var(--crm-border-color);
-        border-radius: 8px;
-      }
-    }
+  &.priority {
+    text-align: center;
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+    min-height: 150px;
   }
 }
 
-.loading-state, .error-state {
+.grid-drop-cell {
+  background-color: #ffffff;
+  border: 1px dashed $color-border-taupe;
+  border-radius: $radius-md;
+  min-height: 150px;
+  padding: $space-sm;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-  gap: 16px;
-  color: var(--crm-text-secondary);
+  gap: $space-sm;
+  transition: background-color 0.2s, border-color 0.2s;
+
+  &:hover {
+    border-color: $color-primary;
+  }
+
+  &.cdk-drop-list-dragging {
+    background-color: rgba($color-primary, 0.02);
+    border-style: solid;
+  }
 }
 
-.spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid var(--crm-border-color);
-  border-top-color: var(--crm-primary);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+.task-card {
+  background-color: #ffffff;
+  border: 1px solid $color-border-taupe;
+  border-radius: $radius-md;
+  padding: $space-md;
+  box-shadow: $shadow-sm;
+  cursor: grab;
+  transition: box-shadow 0.2s, transform 0.2s;
+
+  &:active {
+    cursor: grabbing;
+  }
+
+  h4 {
+    margin: 0 0 $space-xs 0;
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    color: $color-text-dark;
+  }
+
+  p {
+    margin: 0;
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+    line-height: 1.4;
+  }
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
+.cdk-drag-placeholder {
+  opacity: 0.3;
 }

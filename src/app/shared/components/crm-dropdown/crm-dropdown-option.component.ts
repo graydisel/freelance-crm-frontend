@@ -1,4 +1,4 @@
-import { Component, HostListener, inject, input } from '@angular/core';
+import { Component, HostListener, inject, input, ChangeDetectionStrategy } from '@angular/core';
 import { CrmDropdownComponent } from './crm-dropdown.component';
 
 @Component({
@@ -6,13 +6,14 @@ import { CrmDropdownComponent } from './crm-dropdown.component';
   standalone: true,
   template: `<ng-content></ng-content>`,
   styleUrl: './crm-dropdown-option.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   host: {
-    'class': 'crm-dropdown-option'
-  }
+    class: 'crm-dropdown-option',
+  },
 })
 export class CrmDropdownOptionComponent {
   private readonly dropdown = inject(CrmDropdownComponent);
-  
+
   value = input.required<any>();
 
   @HostListener('click', ['$event'])

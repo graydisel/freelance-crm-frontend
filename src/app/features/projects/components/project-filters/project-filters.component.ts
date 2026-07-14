@@ -1,24 +1,28 @@
-import {Component, computed, inject, input, output, signal} from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  output,
+  signal,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CrmButtonComponent } from '../../../../shared/components/crm-button/crm-button';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { CrmSearchInput } from '../../../../shared/components/crm-search-input/crm-search-input';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ProjectStatusEnum } from '../../../../core/enums/project-status.enum';
 import { ProjectsService } from '../../../../core/services/projects/projects.service';
-import {CrmFilterChipItem} from '../../../../shared/interfaces/crm-filter.interface';
-import {CrmFilterChips} from '../../../../shared/components/crm-filter-chips/crm-filter-chips';
+import { CrmFilterChipItem } from '../../../../shared/interfaces/crm-filter.interface';
+import { CrmFilterChips } from '../../../../shared/components/crm-filter-chips/crm-filter-chips';
 
 @Component({
   selector: 'app-project-filters',
   standalone: true,
   templateUrl: './project-filters.component.html',
-  imports: [
-    CrmButtonComponent,
-    ReactiveFormsModule,
-    CrmSearchInput,
-    CrmFilterChips
-  ],
-  styleUrls: ['./project-filters.component.scss']
+  imports: [CrmButtonComponent, ReactiveFormsModule, CrmSearchInput, CrmFilterChips],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrls: ['./project-filters.component.scss'],
 })
 export class ProjectFiltersComponent {
   protected readonly fb = inject(NonNullableFormBuilder);
@@ -31,7 +35,8 @@ export class ProjectFiltersComponent {
   completedCount = input<number>(0);
   pausedCount = input<number>(0);
 
-  protected readonly projectSearchFn = (term: string) => this.projectsService.getProjects(1, 5, term);
+  protected readonly projectSearchFn = (term: string) =>
+    this.projectsService.getProjects(1, 5, term);
 
   searchChange = output<string>();
   statusChange = output<string>();
@@ -45,12 +50,15 @@ export class ProjectFiltersComponent {
   });
 
   constructor() {
-    this.searchForm.get('status')?.valueChanges.pipe(takeUntilDestroyed()).subscribe(status => {
-      if (status) {
-        this.currentStatus.set(status);
-        this.statusChange.emit(status);
-      }
-    });
+    this.searchForm
+      .get('status')
+      ?.valueChanges.pipe(takeUntilDestroyed())
+      .subscribe((status) => {
+        if (status) {
+          this.currentStatus.set(status);
+          this.statusChange.emit(status);
+        }
+      });
   }
 
   search() {
@@ -66,7 +74,7 @@ export class ProjectFiltersComponent {
     { value: ProjectStatusEnum.ACTIVE, label: 'In Progress', count: this.activeCount() },
     { value: ProjectStatusEnum.REVIEW, label: 'Review', count: this.reviewCount() },
     { value: ProjectStatusEnum.COMPLETED, label: 'Completed', count: this.completedCount() },
-    { value: ProjectStatusEnum.PAUSED, label: 'Paused', count: this.pausedCount() }
+    { value: ProjectStatusEnum.PAUSED, label: 'Paused', count: this.pausedCount() },
   ]);
 
   onStatusChange(status: string) {

@@ -1,4 +1,14 @@
-import { Component, input, output, signal, HostListener, ElementRef, inject, ViewChild } from '@angular/core';
+import {
+  Component,
+  input,
+  output,
+  signal,
+  HostListener,
+  ElementRef,
+  inject,
+  ViewChild,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 // import { RouterModule } from '@angular/router';
 import { Project } from '../../../../core/models/project.model';
@@ -12,9 +22,10 @@ import { CrmExpandableTextComponent } from '../../../../shared/components/crm-ex
   imports: [CommonModule, CrmMetricCard, CrmExpandableTextComponent],
   templateUrl: './project-card.component.html',
   styleUrls: ['./project-card.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   host: {
-    '[class.is-card-expanded]': 'isExpanded()'
-  }
+    '[class.is-card-expanded]': 'isExpanded()',
+  },
 })
 export class ProjectCardComponent {
   project = input.required<Project>();

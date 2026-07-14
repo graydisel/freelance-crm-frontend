@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './crm-metric-card.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './crm-metric-card.scss',
 })
 export class CrmMetricCard {

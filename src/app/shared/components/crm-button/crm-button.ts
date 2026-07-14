@@ -1,4 +1,4 @@
-import {Component, input, ViewEncapsulation} from '@angular/core';
+import { Component, input, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'button[crm-btn]',
@@ -12,8 +12,9 @@ import {Component, input, ViewEncapsulation} from '@angular/core';
   `,
   styleUrl: './crm-button.scss',
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.Eager,
   host: {
-    'class': 'crm-btn',
+    class: 'crm-btn',
     '[class.crm-btn--primary]': "variant() === 'primary'",
     '[class.crm-btn--secondary]': "variant() === 'secondary'",
     '[class.crm-btn--danger]': "variant() === 'danger'",
@@ -21,8 +22,8 @@ import {Component, input, ViewEncapsulation} from '@angular/core';
     '[class.crm-btn--md]': "size() === 'md'",
     '[class.crm-btn--lg]': "size() === 'lg'",
     '[class.crm-btn--loading]': 'loading()',
-    '[disabled]': 'disabled() || loading()'
-  }
+    '[disabled]': 'disabled() || loading()',
+  },
 })
 export class CrmButtonComponent {
   variant = input<'primary' | 'secondary' | 'danger'>('primary');

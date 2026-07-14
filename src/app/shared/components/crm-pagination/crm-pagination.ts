@@ -1,11 +1,12 @@
-import {Component, computed, input, output} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import { Component, computed, input, output, ChangeDetectionStrategy } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'crm-pagination',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './crm-pagination.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './crm-pagination.scss',
 })
 export class CrmPagination {

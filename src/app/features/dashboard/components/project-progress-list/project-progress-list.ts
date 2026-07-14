@@ -1,10 +1,11 @@
-import { Component, input } from '@angular/core';
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 import { ProjectProgress } from '../../../../core/models/project.model';
 
 @Component({
   selector: 'app-project-progress-list',
   imports: [],
   templateUrl: './project-progress-list.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './project-progress-list.scss',
 })
 export class ProjectProgressList {

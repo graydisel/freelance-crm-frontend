@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -7,11 +7,12 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   templateUrl: './crm-avatar.component.html',
   styleUrls: ['./crm-avatar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   host: {
-    'class': 'crm-avatar',
+    class: 'crm-avatar',
     '[class.crm-avatar--company]': 'variant() === "company"',
-    '[class.crm-avatar--contact]': 'variant() === "contact"'
-  }
+    '[class.crm-avatar--contact]': 'variant() === "contact"',
+  },
 })
 export class CrmAvatarComponent {
   initials = input.required<string>();

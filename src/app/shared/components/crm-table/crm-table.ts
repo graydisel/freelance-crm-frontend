@@ -1,15 +1,20 @@
-import { Component, computed, Directive, input, output, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  Directive,
+  ViewEncapsulation,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Directive({
   selector: '[crm-table-header]',
-  standalone: true
+  standalone: true,
 })
 export class CrmTableHeaderDirective {}
 
 @Directive({
   selector: '[crm-table-body]',
-  standalone: true
+  standalone: true,
 })
 export class CrmTableBodyDirective {}
 
@@ -20,14 +25,15 @@ export class CrmTableBodyDirective {}
   templateUrl: './crm-table.html',
   styleUrl: './crm-table.scss',
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.Eager,
   host: {
-    class: 'crm-table-shared-root'
-  }
+    class: 'crm-table-shared-root',
+  },
 })
-export class CrmTable { }
+export class CrmTable {}
 
 export const CRM_TABLE_DECORATORS = [
   CrmTable,
   CrmTableHeaderDirective,
-  CrmTableBodyDirective
+  CrmTableBodyDirective,
 ] as const;

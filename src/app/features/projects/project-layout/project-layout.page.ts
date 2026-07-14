@@ -1,4 +1,11 @@
-import { Component, inject, OnInit, signal, DestroyRef } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  signal,
+  DestroyRef,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -21,10 +28,11 @@ import { CrmStatusBadgeComponent } from '../../../shared/components/crm-status-b
     RouterLink,
     RouterLinkActive,
     RouterOutlet,
-    CrmStatusBadgeComponent
+    CrmStatusBadgeComponent,
   ],
   templateUrl: './project-layout.page.html',
-  styleUrls: ['./project-layout.page.scss']
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrls: ['./project-layout.page.scss'],
 })
 export class ProjectLayoutPage implements OnInit {
   private readonly route = inject(ActivatedRoute);
@@ -36,26 +44,28 @@ export class ProjectLayoutPage implements OnInit {
   errorMessage = signal<string | null>(null);
 
   ngOnInit() {
-    this.route.paramMap.pipe(
-      switchMap(params => {
-        const id = params.get('id');
-        this.isLoading.set(true);
-        if (id) {
-          return this.projectsService.getProject(id);
-        } else {
-          throw new Error('Project ID is required');
-        }
-      }),
-      takeUntilDestroyed(this.destroyRef)
-    ).subscribe({
-      next: (project) => {
-        this.project.set(project);
-        this.isLoading.set(false);
-      },
-      error: (err) => {
-        this.errorMessage.set('Failed to load project details.');
-        this.isLoading.set(false);
-      }
-    });
+    this.route.paramMap
+      .pipe(
+        switchMap((params) => {
+          const id = params.get('id');
+          this.isLoading.set(true);
+          if (id) {
+            return this.projectsService.getProject(id);
+          } else {
+            throw new Error('Project ID is required');
+          }
+        }),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe({
+        next: (project) => {
+          this.project.set(project);
+          this.isLoading.set(false);
+        },
+        error: (err) => {
+          this.errorMessage.set('Failed to load project details.');
+          this.isLoading.set(false);
+        },
+      });
   }
 }

@@ -1,4 +1,4 @@
-import { Component, input, signal, output } from '@angular/core';
+import { Component, input, signal, output, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -6,12 +6,13 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './crm-expandable-text.component.html',
-  styleUrls: ['./crm-expandable-text.component.scss']
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrls: ['./crm-expandable-text.component.scss'],
 })
 export class CrmExpandableTextComponent {
   text = input<string>();
   maxHeight = input<number>(60);
-  
+
   isExpanded = signal(false);
   expandedChange = output<boolean>();
 

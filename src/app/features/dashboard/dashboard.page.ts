@@ -1,5 +1,13 @@
 import { CurrencyPipe, PercentPipe } from '@angular/common';
-import { Component, computed, inject, OnInit, signal, DestroyRef } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  OnInit,
+  signal,
+  DestroyRef,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DashboardService } from '../../core/services/dashboard/dashboard.service';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
@@ -12,10 +20,17 @@ import { CrmMetricCard } from '../../shared/components/crm-metric-card/crm-metri
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CurrencyPipe, PercentPipe, SidebarComponent,
-    CrmMetricCard, RecentClientsTable, ProjectProgressList, CrmButtonComponent
+  imports: [
+    CurrencyPipe,
+    PercentPipe,
+    SidebarComponent,
+    CrmMetricCard,
+    RecentClientsTable,
+    ProjectProgressList,
+    CrmButtonComponent,
   ],
   templateUrl: './dashboard.page.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './dashboard.page.scss',
 })
 export class DashboardPage implements OnInit {
@@ -31,17 +46,20 @@ export class DashboardPage implements OnInit {
   }
 
   private loadData(): void {
-    this.dashboardService.getDashboardData().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
-      next: (metrics) => {
-        this.metrics.set(metrics);
+    this.dashboardService
+      .getDashboardData()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (metrics) => {
+          this.metrics.set(metrics);
 
-        this.isRefreshing.set(false);
-      },
-      error: (err) => {
-        console.error('Error with dashboard data:', err);
-        this.isRefreshing.set(false);
-      },
-    });
+          this.isRefreshing.set(false);
+        },
+        error: (err) => {
+          console.error('Error with dashboard data:', err);
+          this.isRefreshing.set(false);
+        },
+      });
   }
 
   protected readonly tasksProgress = computed(() => {
@@ -49,12 +67,10 @@ export class DashboardPage implements OnInit {
     return tasksTotal === 0 ? 0 : tasksCompleted / tasksTotal;
   });
 
-  protected readonly summaryText = computed(
-    () => {
-      const { activeClientsCount, projectsActive, tasksCompleted } = this.metrics();
-      return `${activeClientsCount} active clients · ${projectsActive} live projects · ${tasksCompleted} tasks completed this quarter`
-    }
-  );
+  protected readonly summaryText = computed(() => {
+    const { activeClientsCount, projectsActive, tasksCompleted } = this.metrics();
+    return `${activeClientsCount} active clients · ${projectsActive} live projects · ${tasksCompleted} tasks completed this quarter`;
+  });
 
   protected refreshData(): void {
     if (this.isRefreshing()) return;

@@ -7,7 +7,8 @@ import {
   inject,
   input,
   output,
-  signal
+  signal,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
@@ -15,7 +16,7 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 const CRM_DROPDOWN_PROVIDER: Provider = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => CrmDropdownComponent),
-  multi: true
+  multi: true,
 };
 
 @Component({
@@ -24,7 +25,8 @@ const CRM_DROPDOWN_PROVIDER: Provider = {
   imports: [CommonModule],
   providers: [CRM_DROPDOWN_PROVIDER],
   templateUrl: './crm-dropdown.component.html',
-  styleUrl: './crm-dropdown.component.scss'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './crm-dropdown.component.scss',
 })
 export class CrmDropdownComponent implements ControlValueAccessor {
   private readonly elementRef = inject(ElementRef);
@@ -32,7 +34,7 @@ export class CrmDropdownComponent implements ControlValueAccessor {
   placeholder = input<string>('Select an option...');
   searchable = input<boolean>(false);
   allowCustomAdd = input<boolean>(false);
-  
+
   searchChange = output<string>();
 
   protected readonly isOpen = signal<boolean>(false);

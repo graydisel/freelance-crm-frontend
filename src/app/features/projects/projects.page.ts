@@ -1,4 +1,12 @@
-import { Component, computed, effect, inject, signal, DestroyRef } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  signal,
+  DestroyRef,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -28,10 +36,11 @@ import { ProjectDetailsComponent } from './components/project-details/project-de
     CrmButtonComponent,
     CrmDrawerComponent,
     ProjectFormComponent,
-    ProjectDetailsComponent
+    ProjectDetailsComponent,
   ],
   templateUrl: './projects.page.html',
-  styleUrls: ['./projects.page.scss']
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrls: ['./projects.page.scss'],
 })
 export class ProjectsPageComponent {
   private readonly projectsService = inject(ProjectsService);
@@ -55,17 +64,15 @@ export class ProjectsPageComponent {
   }
 
   private loadProjects(): void {
-    this.projectsService.getProjects(
-      this.currentPage(),
-      this.pageSize(),
-      this.searchQuery(),
-      this.statusFilter()
-    ).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
-      next: (response) => {
-        this.serverResponse.set(response)
-      },
-      error: (err) => console.error('Error loading projects:', err)
-    });
+    this.projectsService
+      .getProjects(this.currentPage(), this.pageSize(), this.searchQuery(), this.statusFilter())
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (response) => {
+          this.serverResponse.set(response);
+        },
+        error: (err) => console.error('Error loading projects:', err),
+      });
   }
 
   protected readonly paginatedProjects = computed<Project[]>(() => {
@@ -76,12 +83,24 @@ export class ProjectsPageComponent {
     return this.serverResponse()?.meta.totalItems ?? 0;
   });
 
-  protected readonly filteredPlanningCount = computed(() => this.serverResponse()?.meta.filteredMetrics?.planningCount ?? 0);
-  protected readonly filteredActiveCount = computed(() => this.serverResponse()?.meta.filteredMetrics?.activeCount ?? 0);
-  protected readonly filteredReviewCount = computed(() => this.serverResponse()?.meta.filteredMetrics?.reviewCount ?? 0);
-  protected readonly filteredCompletedCount = computed(() => this.serverResponse()?.meta.filteredMetrics?.completedCount ?? 0);
-  protected readonly filteredPausedCount = computed(() => this.serverResponse()?.meta.filteredMetrics?.pausedCount ?? 0);
-  protected readonly filteredTotalCount = computed(() => this.serverResponse()?.meta.filteredMetrics?.totalCount ?? 0);
+  protected readonly filteredPlanningCount = computed(
+    () => this.serverResponse()?.meta.filteredMetrics?.planningCount ?? 0,
+  );
+  protected readonly filteredActiveCount = computed(
+    () => this.serverResponse()?.meta.filteredMetrics?.activeCount ?? 0,
+  );
+  protected readonly filteredReviewCount = computed(
+    () => this.serverResponse()?.meta.filteredMetrics?.reviewCount ?? 0,
+  );
+  protected readonly filteredCompletedCount = computed(
+    () => this.serverResponse()?.meta.filteredMetrics?.completedCount ?? 0,
+  );
+  protected readonly filteredPausedCount = computed(
+    () => this.serverResponse()?.meta.filteredMetrics?.pausedCount ?? 0,
+  );
+  protected readonly filteredTotalCount = computed(
+    () => this.serverResponse()?.meta.filteredMetrics?.totalCount ?? 0,
+  );
 
   protected onPageChange(newPage: number): void {
     this.currentPage.set(newPage);

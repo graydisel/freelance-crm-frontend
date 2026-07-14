@@ -1,4 +1,10 @@
-import { Component, HostBinding, HostListener, input, output } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  input,
+  output,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -7,9 +13,10 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   templateUrl: './crm-drawer.component.html',
   styleUrls: ['./crm-drawer.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   host: {
-    '[class.is-open]': 'isOpen()'
-  }
+    '[class.is-open]': 'isOpen()',
+  },
 })
 export class CrmDrawerComponent {
   isOpen = input<boolean>(false);

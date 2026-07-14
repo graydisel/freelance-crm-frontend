@@ -1,14 +1,15 @@
-import { Component, inject, signal, DestroyRef } from '@angular/core';
+import { Component, inject, signal, DestroyRef, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { Router } from '@angular/router';
-import {CrmButtonComponent} from '../../../shared/components/crm-button/crm-button';
+import { CrmButtonComponent } from '../../../shared/components/crm-button/crm-button';
 
 @Component({
   selector: 'app-login',
   imports: [ReactiveFormsModule, CrmButtonComponent],
   templateUrl: './login.page.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './login.page.scss',
 })
 export class LoginPage {
@@ -36,21 +37,24 @@ export class LoginPage {
 
     const { email, password } = this.loginForm.getRawValue();
 
-    this.authService.login(email, password).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
-      next: (response) => {
-        this.isLoading.set(false);
-        this.router.navigate(['/dashboard']);
-      },
-      error: (error) => {
-        this.isLoading.set(false);
-        if (error.status === 0) {
-          this.errorMessage = 'No access to the server. Please try again';
-        } else {
-          this.errorMessage = error.error?.message || 'Authorization error';
-        }
+    this.authService
+      .login(email, password)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (response) => {
+          this.isLoading.set(false);
+          this.router.navigate(['/dashboard']);
+        },
+        error: (error) => {
+          this.isLoading.set(false);
+          if (error.status === 0) {
+            this.errorMessage = 'No access to the server. Please try again';
+          } else {
+            this.errorMessage = error.error?.message || 'Authorization error';
+          }
 
-        console.error('Error details:', error);
-      },
-    });
+          console.error('Error details:', error);
+        },
+      });
   }
 }

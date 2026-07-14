@@ -1,13 +1,24 @@
-import {Component, computed, inject, input, output, signal} from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  output,
+  signal,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ClientStatusEnum } from '../../../../core/enums/client-status.enum';
 import { CrmButtonComponent } from '../../../../shared/components/crm-button/crm-button';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { CrmSearchInput } from '../../../../shared/components/crm-search-input/crm-search-input';
 import { ClientsService } from '../../../../core/services/clients/clients.service';
-import {CrmFilterChipItem} from '../../../../shared/interfaces/crm-filter.interface';
-import {CrmFilterChips} from '../../../../shared/components/crm-filter-chips/crm-filter-chips';
-import { CrmDropdownComponent, CrmDropdownOptionComponent } from '../../../../shared/components/crm-dropdown';
+import { CrmFilterChipItem } from '../../../../shared/interfaces/crm-filter.interface';
+import { CrmFilterChips } from '../../../../shared/components/crm-filter-chips/crm-filter-chips';
+import {
+  CrmDropdownComponent,
+  CrmDropdownOptionComponent,
+} from '../../../../shared/components/crm-dropdown';
 
 @Component({
   selector: 'app-client-filters',
@@ -19,9 +30,10 @@ import { CrmDropdownComponent, CrmDropdownOptionComponent } from '../../../../sh
     CrmSearchInput,
     CrmFilterChips,
     CrmDropdownComponent,
-    CrmDropdownOptionComponent
+    CrmDropdownOptionComponent,
   ],
-  styleUrls: ['./client-filters.component.scss']
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrls: ['./client-filters.component.scss'],
 })
 export class ClientFiltersComponent {
   protected readonly fb = inject(NonNullableFormBuilder);
@@ -34,8 +46,8 @@ export class ClientFiltersComponent {
 
   protected readonly clientSearchFn = (term: string) => this.clientsService.getSearchPreview(term);
 
-  searchChange = output<string>()
-  statusChange = output<string>()
+  searchChange = output<string>();
+  statusChange = output<string>();
 
   protected readonly isLoading = signal(false);
   protected readonly currentStatus = signal<string>('all');
@@ -46,12 +58,15 @@ export class ClientFiltersComponent {
   });
 
   constructor() {
-    this.searchForm.get('status')?.valueChanges.pipe(takeUntilDestroyed()).subscribe(status => {
-      if (status) {
-        this.currentStatus.set(status);
-        this.statusChange.emit(status);
-      }
-    });
+    this.searchForm
+      .get('status')
+      ?.valueChanges.pipe(takeUntilDestroyed())
+      .subscribe((status) => {
+        if (status) {
+          this.currentStatus.set(status);
+          this.statusChange.emit(status);
+        }
+      });
   }
 
   search() {
@@ -65,7 +80,7 @@ export class ClientFiltersComponent {
     { value: 'all', label: 'All', count: this.totalResults() },
     { value: ClientStatusEnum.ACTIVE, label: 'Active', count: this.activeCount() },
     { value: ClientStatusEnum.LEAD, label: 'Lead', count: this.leadsCount() },
-    { value: ClientStatusEnum.ARCHIVED, label: 'Archived', count: this.archivedCount() }
+    { value: ClientStatusEnum.ARCHIVED, label: 'Archived', count: this.archivedCount() },
   ]);
 
   onStatusChange(status: string) {

@@ -1,4 +1,14 @@
-import { Component, computed, inject, input, OnInit, output, signal, DestroyRef } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  OnInit,
+  output,
+  signal,
+  DestroyRef,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { Subject, catchError, debounceTime, distinctUntilChanged, of, switchMap } from 'rxjs';
@@ -7,7 +17,10 @@ import { ProjectsService } from '../../../../core/services/projects/projects.ser
 import { ClientsService } from '../../../../core/services/clients/clients.service';
 import { UsersService } from '../../../../core/services/users/users.service';
 import { CrmButtonComponent } from '../../../../shared/components/crm-button/crm-button';
-import { CrmDropdownComponent, CrmDropdownOptionComponent } from '../../../../shared/components/crm-dropdown';
+import {
+  CrmDropdownComponent,
+  CrmDropdownOptionComponent,
+} from '../../../../shared/components/crm-dropdown';
 import { Project, CreateProjectDto, UpdateProjectDto } from '../../../../core/models/project.model';
 import { ProjectStatusEnum } from '../../../../core/enums/project-status.enum';
 import { UserRoleEnum } from '../../../../core/enums/user-role.enum';
@@ -21,10 +34,11 @@ import { CrmValidators } from '../../../../core/validators/custom-validators';
     ReactiveFormsModule,
     CrmButtonComponent,
     CrmDropdownComponent,
-    CrmDropdownOptionComponent
+    CrmDropdownOptionComponent,
   ],
   templateUrl: './project-form.component.html',
-  styleUrls: ['./project-form.component.scss']
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrls: ['./project-form.component.scss'],
 })
 export class ProjectFormComponent implements OnInit {
   private readonly fb = inject(NonNullableFormBuilder);
@@ -38,18 +52,18 @@ export class ProjectFormComponent implements OnInit {
 
   protected readonly isEditMode = computed(() => !!this.project());
   protected readonly formTitle = computed(() =>
-    this.isEditMode() ? 'Edit Project' : 'Add New Project'
+    this.isEditMode() ? 'Edit Project' : 'Add New Project',
   );
   protected readonly formSubtitle = computed(() =>
     this.isEditMode()
       ? 'Update the project details below.'
-      : 'Enter the details for the new project.'
+      : 'Enter the details for the new project.',
   );
   protected readonly submitLabel = computed(() =>
-    this.isEditMode() ? 'Save Changes' : 'Create Project'
+    this.isEditMode() ? 'Save Changes' : 'Create Project',
   );
   protected readonly submittingLabel = computed(() =>
-    this.isEditMode() ? 'Saving...' : 'Creating...'
+    this.isEditMode() ? 'Saving...' : 'Creating...',
   );
 
   protected readonly isSubmitting = signal(false);
@@ -71,39 +85,43 @@ export class ProjectFormComponent implements OnInit {
     description: [''],
     status: [ProjectStatusEnum.PLANNING, Validators.required],
     clientId: ['', Validators.required],
-    managerId: ['', Validators.required]
+    managerId: ['', Validators.required],
   });
 
   constructor() {
-    this.clientSearchSubject.pipe(
-      takeUntilDestroyed(),
-      debounceTime(300),
-      distinctUntilChanged(),
-      switchMap(term => {
-        if (!term.trim()) return of({ data: [] });
-        return this.clientsService.getSearchPreview(term).pipe(
-          catchError(() => of({ data: [] }))
-        );
-      })
-    ).subscribe((res: any) => {
-      const data = Array.isArray(res) ? res : (res?.data || []);
-      this.clientSearchResults.set(data);
-    });
+    this.clientSearchSubject
+      .pipe(
+        takeUntilDestroyed(),
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap((term) => {
+          if (!term.trim()) return of({ data: [] });
+          return this.clientsService
+            .getSearchPreview(term)
+            .pipe(catchError(() => of({ data: [] })));
+        }),
+      )
+      .subscribe((res: any) => {
+        const data = Array.isArray(res) ? res : res?.data || [];
+        this.clientSearchResults.set(data);
+      });
 
-    this.managerSearchSubject.pipe(
-      takeUntilDestroyed(),
-      debounceTime(300),
-      distinctUntilChanged(),
-      switchMap(term => {
-        if (!term.trim()) return of([]);
-        return this.usersService.getAvailableUsers(term, UserRoleEnum.MANAGER).pipe(
-          catchError(() => of([]))
-        );
-      })
-    ).subscribe((res: any) => {
-      const data = Array.isArray(res) ? res : (res?.data || []);
-      this.managerSearchResults.set(data);
-    });
+    this.managerSearchSubject
+      .pipe(
+        takeUntilDestroyed(),
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap((term) => {
+          if (!term.trim()) return of([]);
+          return this.usersService
+            .getAvailableUsers(term, UserRoleEnum.MANAGER)
+            .pipe(catchError(() => of([])));
+        }),
+      )
+      .subscribe((res: any) => {
+        const data = Array.isArray(res) ? res : res?.data || [];
+        this.managerSearchResults.set(data);
+      });
   }
 
   ngOnInit(): void {
@@ -114,7 +132,7 @@ export class ProjectFormComponent implements OnInit {
         description: p.description || '',
         status: p.status,
         clientId: p.client?.id || '',
-        managerId: p.manager?.id || ''
+        managerId: p.manager?.id || '',
       });
       this.selectedClientName.set(p.client?.companyName || '');
       this.selectedManagerName.set(p.manager?.fullName || '');
@@ -131,7 +149,7 @@ export class ProjectFormComponent implements OnInit {
 
   protected onClientSelected(clientId: string): void {
     this.form.patchValue({ clientId });
-    const selected = this.clientSearchResults().find(c => c.id === clientId);
+    const selected = this.clientSearchResults().find((c) => c.id === clientId);
     if (selected) {
       this.selectedClientName.set(selected.companyName);
     }
@@ -139,7 +157,7 @@ export class ProjectFormComponent implements OnInit {
 
   protected onManagerSelected(managerId: string): void {
     this.form.patchValue({ managerId });
-    const selected = this.managerSearchResults().find(u => u.id === managerId);
+    const selected = this.managerSearchResults().find((u) => u.id === managerId);
     if (selected) {
       this.selectedManagerName.set(`${selected.firstName} ${selected.lastName}`);
     }
@@ -162,45 +180,51 @@ export class ProjectFormComponent implements OnInit {
         description: formValue.description,
         status: formValue.status,
         clientId: formValue.clientId,
-        managerId: formValue.managerId
+        managerId: formValue.managerId,
       };
-      this.projectsService.updateProject(this.project()!.id, dto).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
-        next: () => {
-          this.isSubmitting.set(false);
-          this.saved.emit();
-        },
-        error: (err) => {
-          this.isSubmitting.set(false);
-          this.errorMessage.set(
-            err.error?.message || 'An unexpected error occurred while saving.'
-          );
-        }
-      });
+      this.projectsService
+        .updateProject(this.project()!.id, dto)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: () => {
+            this.isSubmitting.set(false);
+            this.saved.emit();
+          },
+          error: (err) => {
+            this.isSubmitting.set(false);
+            this.errorMessage.set(
+              err.error?.message || 'An unexpected error occurred while saving.',
+            );
+          },
+        });
     } else {
       const dto: CreateProjectDto = {
         name: formValue.name,
         description: formValue.description || undefined,
         status: formValue.status,
         clientId: formValue.clientId,
-        managerId: formValue.managerId
+        managerId: formValue.managerId,
       };
-      this.projectsService.createProject(dto).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
-        next: () => {
-          this.isSubmitting.set(false);
-          this.form.reset({
-            status: ProjectStatusEnum.PLANNING
-          });
-          this.selectedClientName.set('');
-          this.selectedManagerName.set('');
-          this.saved.emit();
-        },
-        error: (err) => {
-          this.isSubmitting.set(false);
-          this.errorMessage.set(
-            err.error?.message || 'An unexpected error occurred while creating.'
-          );
-        }
-      });
+      this.projectsService
+        .createProject(dto)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: () => {
+            this.isSubmitting.set(false);
+            this.form.reset({
+              status: ProjectStatusEnum.PLANNING,
+            });
+            this.selectedClientName.set('');
+            this.selectedManagerName.set('');
+            this.saved.emit();
+          },
+          error: (err) => {
+            this.isSubmitting.set(false);
+            this.errorMessage.set(
+              err.error?.message || 'An unexpected error occurred while creating.',
+            );
+          },
+        });
     }
   }
 }

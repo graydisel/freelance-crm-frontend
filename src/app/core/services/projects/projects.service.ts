@@ -14,7 +14,7 @@ import {
 })
 export class ProjectsService {
   private readonly http = inject(HttpClient);
-  private readonly API_URL = `${environment.apiUrl}/projects`;
+  private readonly URL_PROJECTS = `${environment.apiUrl}/projects`;
 
   getProjects(page: number, limit: number, search?: string, status?: string): Observable<ProjectsServerResponse> {
     let params = new HttpParams()
@@ -28,18 +28,18 @@ export class ProjectsService {
       params = params.set('status', status);
     }
 
-    return this.http.get<ProjectsServerResponse>(this.API_URL, { params });
+    return this.http.get<ProjectsServerResponse>(this.URL_PROJECTS, { params });
   }
 
   getProject(id: string): Observable<Project> {
-    return this.http.get<Project>(`${this.API_URL}/${id}`);
+    return this.http.get<Project>(`${this.URL_PROJECTS}/${id}`);
   }
 
   createProject(dto: CreateProjectDto): Observable<Project> {
-    return this.http.post<Project>(this.API_URL, dto);
+    return this.http.post<Project>(this.URL_PROJECTS, dto);
   }
 
   updateProject(id: string, dto: UpdateProjectDto): Observable<Project> {
-    return this.http.patch<Project>(`${this.API_URL}/${id}`, dto);
+    return this.http.patch<Project>(`${this.URL_PROJECTS}/${id}`, dto);
   }
 }

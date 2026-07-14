@@ -1,4 +1,14 @@
-import { Component, computed, effect, inject, input, output, signal, DestroyRef } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  output,
+  signal,
+  DestroyRef,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ClientProfile, UpdateClientDto } from '../../../../core/models/client.model';
@@ -10,7 +20,10 @@ import { ClientStatusEnum } from '../../../../core/enums/client-status.enum';
 import { RouterLink } from '@angular/router';
 import { CrmValidators } from '../../../../core/validators/custom-validators';
 import { NgxMaskDirective } from 'ngx-mask';
-import { CrmDropdownComponent, CrmDropdownOptionComponent } from '../../../../shared/components/crm-dropdown';
+import {
+  CrmDropdownComponent,
+  CrmDropdownOptionComponent,
+} from '../../../../shared/components/crm-dropdown';
 import { Subject, catchError, debounceTime, distinctUntilChanged, of, switchMap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UsersService } from '../../../../core/services/users/users.service';
@@ -29,10 +42,11 @@ import { UserRoleEnum } from '../../../../core/enums/user-role.enum';
     RouterLink,
     NgxMaskDirective,
     CrmDropdownComponent,
-    CrmDropdownOptionComponent
+    CrmDropdownOptionComponent,
   ],
   templateUrl: './client-details.component.html',
-  styleUrls: ['./client-details.component.scss']
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrls: ['./client-details.component.scss'],
 })
 export class ClientDetailsComponent {
   clientId = input.required<string>();
@@ -66,7 +80,7 @@ export class ClientDetailsComponent {
     contactEmail: ['', [Validators.required, Validators.email]],
     phone: ['', [Validators.required]],
     contractValue: [0, [Validators.required, Validators.min(0)]],
-    status: [ClientStatusEnum.LEAD, Validators.required]
+    status: [ClientStatusEnum.LEAD, Validators.required],
   });
 
   searchResults = signal<any[]>([]);
@@ -75,19 +89,21 @@ export class ClientDetailsComponent {
   statusOptions = Object.values(ClientStatusEnum);
 
   constructor() {
-    this.searchSubject.pipe(
-      takeUntilDestroyed(),
-      debounceTime(300),
-      distinctUntilChanged(),
-      switchMap(term => {
-        if (!term.trim()) return of([]);
-        return this.usersService.getAvailableUsers(term, UserRoleEnum.CLIENT).pipe(
-          catchError(() => of([]))
-        );
-      })
-    ).subscribe((res: any) => {
-      this.searchResults.set(Array.isArray(res) ? res : (res?.data || []));
-    });
+    this.searchSubject
+      .pipe(
+        takeUntilDestroyed(),
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap((term) => {
+          if (!term.trim()) return of([]);
+          return this.usersService
+            .getAvailableUsers(term, UserRoleEnum.CLIENT)
+            .pipe(catchError(() => of([])));
+        }),
+      )
+      .subscribe((res: any) => {
+        this.searchResults.set(Array.isArray(res) ? res : res?.data || []);
+      });
 
     this.editForm.valueChanges.pipe(takeUntilDestroyed()).subscribe(() => {
       if (this.errorMessage()) {
@@ -95,16 +111,19 @@ export class ClientDetailsComponent {
       }
     });
 
-    this.editForm.get('contactPerson')?.valueChanges.pipe(takeUntilDestroyed()).subscribe(fullName => {
-      if (fullName) {
-        const selectedUser = this.searchResults().find(
-          user => `${user.firstName} ${user.lastName}` === fullName
-        );
-        if (selectedUser) {
-          this.editForm.patchValue({ contactEmail: selectedUser.email }, { emitEvent: false });
+    this.editForm
+      .get('contactPerson')
+      ?.valueChanges.pipe(takeUntilDestroyed())
+      .subscribe((fullName) => {
+        if (fullName) {
+          const selectedUser = this.searchResults().find(
+            (user) => `${user.firstName} ${user.lastName}` === fullName,
+          );
+          if (selectedUser) {
+            this.editForm.patchValue({ contactEmail: selectedUser.email }, { emitEvent: false });
+          }
         }
-      }
-    });
+      });
 
     effect(() => {
       const id = this.clientId();
@@ -116,16 +135,19 @@ export class ClientDetailsComponent {
 
   private loadClient(id: string) {
     this.isLoading.set(true);
-    this.clientsService.getClient(id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
-      next: (data) => {
-        this.client.set(data);
-        this.resetForm();
-        this.isLoading.set(false);
-      },
-      error: () => {
-        this.isLoading.set(false);
-      }
-    });
+    this.clientsService
+      .getClient(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (data) => {
+          this.client.set(data);
+          this.resetForm();
+          this.isLoading.set(false);
+        },
+        error: () => {
+          this.isLoading.set(false);
+        },
+      });
   }
 
   onContactSearch(term: string) {
@@ -149,7 +171,7 @@ export class ClientDetailsComponent {
         contactEmail: c.contactEmail,
         phone: c.phone || '',
         contractValue: c.contractValue || 0,
-        status: c.status
+        status: c.status,
       });
     }
   }
@@ -161,24 +183,29 @@ export class ClientDetailsComponent {
     this.errorMessage.set(null);
     const dto: UpdateClientDto = {
       ...this.editForm.getRawValue(),
-      contractValue: Number(this.editForm.controls.contractValue.value) || 0
+      contractValue: Number(this.editForm.controls.contractValue.value) || 0,
     };
 
-    this.clientsService.updateClient(this.client()!.id, dto).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
-      next: (updatedClient) => {
-        this.client.set(updatedClient);
-        this.isSubmitting.set(false);
-        this.isEditMode.set(false);
-        this.saved.emit();
-      },
-      error: (err) => {
-        this.isSubmitting.set(false);
-        if (err.status === 409 || err?.error?.statusCode === 409) {
-          this.errorMessage.set(err.error?.message || 'This email is already taken by another company.');
-        } else {
-          this.errorMessage.set('An unexpected error occurred while saving.');
-        }
-      }
-    });
+    this.clientsService
+      .updateClient(this.client()!.id, dto)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (updatedClient) => {
+          this.client.set(updatedClient);
+          this.isSubmitting.set(false);
+          this.isEditMode.set(false);
+          this.saved.emit();
+        },
+        error: (err) => {
+          this.isSubmitting.set(false);
+          if (err.status === 409 || err?.error?.statusCode === 409) {
+            this.errorMessage.set(
+              err.error?.message || 'This email is already taken by another company.',
+            );
+          } else {
+            this.errorMessage.set('An unexpected error occurred while saving.');
+          }
+        },
+      });
   }
 }

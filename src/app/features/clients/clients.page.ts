@@ -1,4 +1,13 @@
-import { Component, computed, effect, inject, OnInit, signal, DestroyRef } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  OnInit,
+  signal,
+  DestroyRef,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
@@ -10,7 +19,7 @@ import { CrmMetricCard } from '../../shared/components/crm-metric-card/crm-metri
 import { CrmDrawerComponent } from '../../shared/components/crm-drawer/crm-drawer.component';
 import { ClientCreateFormComponent } from './components/client-create-form/client-create-form.component';
 import { ClientDetailsComponent } from './components/client-details/client-details.component';
-import {CrmPagination} from '../../shared/components/crm-pagination/crm-pagination';
+import { CrmPagination } from '../../shared/components/crm-pagination/crm-pagination';
 
 @Component({
   selector: 'app-clients-page',
@@ -25,10 +34,11 @@ import {CrmPagination} from '../../shared/components/crm-pagination/crm-paginati
     CrmDrawerComponent,
     ClientCreateFormComponent,
     ClientDetailsComponent,
-    CrmPagination
+    CrmPagination,
   ],
   templateUrl: './clients.page.html',
-  styleUrls: ['./clients.page.scss']
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrls: ['./clients.page.scss'],
 })
 export class ClientsPageComponent implements OnInit {
   private readonly clientsService = inject(ClientsService);
@@ -50,18 +60,16 @@ export class ClientsPageComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   private loadClients(): void {
-    this.clientsService.getClients(
-      this.currentPage(),
-      this.pageSize(),
-      this.searchQuery(),
-      this.statusFilter()
-    ).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
-      next: (response) => this.serverResponse.set(response),
-      error: (err) => console.error('Error loading clients:', err)
-    });
+    this.clientsService
+      .getClients(this.currentPage(), this.pageSize(), this.searchQuery(), this.statusFilter())
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (response) => this.serverResponse.set(response),
+        error: (err) => console.error('Error loading clients:', err),
+      });
   }
 
   protected readonly paginatedClients = computed<ClientProfile[]>(() => {
@@ -87,7 +95,6 @@ export class ClientsPageComponent implements OnInit {
   protected readonly totalRevenue = computed<number>(() => {
     return this.serverResponse()?.meta.globalMetrics?.totalActiveRevenue ?? 0;
   });
-
 
   protected readonly filteredActiveCount = computed<number>(() => {
     return this.serverResponse()?.meta.filteredMetrics?.activeCount ?? 0;

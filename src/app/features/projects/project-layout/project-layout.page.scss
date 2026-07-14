@@ -1,54 +1,116 @@
+@use 'variables' as *;
+
 .crm-dashboard {
   display: flex;
+  flex-direction: column;
+
+  @include md-up {
+    flex-direction: row;
+  }
 }
 
 .page-container {
   flex: 1;
-  padding: 32px 40px;
+  min-width: 0;
+  padding: 16px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   background-color: var(--crm-bg-body);
+
+  @include md-up {
+    padding: 32px 40px;
+  }
 }
 
 .kanban-header {
   margin-bottom: 24px;
   background: var(--crm-bg-surface);
-  padding: 24px;
+  padding: 16px;
   border-radius: 12px;
   border: 1px solid var(--crm-border-color);
 
+  @include md-up {
+    padding: 24px;
+  }
+
   .kanban-header-top {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 16px;
     margin-bottom: 16px;
+
+    @include sm-up {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
 
     .title-group {
       display: flex;
-      align-items: center;
-      gap: 16px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+
+      @include sm-up {
+        flex-direction: row;
+        align-items: center;
+        gap: 16px;
+      }
 
       h1 {
-        font-size: 24px;
+        font-size: 20px;
         font-weight: 600;
         color: var(--crm-text-primary);
         margin: 0;
+
+        @include sm-up {
+          font-size: 24px;
+        }
       }
     }
 
     .actions-group {
       display: flex;
-      gap: 12px;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+
+      @include sm-up {
+        flex-direction: row;
+        gap: 12px;
+        width: auto;
+      }
+
+      button {
+        width: 100%;
+
+        @include sm-up {
+          width: auto;
+        }
+      }
     }
   }
 
   .project-details-grid {
-    display: flex;
-    gap: 24px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
     margin-bottom: 16px;
     padding-bottom: 16px;
     border-bottom: 1px dashed var(--crm-border-color);
+
+    @include sm-up {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include md-up {
+      display: flex;
+      flex-direction: row;
+      gap: 24px;
+    }
 
     .detail-item {
       display: flex;
@@ -83,9 +145,16 @@
   gap: 8px;
   border-bottom: 1px solid var(--crm-border-color);
   padding-bottom: 0;
-  
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
   .tab-link {
-    padding: 12px 24px;
+    padding: 12px 16px;
     font-size: 14px;
     font-weight: 500;
     color: var(--crm-text-secondary);
@@ -93,14 +162,19 @@
     border-bottom: 2px solid transparent;
     transition: all 0.2s ease;
     margin-bottom: -1px;
-    
+    white-space: nowrap;
+
+    @include md-up {
+      padding: 12px 24px;
+    }
+
     &:hover {
       color: var(--crm-primary);
       background: var(--crm-bg-body);
       border-top-left-radius: 6px;
       border-top-right-radius: 6px;
     }
-    
+
     &.active {
       color: var(--crm-primary);
       border-bottom-color: var(--crm-primary);
@@ -112,9 +186,11 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
-.loading-state, .error-state {
+.loading-state,
+.error-state {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -134,5 +210,7 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }

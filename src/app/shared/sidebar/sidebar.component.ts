@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../core/services/auth/auth.service';
 import { navItems } from '../../core/routes/sidebar.route';
@@ -9,6 +9,7 @@ import { navItems } from '../../core/routes/sidebar.route';
   imports: [RouterLink, RouterLinkActive],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   host: {
     class: 'crm-sidebar',
     '[class.crm-sidebar--collapsed]': 'isDesktopCollapsed()',

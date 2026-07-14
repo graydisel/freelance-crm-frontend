@@ -1,11 +1,12 @@
-import {Component, input, output} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {CrmFilterChipItem} from '../../interfaces/crm-filter.interface';
+import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { CrmFilterChipItem } from '../../interfaces/crm-filter.interface';
 
 @Component({
   selector: 'crm-filter-chips',
   imports: [CommonModule],
   templateUrl: './crm-filter-chips.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './crm-filter-chips.scss',
 })
 export class CrmFilterChips {
