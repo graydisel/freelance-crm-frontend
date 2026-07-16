@@ -12,3 +12,21 @@ export interface Task {
   assignee: User;
   createdAt: string;
 }
+
+export interface CreateTaskDto {
+  title: string;
+  description?: string;
+  status?: TaskStatusEnum;
+  priority?: TaskPriorityEnum;
+  projectId: string;
+  assigneeId?: string;
+}
+
+export interface UpdateTaskDto {
+  title?: string;
+  description?: string;
+  status?: TaskStatusEnum;
+  priority?: TaskPriorityEnum;
+  projectId?: string;
+  assigneeId?: string;
+}

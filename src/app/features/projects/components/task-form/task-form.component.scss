@@ -1,0 +1,115 @@
+@use 'variables' as *;
+
+.form-container {
+  padding: $space-xl;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+
+  .form-header {
+    margin-bottom: $space-2xl;
+
+    .form-title {
+      font-size: $font-size-xl;
+      font-weight: $font-weight-semibold;
+      color: $color-text-heading;
+      margin: 0 0 $space-sm;
+    }
+
+    .form-subtitle {
+      font-size: $font-size-sm;
+      color: $color-text-muted;
+      margin: 0;
+    }
+  }
+
+  .crm-form {
+    display: flex;
+    flex-direction: column;
+    gap: $space-xl;
+
+    .form-row {
+      display: flex;
+      gap: $space-lg;
+      flex-wrap: wrap;
+
+      .col-half {
+        flex: 1 1 calc(50% - 0.5rem);
+        min-width: 200px;
+      }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: $space-sm;
+
+      .form-label {
+        font-size: $font-size-sm;
+        font-weight: $font-weight-medium;
+        color: $color-text-dark;
+
+        .required {
+          color: $color-danger;
+        }
+      }
+
+      .form-control {
+        padding: $space-md $space-lg;
+        font-size: $font-size-sm;
+        border: 1px solid $color-border-taupe;
+        border-radius: $radius-md;
+        background: $color-bg-main;
+        color: $color-text-dark;
+        transition: $transition-fast;
+        outline: none;
+
+        &:focus {
+          border-color: $color-primary;
+          box-shadow: 0 0 0 3px rgba($color-primary, 0.1);
+          background: $color-bg-card;
+        }
+
+        &.is-invalid {
+          border-color: $color-danger;
+
+          &:focus {
+            box-shadow: 0 0 0 3px rgba($color-danger, 0.1);
+          }
+        }
+      }
+
+      textarea.form-control {
+        resize: vertical;
+        min-height: 100px;
+      }
+
+      .error-message {
+        font-size: $font-size-xs;
+        color: $color-danger;
+        margin-top: $space-xs;
+      }
+    }
+
+    .server-error {
+      padding: $space-lg;
+      background: $color-danger-bg;
+      border-left: 4px solid $color-danger;
+      color: $color-danger;
+      font-size: $font-size-sm;
+      border-radius: $radius-md;
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: $space-lg;
+    }
+  }
+}
+
+.no-results {
+  padding: $space-md $space-lg;
+  font-size: $font-size-sm;
+  color: $color-text-muted;
+  text-align: center;
+}

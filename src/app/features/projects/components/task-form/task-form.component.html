@@ -1,0 +1,86 @@
+<div class="form-container">
+  <div class="form-header">
+    <h3 class="form-title">{{ formTitle() }}</h3>
+    <p class="form-subtitle">{{ formSubtitle() }}</p>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="crm-form">
+    <!-- Title -->
+    <div class="form-group">
+      <label class="form-label" for="taskTitle">Task Title <span class="required">*</span></label>
+      <input id="taskTitle" type="text" formControlName="title" class="form-control" placeholder="Enter task title"
+        [class.is-invalid]="form.controls.title.invalid && form.controls.title.touched" />
+      @if (form.controls.title.invalid && form.controls.title.touched) {
+      <div class="error-message">Valid title is required.</div>
+      }
+    </div>
+
+    <!-- Description -->
+    <div class="form-group">
+      <label class="form-label" for="taskDesc">Description</label>
+      <textarea id="taskDesc" formControlName="description" class="form-control" rows="4"
+        placeholder="Provide a brief description"></textarea>
+    </div>
+
+    <!-- Status & Priority Row -->
+    <div class="form-row">
+      <div class="form-group col-half">
+        <label class="form-label" for="taskStatus">Status <span class="required">*</span></label>
+        <select id="taskStatus" formControlName="status" class="form-control"
+          [class.is-invalid]="form.controls.status.invalid && form.controls.status.touched">
+          @for (status of statuses; track status) {
+          <option [value]="status">{{ status | titlecase }}</option>
+          }
+        </select>
+        @if (form.controls.status.invalid && form.controls.status.touched) {
+        <div class="error-message">Status is required.</div>
+        }
+      </div>
+
+      <div class="form-group col-half">
+        <label class="form-label" for="taskPriority">Priority <span class="required">*</span></label>
+        <select id="taskPriority" formControlName="priority" class="form-control"
+          [class.is-invalid]="form.controls.priority.invalid && form.controls.priority.touched">
+          @for (priority of priorities; track priority) {
+          <option [value]="priority">{{ priority | titlecase }}</option>
+          }
+        </select>
+        @if (form.controls.priority.invalid && form.controls.priority.touched) {
+        <div class="error-message">Priority is required.</div>
+        }
+      </div>
+    </div>
+
+    <!-- Assignee -->
+    <div class="form-group">
+      <label class="form-label">Assignee</label>
+      <crm-dropdown formControlName="assigneeId" [searchable]="true" (searchChange)="onAssigneeSearch($event)">
+        <div crm-dropdown-trigger>
+          {{ selectedAssigneeName() || 'Search developer...' }}
+        </div>
+        @for (user of assigneeSearchResults(); track user.id) {
+        <div crm-dropdown-option [value]="user.id" (click)="onAssigneeSelected(user.id)">
+          {{ user.firstName }} {{ user.lastName }}
+        </div>
+        }
+        @if (assigneeSearchResults().length === 0) {
+        <div class="no-results">No developers found.</div>
+        }
+      </crm-dropdown>
+    </div>
+
+    <!-- Error message from server -->
+    @if (errorMessage()) {
+    <div class="server-error">
+      {{ errorMessage() }}
+    </div>
+    }
+
+    <!-- Submit Button -->
+    <div class="form-actions">
+      <button crm-btn type="submit" variant="primary" [disabled]="form.invalid" [loading]="isSubmitting()">
+        {{ isSubmitting() ? submittingLabel() : submitLabel() }}
+      </button>
+    </div>
+  </form>
+</div>

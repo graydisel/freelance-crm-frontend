@@ -135,7 +135,8 @@ export class ProjectFormComponent implements OnInit {
         managerId: p.manager?.id || '',
       });
       this.selectedClientName.set(p.client?.companyName || '');
-      this.selectedManagerName.set(p.manager?.fullName || '');
+      this.selectedManagerName.set(p.manager.fullName);
+      console.log(p);
     }
   }
 

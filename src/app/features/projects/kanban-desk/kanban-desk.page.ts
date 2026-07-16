@@ -4,12 +4,14 @@ import {
   OnInit,
   signal,
   DestroyRef,
-  ChangeDetectionStrategy, computed,
+  ChangeDetectionStrategy,
+  computed,
+  ViewChild, effect,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {catchError, forkJoin, of, switchMap} from 'rxjs';
+import {catchError, debounceTime, forkJoin, of, switchMap} from 'rxjs';
 import { ProjectsService } from '../../../core/services/projects/projects.service';
 import {Project} from '../../../core/models/project.model';
 import {TaskStatusEnum} from '../../../core/enums/task-status.enum';
@@ -17,11 +19,15 @@ import {CdkDragDrop, DragDropModule} from '@angular/cdk/drag-drop';
 import {TaskService} from '../../../core/services/tasks/task.service';
 import {TaskPriorityEnum} from '../../../core/enums/task-priority.enum';
 import {Task} from '../../../core/models/task.model';
+import {CrmDrawerComponent} from '../../../shared/components/crm-drawer/crm-drawer.component';
+import {CrmButtonComponent} from '../../../shared/components/crm-button/crm-button';
+import {TaskFormComponent} from '../components/task-form/task-form.component';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-kanban-desk',
   standalone: true,
-  imports: [CommonModule, DragDropModule],
+  imports: [CommonModule, DragDropModule, CrmDrawerComponent, CrmButtonComponent, TaskFormComponent],
   templateUrl: './kanban-desk.page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./kanban-desk.page.scss'],
@@ -39,6 +45,13 @@ export class KanbanDeskPage implements OnInit {
   tasks = signal<Task[]>([]);
   isLoading = signal<boolean>(true);
   errorMessage = signal<string | null>(null);
+
+  protected readonly isDrawerOpen = signal<boolean>(false);
+  protected readonly selectedTask = signal<Task | null>(null);
+
+  constructor() {
+
+  }
 
   boardGrid = computed(() => {
     const currentTasks = this.tasks();
@@ -92,6 +105,65 @@ export class KanbanDeskPage implements OnInit {
         }
       });
   }
+
+  loadTasks() {
+    const id = this.project()?.id;
+    if (id) {
+      this.taskService.getTasks(id)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(tasks => this.tasks.set(tasks));
+    }
+  }
+
+  protected openAddTask(): void {
+    this.selectedTask.set(null);
+    this.isDrawerOpen.set(true);
+  }
+
+  protected editTask(task: Task): void {
+    this.selectedTask.set(task);
+    this.isDrawerOpen.set(true);
+  }
+
+  protected closeDrawer(): void {
+    this.isDrawerOpen.set(false);
+    setTimeout(() => {
+      this.selectedTask.set(null);
+    }, 300);
+  }
+
+  protected onTaskSaved(): void {
+    this.closeDrawer();
+    this.loadTasks();
+  }
+
+  onPriorityChange(taskId: string, event: Event) {
+    const selectElement = event.target as HTMLSelectElement;
+    const newPriority = selectElement.value as TaskPriorityEnum;
+
+    const targetTask = this.tasks().find(t => t.id === taskId);
+    if (!targetTask || targetTask.priority === newPriority) {
+      return;
+    }
+    const oldPriority = targetTask.priority;
+
+    this.tasks.update(currentTasks =>
+      currentTasks.map(t => t.id === taskId ? { ...t, priority: newPriority } : t)
+    );
+
+    this.taskService.updateTaskPriority(taskId, newPriority)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        error: (err) => {
+          console.error('Failed to update task priority via dropdown:', err);
+          this.tasks.update(currentTasks =>
+            currentTasks.map(t => t.id === taskId ? { ...t, priority: oldPriority } : t)
+          );
+          this.errorMessage.set('Could not update task priority. Changes reverted.');
+        }
+      });
+  }
+
 
   onTaskDrop(event: CdkDragDrop<Task[]>) {
     if (event.previousContainer === event.container) {

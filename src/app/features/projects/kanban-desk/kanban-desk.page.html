@@ -1,50 +1,64 @@
+<div class="kanban-page-header">
+  <button crm-btn variant="primary" (click)="openAddTask()">Add Task</button>
+</div>
+
 <div class="kanban-board-container">
   @if (isLoading()) {
-    <div class="loading-state">
-      <div class="spinner"></div>
-      <p>Loading board...</p>
-    </div>
+  <div class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading board...</p>
+  </div>
   } @else if (errorMessage()) {
-    <div class="error-state">
-      <p>{{ errorMessage() }}</p>
-    </div>
+  <div class="error-state">
+    <p>{{ errorMessage() }}</p>
+  </div>
   } @else if (project()) {
-    <div class="kanban-grid" cdkDropListGroup>
+  <div class="kanban-grid" cdkDropListGroup>
 
-      <div class="grid-header-cell corner">Priority \ Status</div>
+    <div class="grid-header-cell corner">Status Priority</div>
 
-      @for (status of statuses; track status) {
-        <div class="grid-header-cell status">
-          {{ status.toUpperCase() }}
-        </div>
-      }
-
-      @for (priority of priorities; track priority) {
-
-        <div class="grid-header-cell priority">
-          {{ priority.toUpperCase() }}
-        </div>
-
-        @for (status of statuses; track status) {
-          @let cellKey = status + '_' + priority;
-          @let cellTasks = boardGrid()[cellKey];
-
-          <div class="grid-drop-cell"
-               cdkDropList
-               [id]="cellKey"
-               [cdkDropListData]="cellTasks"
-               (cdkDropListDropped)="onTaskDrop($event)">
-
-            @for (task of cellTasks; track task.id) {
-              <div class="task-card" cdkDrag [cdkDragData]="task">
-                <h4>{{ task.title }}</h4>
-                <p>{{ task.description }}</p>
-              </div>
-            }
-          </div>
-        }
-      }
-
+    @for (status of statuses; track status) {
+    <div class="grid-header-cell status">
+      {{ status.toUpperCase() }}
     </div>
+    }
+
+    @for (priority of priorities; track priority) {
+
+    <div class="grid-header-cell priority">
+      {{ priority.toUpperCase() }}
+    </div>
+
+    @for (status of statuses; track status) {
+    @let cellKey = status + '_' + priority;
+    @let cellTasks = boardGrid()[cellKey];
+
+    <div class="grid-drop-cell" cdkDropList [id]="cellKey" [cdkDropListData]="cellTasks"
+      (cdkDropListDropped)="onTaskDrop($event)">
+
+      @for (task of cellTasks; track task.id) {
+      <div class="task-card" cdkDrag [cdkDragData]="task">
+        <h4 class="task-card--header" (click)="editTask(task)">{{ task.title }}</h4>
+        <p>{{ task.description }}</p>
+        <select class="task-card--priority" name="priority" (change)="onPriorityChange(task.id, $event)" title="Change Priority">
+          @for (priority of priorities; track priority) {
+          <option value="{{ priority }}" [selected]="task.priority === priority">
+            {{ priority.toUpperCase() }}
+          </option>
+          }
+        </select>
+      </div>
+      }
+    </div>
+    }
+    }
+
+  </div>
   }
 </div>
+
+<crm-drawer [isOpen]="isDrawerOpen()" [title]="selectedTask() ? 'Edit Task' : 'Add New Task'" (closed)="closeDrawer()">
+  @if (isDrawerOpen()) {
+  <app-task-form [task]="selectedTask()" [projectId]="project()!.id" (saved)="onTaskSaved()"></app-task-form>
+  }
+</crm-drawer>

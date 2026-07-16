@@ -55,17 +55,13 @@
 
   <crm-drawer [isOpen]="isDrawerOpen()" (closed)="closeDrawer()">
     @if (isDrawerOpen()) {
-      @if (drawerMode() === 'details' && selectedProject()) {
-        <app-project-details 
-          [project]="selectedProject()!" 
-          (edit)="onEditProject()">
-        </app-project-details>
-      } @else {
-        <app-project-form 
-          [project]="selectedProject()" 
-          (saved)="onProjectSaved()">
-        </app-project-form>
-      }
+    @if (drawerMode() === 'details' && selectedProject()) {
+    <app-project-details [project]="selectedProject()!" (edit)="onEditProject()">
+    </app-project-details>
+    } @else {
+    <app-project-form [project]="selectedProject()" (saved)="onProjectSaved()">
+    </app-project-form>
+    }
     }
   </crm-drawer>
 </main>

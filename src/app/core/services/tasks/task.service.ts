@@ -1,10 +1,10 @@
-import {inject, Injectable} from '@angular/core';
-import {environment} from '../../../../environments/environment.development';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {TaskStatusEnum} from '../../enums/task-status.enum';
-import {TaskPriorityEnum} from '../../enums/task-priority.enum';
-import {Task} from '../../models/task.model';
+import { inject, Injectable } from '@angular/core';
+import { environment } from '../../../../environments/environment.development';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { TaskStatusEnum } from '../../enums/task-status.enum';
+import { TaskPriorityEnum } from '../../enums/task-priority.enum';
+import { CreateTaskDto, Task, UpdateTaskDto } from '../../models/task.model';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +15,14 @@ export class TaskService {
 
   getTasks(id: string): Observable<Task[]> {
     return this.http.get<Task[]>(`${this.URL_TASKS}/project/${id}`);
+  }
+
+  createTask(dto: CreateTaskDto): Observable<Task> {
+    return this.http.post<Task>(this.URL_TASKS, dto);
+  }
+
+  updateTask(taskId: string, dto: UpdateTaskDto): Observable<Task> {
+    return this.http.patch<Task>(`${this.URL_TASKS}/${taskId}`, dto);
   }
 
   updateTaskStatus(taskId: string, newStatus: TaskStatusEnum): Observable<Task> {
