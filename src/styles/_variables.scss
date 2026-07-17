@@ -4,6 +4,7 @@ $color-bg-sidebar: #d9d2c8; // taupe-200
 $color-bg-card: #ffffff;
 $color-bg-muted: #f1f5f9; // slate-100
 $color-bg-taupe-light: #ebe6e0; // taupe-100
+$color-bg-grey-light: #e1e4e6;
 
 $color-border-accent: #c8b4c0; // mauve-300
 $color-border-taupe: #ebe6e0; // taupe-100
@@ -29,6 +30,12 @@ $color-danger-hover: #dc2626; // red-600
 $color-success-bg: #f0fdf4; // green-50
 $color-success-text: #15803d; // green-700
 $color-success-ring: rgba(22, 163, 74, 0.2);
+
+$color-info-bg: #fff6bd; // yellow-50
+$color-info-text: #854d0e; // amber-700
+
+$color-accept-bg: rgb(193 230 255);
+$color-accept-text: #1f2861;
 
 $color-warning-bg: #fffbeb; // amber-50
 $color-warning-text: #b45309; // amber-700

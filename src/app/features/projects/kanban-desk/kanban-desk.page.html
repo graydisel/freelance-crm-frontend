@@ -38,8 +38,7 @@
 
       @for (task of cellTasks; track task.id) {
       <div class="task-card" cdkDrag [cdkDragData]="task">
-        <h4 class="task-card--header" (click)="editTask(task)">{{ task.title }}</h4>
-        <p>{{ task.description }}</p>
+        <h4 class="task-card--header" (click)="viewTask(task)">{{ task.title }}</h4>
         <select class="task-card--priority" name="priority" (change)="onPriorityChange(task.id, $event)" title="Change Priority">
           @for (priority of priorities; track priority) {
           <option value="{{ priority }}" [selected]="task.priority === priority">
@@ -57,8 +56,12 @@
   }
 </div>
 
-<crm-drawer [isOpen]="isDrawerOpen()" [title]="selectedTask() ? 'Edit Task' : 'Add New Task'" (closed)="closeDrawer()">
+<crm-drawer [isOpen]="isDrawerOpen()" [title]="drawerTitle()" (closed)="closeDrawer()">
   @if (isDrawerOpen()) {
-  <app-task-form [task]="selectedTask()" [projectId]="project()!.id" (saved)="onTaskSaved()"></app-task-form>
+    @if (isEditingTask() || !selectedTask()) {
+      <app-task-form [task]="selectedTask()" [projectId]="project()!.id" (saved)="onTaskSaved()"></app-task-form>
+    } @else {
+      <app-task-details [task]="selectedTask()!" (edit)="isEditingTask.set(true)"></app-task-details>
+    }
   }
 </crm-drawer>

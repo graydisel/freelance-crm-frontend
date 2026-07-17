@@ -6,12 +6,11 @@ import {
   DestroyRef,
   ChangeDetectionStrategy,
   computed,
-  ViewChild, effect,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {catchError, debounceTime, forkJoin, of, switchMap} from 'rxjs';
+import {catchError, forkJoin, of, switchMap} from 'rxjs';
 import { ProjectsService } from '../../../core/services/projects/projects.service';
 import {Project} from '../../../core/models/project.model';
 import {TaskStatusEnum} from '../../../core/enums/task-status.enum';
@@ -22,12 +21,12 @@ import {Task} from '../../../core/models/task.model';
 import {CrmDrawerComponent} from '../../../shared/components/crm-drawer/crm-drawer.component';
 import {CrmButtonComponent} from '../../../shared/components/crm-button/crm-button';
 import {TaskFormComponent} from '../components/task-form/task-form.component';
-import {FormControl} from '@angular/forms';
+import {TaskDetailsComponent} from '../components/task-details/task-details.component';
 
 @Component({
   selector: 'app-kanban-desk',
   standalone: true,
-  imports: [CommonModule, DragDropModule, CrmDrawerComponent, CrmButtonComponent, TaskFormComponent],
+  imports: [CommonModule, DragDropModule, CrmDrawerComponent, CrmButtonComponent, TaskFormComponent, TaskDetailsComponent],
   templateUrl: './kanban-desk.page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./kanban-desk.page.scss'],
@@ -48,6 +47,12 @@ export class KanbanDeskPage implements OnInit {
 
   protected readonly isDrawerOpen = signal<boolean>(false);
   protected readonly selectedTask = signal<Task | null>(null);
+  protected readonly isEditingTask = signal<boolean>(false);
+
+  drawerTitle = computed(() => {
+    if (!this.selectedTask()) return 'Add New Task';
+    return this.isEditingTask() ? 'Edit Task' : 'Task Details';
+  });
 
   constructor() {
 
@@ -117,11 +122,13 @@ export class KanbanDeskPage implements OnInit {
 
   protected openAddTask(): void {
     this.selectedTask.set(null);
+    this.isEditingTask.set(true);
     this.isDrawerOpen.set(true);
   }
 
-  protected editTask(task: Task): void {
+  protected viewTask(task: Task): void {
     this.selectedTask.set(task);
+    this.isEditingTask.set(false);
     this.isDrawerOpen.set(true);
   }
 
@@ -129,6 +136,7 @@ export class KanbanDeskPage implements OnInit {
     this.isDrawerOpen.set(false);
     setTimeout(() => {
       this.selectedTask.set(null);
+      this.isEditingTask.set(false);
     }, 300);
   }
 
