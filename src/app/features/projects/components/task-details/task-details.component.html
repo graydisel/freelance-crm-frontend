@@ -1,0 +1,36 @@
+<div class="task-details">
+  <div class="task-details__header">
+    <h2 class="task-details__title">{{ task().title }}</h2>
+  </div>
+
+  <div class="task-details__section">
+    <h3 class="task-details__section-title">Description</h3>
+    <p class="task-details__text">{{ task().description || 'No description provided.' }}</p>
+  </div>
+
+  <div class="task-details__section">
+    <h3 class="task-details__section-title">Details</h3>
+    <div class="task-details__info-row">
+      <span class="task-details__info-label">Status:</span>
+      <span class="task-details__info-value crm-status-badge crm-status-badge--{{ task().status }}">
+        {{ task().status.replace('_', ' ') }}
+      </span>
+    </div>
+    <div class="task-details__info-row">
+      <span class="task-details__info-label">Priority:</span>
+      <span class="task-details__info-value crm-priority-badge crm-priority-badge--{{ task().priority }}">
+        {{ task().priority.replace('_', ' ') }}
+      </span>
+    </div>
+    <div class="task-details__info-row">
+      <span class="task-details__info-label">Assignee:</span>
+      <span class="task-details__info-value">
+        {{ task().assignee ? task().assignee.firstName + ' ' + task().assignee.lastName : 'Unassigned' }}
+      </span>
+    </div>
+  </div>
+
+  <div class="task-details__actions">
+    <button crm-btn type="button" variant="primary" size="md" (click)="onEditClick()">Edit Task</button>
+  </div>
+</div>

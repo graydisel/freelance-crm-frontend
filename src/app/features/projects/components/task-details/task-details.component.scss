@@ -1,0 +1,80 @@
+@use "variables" as *;
+
+.task-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__section-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: $font-weight-semibold;
+    color: $color-text-dark;
+    border-bottom: 1px solid $color-border-accent;
+    padding-bottom: 0.25rem;
+  }
+
+  &__text {
+    margin: 0;
+    color: $color-text-dark;
+    line-height: 1.5;
+  }
+
+  &__info-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__info-label {
+    font-weight: $font-weight-medium;
+    color: $color-text-dark;
+    min-width: 120px;
+  }
+
+  &__info-value {
+    font-size: $font-size-base;
+    color: $color-text-dark;
+    font-weight: $font-weight-medium;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+  }
+}
+
+.crm-status-badge, .crm-priority-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  text-transform: capitalize;
+  font-weight: $font-weight-semibold;
+
+  &--todo { background-color: $color-warning-bg; color: $color-warning-text; }
+  &--in-progress { background-color: $color-accept-bg; color: $color-accept-text; }
+  &--review { background-color: $color-bg-grey-light; color: $color-text-muted; }
+  &--done { background-color: $color-success-bg; color: $color-success-text; }
+
+  &--low { background-color: $color-bg-grey-light; color: $color-text-muted; }
+  &--medium { background-color: $color-info-bg; color: $color-info-text; }
+  &--high { background-color: $color-danger-bg; color: $color-danger; }
+}
