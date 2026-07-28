@@ -10,23 +10,24 @@ import {
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {catchError, forkJoin, of, switchMap} from 'rxjs';
+import { catchError, forkJoin, of, switchMap } from 'rxjs';
 import { ProjectsService } from '../../../core/services/projects/projects.service';
-import {Project} from '../../../core/models/project.model';
-import {TaskStatusEnum} from '../../../core/enums/task-status.enum';
-import {CdkDragDrop, DragDropModule} from '@angular/cdk/drag-drop';
-import {TaskService} from '../../../core/services/tasks/task.service';
-import {TaskPriorityEnum} from '../../../core/enums/task-priority.enum';
-import {Task} from '../../../core/models/task.model';
-import {CrmDrawerComponent} from '../../../shared/components/crm-drawer/crm-drawer.component';
-import {CrmButtonComponent} from '../../../shared/components/crm-button/crm-button';
-import {TaskFormComponent} from '../components/task-form/task-form.component';
-import {TaskDetailsComponent} from '../components/task-details/task-details.component';
+import { Project } from '../../../core/models/project.model';
+import { TaskStatusEnum } from '../../../core/enums/task-status.enum';
+import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
+import { TaskService } from '../../../core/services/tasks/task.service';
+import { TaskPriorityEnum } from '../../../core/enums/task-priority.enum';
+import { Task } from '../../../core/models/task.model';
+import { CrmDrawerComponent } from '../../../shared/components/crm-drawer/crm-drawer.component';
+import { CrmButtonComponent } from '../../../shared/components/crm-button/crm-button';
+import { TaskFormComponent } from '../components/task-form/task-form.component';
+import { TaskDetailsComponent } from '../components/task-details/task-details.component';
+import { TaskFilterComponent, TaskFilterOptions } from '../components/task-filter/task-filter.component';
 
 @Component({
   selector: 'app-kanban-desk',
   standalone: true,
-  imports: [CommonModule, DragDropModule, CrmDrawerComponent, CrmButtonComponent, TaskFormComponent, TaskDetailsComponent],
+  imports: [CommonModule, DragDropModule, CrmDrawerComponent, TaskFormComponent, TaskDetailsComponent, TaskFilterComponent],
   templateUrl: './kanban-desk.page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./kanban-desk.page.scss'],
@@ -44,6 +45,7 @@ export class KanbanDeskPage implements OnInit {
   tasks = signal<Task[]>([]);
   isLoading = signal<boolean>(true);
   errorMessage = signal<string | null>(null);
+  activeFilters = signal<TaskFilterOptions>({});
 
   protected readonly isDrawerOpen = signal<boolean>(false);
   protected readonly selectedTask = signal<Task | null>(null);
@@ -114,10 +116,22 @@ export class KanbanDeskPage implements OnInit {
   loadTasks() {
     const id = this.project()?.id;
     if (id) {
-      this.taskService.getTasks(id)
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe(tasks => this.tasks.set(tasks));
+      const filters = this.activeFilters();
+      if (Object.keys(filters).length > 0) {
+        this.taskService.getFilteredTasks({ projectId: id, ...filters })
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe(tasks => this.tasks.set(tasks));
+      } else {
+        this.taskService.getTasks(id)
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe(tasks => this.tasks.set(tasks));
+      }
     }
+  }
+
+  onFilterChange(filters: TaskFilterOptions) {
+    this.activeFilters.set(filters);
+    this.loadTasks();
   }
 
   protected openAddTask(): void {

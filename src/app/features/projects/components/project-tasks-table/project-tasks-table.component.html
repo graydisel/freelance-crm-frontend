@@ -1,0 +1,51 @@
+<crm-table>
+  <tr crm-table-header>
+    <th>Title</th>
+    <th>Assignee</th>
+    <th>Status</th>
+    <th>Priority</th>
+  </tr>
+
+  <ng-container crm-table-body>
+    @for (task of tasks(); track task.id) {
+      <tr>
+        <td>
+          <a href="#" (click)="onTaskClick(task, $event)" class="task-title-link">
+            {{ task.title }}
+          </a>
+        </td>
+        <td>
+          @if (task.assignee) {
+            <div class="assignee-cell">
+              <div class="assignee-avatar">
+                {{ task.assignee.firstName.charAt(0) }}{{ task.assignee.lastName.charAt(0) }}
+              </div>
+              <span class="assignee-name">{{ task.assignee.firstName }} {{ task.assignee.lastName }}</span>
+            </div>
+          } @else {
+            <span class="unassigned-text">Unassigned</span>
+          }
+        </td>
+        <td>
+          <crm-status-badge [status]="task.status"></crm-status-badge>
+        </td>
+        <td>
+          <select class="priority-select" (change)="onPriorityChange(task, $event)">
+            @for (p of priorities; track p) {
+              <option [value]="p" [selected]="task.priority === p">
+                {{ p | titlecase }}
+              </option>
+            }
+          </select>
+        </td>
+      </tr>
+    }
+    @if (tasks().length === 0) {
+      <tr>
+        <td colspan="4" class="empty-state-cell">
+          <p>No tasks found.</p>
+        </td>
+      </tr>
+    }
+  </ng-container>
+</crm-table>

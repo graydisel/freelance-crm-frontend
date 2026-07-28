@@ -1,6 +1,30 @@
-<div class="project-tasks-container">
-  <div class="empty-state">
-    <h3>Tasks Table</h3>
-    <p>Task list for this project will be displayed here.</p>
-  </div>
+<div class="tasks-page-container">
+  <app-task-filter (filterChange)="onFilterChange($event)" (openAddTask)="openAddTask()"></app-task-filter>
+
+  @if (isLoading()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading tasks...</p>
+    </div>
+  } @else if (errorMessage()) {
+    <div class="error-state">
+      <p>{{ errorMessage() }}</p>
+    </div>
+  } @else if (project()) {
+    <app-project-tasks-table 
+      [tasks]="tasks()" 
+      (taskClick)="viewTask($event)" 
+      (priorityChange)="onPriorityChange($event)">
+    </app-project-tasks-table>
+  }
 </div>
+
+<crm-drawer [isOpen]="isDrawerOpen()" [title]="drawerTitle()" (closed)="closeDrawer()">
+  @if (isDrawerOpen()) {
+    @if (isEditingTask() || !selectedTask()) {
+      <app-task-form [task]="selectedTask()" [projectId]="project()!.id" (saved)="onTaskSaved()"></app-task-form>
+    } @else {
+      <app-task-details [task]="selectedTask()!" (edit)="isEditingTask.set(true)"></app-task-details>
+    }
+  }
+</crm-drawer>

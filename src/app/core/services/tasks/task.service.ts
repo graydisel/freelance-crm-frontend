@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment.development';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { TaskStatusEnum } from '../../enums/task-status.enum';
 import { TaskPriorityEnum } from '../../enums/task-priority.enum';
@@ -15,6 +15,17 @@ export class TaskService {
 
   getTasks(id: string): Observable<Task[]> {
     return this.http.get<Task[]>(`${this.URL_TASKS}/project/${id}`);
+  }
+
+  getFilteredTasks(params: { projectId: string; priority?: string; assigneeId?: string }): Observable<Task[]> {
+    let httpParams = new HttpParams().set('projectId', params.projectId);
+    if (params.priority && params.priority !== 'all') {
+      httpParams = httpParams.set('priority', params.priority);
+    }
+    if (params.assigneeId) {
+      httpParams = httpParams.set('assigneeId', params.assigneeId);
+    }
+    return this.http.get<Task[]>(`${this.URL_TASKS}/filter`, { params: httpParams });
   }
 
   createTask(dto: CreateTaskDto): Observable<Task> {

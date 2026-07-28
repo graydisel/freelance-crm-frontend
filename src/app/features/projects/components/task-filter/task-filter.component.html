@@ -1,0 +1,42 @@
+<div class="task-filter" [formGroup]="form">
+  <div class="filter-item">
+    <label>Priority</label>
+    <crm-dropdown formControlName="priority" placeholder="All Priorities">
+      <div crm-dropdown-trigger>
+        {{ form.get('priority')?.value === 'all' ? 'All Priorities' : (form.get('priority')?.value | titlecase) }}
+      </div>
+      <div crm-dropdown-option [value]="'all'">
+        All Priorities
+      </div>
+      <div crm-dropdown-option *ngFor="let p of priorities" [value]="p">
+        <span class="priority-label">{{ p }}</span>
+      </div>
+    </crm-dropdown>
+  </div>
+
+  <div class="filter-item">
+    <label>Assignee</label>
+    <crm-dropdown formControlName="assigneeId" [searchable]="true" (searchChange)="onAssigneeSearch($event)">
+      <div crm-dropdown-trigger>
+        {{ selectedAssigneeName() || 'All Assignees' }}
+      </div>
+      <div crm-dropdown-option [value]="''" (click)="onAssigneeSelected('')">
+        All Assignees
+      </div>
+      <div crm-dropdown-option *ngFor="let user of assigneeSearchResults()" [value]="user.id"
+        (click)="onAssigneeSelected(user.id)">
+        <div class="assignee-option">
+          <div class="assignee-details">
+            <span class="assignee-name">{{ user.firstName }} {{ user.lastName }}</span>
+            <span class="assignee-email">{{ user.email }}</span>
+          </div>
+        </div>
+      </div>
+    </crm-dropdown>
+  </div>
+
+  <button crm-btn variant="secondary" (click)="clearFilters()" class="clear-btn">
+    Clear Filters
+  </button>
+  <button crm-btn variant="primary" (click)="onOpenAddTask()">Add Task</button>
+</div>

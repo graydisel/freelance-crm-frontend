@@ -1,6 +1,4 @@
-<div class="kanban-page-header">
-  <button crm-btn variant="primary" (click)="openAddTask()">Add Task</button>
-</div>
+<app-task-filter (filterChange)="onFilterChange($event)" (openAddTask)="openAddTask()"></app-task-filter>
 
 <div class="kanban-board-container">
   @if (isLoading()) {
@@ -39,7 +37,8 @@
       @for (task of cellTasks; track task.id) {
       <div class="task-card" cdkDrag [cdkDragData]="task">
         <h4 class="task-card--header" (click)="viewTask(task)">{{ task.title }}</h4>
-        <select class="task-card--priority" name="priority" (change)="onPriorityChange(task.id, $event)" title="Change Priority">
+        <select class="task-card--priority" name="priority" (change)="onPriorityChange(task.id, $event)"
+          title="Change Priority">
           @for (priority of priorities; track priority) {
           <option value="{{ priority }}" [selected]="task.priority === priority">
             {{ priority.toUpperCase() }}
@@ -58,10 +57,10 @@
 
 <crm-drawer [isOpen]="isDrawerOpen()" [title]="drawerTitle()" (closed)="closeDrawer()">
   @if (isDrawerOpen()) {
-    @if (isEditingTask() || !selectedTask()) {
-      <app-task-form [task]="selectedTask()" [projectId]="project()!.id" (saved)="onTaskSaved()"></app-task-form>
-    } @else {
-      <app-task-details [task]="selectedTask()!" (edit)="isEditingTask.set(true)"></app-task-details>
-    }
+  @if (isEditingTask() || !selectedTask()) {
+  <app-task-form [task]="selectedTask()" [projectId]="project()!.id" (saved)="onTaskSaved()"></app-task-form>
+  } @else {
+  <app-task-details [task]="selectedTask()!" (edit)="isEditingTask.set(true)"></app-task-details>
+  }
   }
 </crm-drawer>

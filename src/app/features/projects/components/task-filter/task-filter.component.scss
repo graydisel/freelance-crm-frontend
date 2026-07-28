@@ -1,0 +1,52 @@
+.task-filter {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  padding: 16px;
+  background-color: var(--surface-card);
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 24px;
+
+  .filter-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 200px;
+
+    label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+  }
+
+  .clear-btn {
+    margin-left: auto;
+  }
+}
+
+.priority-label {
+  text-transform: capitalize;
+}
+
+.assignee-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .assignee-details {
+    display: flex;
+    flex-direction: column;
+
+    .assignee-name {
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .assignee-email {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+  }
+}
