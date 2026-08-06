@@ -39,10 +39,9 @@
     </div>
   </div>
 
-  <div class="project-details__actions">
+  <div class="project-details__actions" style="display: flex; gap: 8px;">
+    <button crm-btn type="button" variant="danger" size="md" (click)="onDeleteClick()">Delete Project</button>
     <button crm-btn type="button" variant="primary" size="md" (click)="onEditClick()">Edit Project</button>
-  </div>
-  <div class="project-details__actions">
     <button crm-btn type="button" variant="primary" size="md" (click)="onNavigateClick()">View Kanban</button>
   </div>
 </div>

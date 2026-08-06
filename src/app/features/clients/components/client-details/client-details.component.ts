@@ -208,4 +208,19 @@ export class ClientDetailsComponent {
         },
       });
   }
+
+  onArchiveClient(): void {
+    if (!this.client()) return;
+    this.isLoading.set(true);
+    this.clientsService.updateClientStatus(this.client()!.id, ClientStatusEnum.ARCHIVED).subscribe({
+      next: () => {
+        this.isLoading.set(false);
+        this.saved.emit();
+      },
+      error: (err) => {
+        this.isLoading.set(false);
+        console.error('Failed to archive client:', err);
+      }
+    });
+  }
 }

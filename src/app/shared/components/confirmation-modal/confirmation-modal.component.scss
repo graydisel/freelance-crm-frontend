@@ -1,0 +1,117 @@
+.modal-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-content {
+  background: var(--bg-surface, #ffffff);
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 450px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border-color, #e2e8f0);
+}
+
+.modal-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary, #1e293b);
+  margin: 0;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-secondary, #64748b);
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.close-button:hover {
+  color: var(--text-primary, #1e293b);
+}
+
+.modal-body {
+  padding: 1.25rem;
+  color: var(--text-secondary, #475569);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-top: 1px solid var(--border-color, #e2e8f0);
+  background: var(--bg-surface-alt, #f8fafc);
+}
+
+button {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.btn-cancel {
+  background-color: var(--bg-surface, #ffffff);
+  border: 1px solid var(--border-color, #cbd5e1);
+  color: var(--text-primary, #334155);
+}
+
+.btn-cancel:hover {
+  background-color: var(--bg-hover, #f1f5f9);
+}
+
+.btn-danger {
+  background-color: var(--color-danger, #ef4444);
+  color: #ffffff;
+}
+
+.btn-danger:hover {
+  background-color: var(--color-danger-dark, #dc2626);
+}
+
+.btn-warning {
+  background-color: var(--color-warning, #f59e0b);
+  color: #ffffff;
+}
+
+.btn-warning:hover {
+  background-color: var(--color-warning-dark, #d97706);
+}
+
+.btn-info {
+  background-color: var(--color-primary, #3b82f6);
+  color: #ffffff;
+}
+
+.btn-info:hover {
+  background-color: var(--color-primary-dark, #2563eb);
+}

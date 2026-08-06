@@ -22,4 +22,10 @@ import { CRM_TABLE_DECORATORS } from '../../../../shared/components/crm-table/cr
 export class ClientsTableComponent {
   clients = input.required<ClientProfile[]>();
   rowClicked = output<ClientProfile>();
+  archive = output<ClientProfile>();
+
+  onArchive(client: ClientProfile, event: Event): void {
+    event.stopPropagation();
+    this.archive.emit(client);
+  }
 }

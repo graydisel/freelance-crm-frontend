@@ -3,5 +3,6 @@ export enum ProjectStatusEnum {
     ACTIVE = 'active',
     REVIEW = 'review',
     COMPLETED = 'completed',
-    PAUSED = 'paused'
+    PAUSED = 'paused',
+    ARCHIVED = 'archived'
 }

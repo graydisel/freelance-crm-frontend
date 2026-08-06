@@ -43,4 +43,8 @@ export class TaskService {
   updateTaskPriority(taskId: string, newPriority: TaskPriorityEnum): Observable<Task> {
     return this.http.patch<Task>(`${this.URL_TASKS}/${taskId}/priority`, { newPriority });
   }
+
+  deleteTask(taskId: string): Observable<void> {
+    return this.http.delete<void>(`${this.URL_TASKS}/${taskId}`);
+  }
 }

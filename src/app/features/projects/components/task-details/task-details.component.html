@@ -30,7 +30,8 @@
     </div>
   </div>
 
-  <div class="task-details__actions">
+  <div class="task-details__actions" style="display: flex; gap: 8px;">
+    <button crm-btn type="button" variant="danger" size="md" (click)="onDeleteClick()">Delete Task</button>
     <button crm-btn type="button" variant="primary" size="md" (click)="onEditClick()">Edit Task</button>
   </div>
 </div>

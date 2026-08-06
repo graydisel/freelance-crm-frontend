@@ -6,6 +6,7 @@
     <th>Phone Number</th>
     <th>Contract Value</th>
     <th>Status</th>
+    <th>Actions</th>
   </tr>
 
   <ng-container crm-table-body>
@@ -44,6 +45,17 @@
         </td>
         <td>
           <crm-status-badge [status]="client.status"></crm-status-badge>
+        </td>
+        <td>
+          @if (client.status !== 'archived') {
+            <button class="crm-table-action-btn" (click)="onArchive(client, $event)" title="Archive Client">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                <polyline points="21 8 21 21 3 21 3 8"></polyline>
+                <rect x="1" y="3" width="22" height="5"></rect>
+                <line x1="10" y1="12" x2="14" y2="12"></line>
+              </svg>
+            </button>
+          }
         </td>
       </tr>
     }

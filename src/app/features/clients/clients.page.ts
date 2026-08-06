@@ -134,4 +134,13 @@ export class ClientsPageComponent implements OnInit {
   protected onClientUpdated(): void {
     this.loadClients();
   }
+
+  protected onArchiveClient(client: ClientProfile): void {
+    this.clientsService.updateClientStatus(client.id, 'archived' as any).subscribe({
+      next: () => {
+        this.loadClients();
+      },
+      error: (err) => console.error('Failed to archive client:', err),
+    });
+  }
 }

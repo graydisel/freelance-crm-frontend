@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
 import { ClientProfile, ClientsServerResponse, CreateClientDto, UpdateClientDto } from '../../models/client.model';
+import { ClientStatusEnum } from '../../enums/client-status.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -30,7 +31,8 @@ export class ClientsService {
     const params = new HttpParams()
       .set('page', '1')
       .set('limit', '5')
-      .set('search', search);
+      .set('search', search)
+      .set('statuses', [ClientStatusEnum.ACTIVE, ClientStatusEnum.LEAD].join(','));
 
     return this.http.get<ClientsServerResponse>(this.API_URL, { params });
   }
@@ -45,5 +47,9 @@ export class ClientsService {
 
   updateClient(id: string, dto: UpdateClientDto): Observable<ClientProfile> {
     return this.http.patch<ClientProfile>(`${this.API_URL}/${id}`, dto);
+  }
+
+  updateClientStatus(id: string, status: ClientStatusEnum): Observable<ClientProfile> {
+    return this.http.patch<ClientProfile>(`${this.API_URL}/${id}/status`, { status });
   }
 }

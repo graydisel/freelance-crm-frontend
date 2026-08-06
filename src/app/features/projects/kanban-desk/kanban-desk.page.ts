@@ -23,11 +23,13 @@ import { CrmButtonComponent } from '../../../shared/components/crm-button/crm-bu
 import { TaskFormComponent } from '../components/task-form/task-form.component';
 import { TaskDetailsComponent } from '../components/task-details/task-details.component';
 import { TaskFilterComponent, TaskFilterOptions } from '../components/task-filter/task-filter.component';
+import { Dialog, DialogModule } from '@angular/cdk/dialog';
+import { ConfirmationModalComponent } from '../../../shared/components/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-kanban-desk',
   standalone: true,
-  imports: [CommonModule, DragDropModule, CrmDrawerComponent, TaskFormComponent, TaskDetailsComponent, TaskFilterComponent],
+  imports: [CommonModule, DragDropModule, DialogModule, CrmDrawerComponent, TaskFormComponent, TaskDetailsComponent, TaskFilterComponent],
   templateUrl: './kanban-desk.page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./kanban-desk.page.scss'],
@@ -37,6 +39,7 @@ export class KanbanDeskPage implements OnInit {
   private readonly projectsService = inject(ProjectsService);
   private readonly taskService = inject(TaskService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly dialog = inject(Dialog);
 
   protected readonly statuses = Object.values(TaskStatusEnum);
   protected readonly priorities = Object.values(TaskPriorityEnum);
@@ -214,6 +217,44 @@ export class KanbanDeskPage implements OnInit {
           currentTasks.map(t => t.id === task.id ? { ...t, status: oldStatus, priority: oldPriority } : t)
         );
         this.errorMessage.set('Could not save task changes.');
+      }
+    });
+  }
+
+  deleteTask(task: Task, event?: Event): void {
+    if (event) {
+      event.stopPropagation();
+    }
+    
+    const dialogRef = this.dialog.open(ConfirmationModalComponent, {
+      data: {
+        title: 'Delete Task',
+        description: `Are you sure you want to delete task "${task.title}"? This action cannot be undone.`,
+        confirmText: 'Delete',
+        variant: 'danger',
+      }
+    });
+
+    dialogRef.closed.pipe(
+      switchMap((result) => {
+        if (result) {
+          return this.taskService.deleteTask(task.id);
+        }
+        return of(null);
+      }),
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: (result) => {
+        if (result !== null) {
+          this.loadTasks();
+          if (this.selectedTask()?.id === task.id) {
+            this.closeDrawer();
+          }
+        }
+      },
+      error: (err) => {
+        console.error('Failed to delete task:', err);
+        this.errorMessage.set('Could not delete task.');
       }
     });
   }

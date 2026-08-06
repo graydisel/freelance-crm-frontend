@@ -36,7 +36,10 @@
 
       @for (task of cellTasks; track task.id) {
       <div class="task-card" cdkDrag [cdkDragData]="task">
-        <h4 class="task-card--header" (click)="viewTask(task)">{{ task.title }}</h4>
+        <div class="task-card--header-row">
+          <h4 class="task-card--header" (click)="viewTask(task)">{{ task.title }}</h4>
+          <button class="delete-task-btn" (click)="deleteTask(task, $event)" title="Delete Task">×</button>
+        </div>
         <select class="task-card--priority" name="priority" (change)="onPriorityChange(task.id, $event)"
           title="Change Priority">
           @for (priority of priorities; track priority) {
@@ -60,7 +63,7 @@
   @if (isEditingTask() || !selectedTask()) {
   <app-task-form [task]="selectedTask()" [projectId]="project()!.id" (saved)="onTaskSaved()"></app-task-form>
   } @else {
-  <app-task-details [task]="selectedTask()!" (edit)="isEditingTask.set(true)"></app-task-details>
+  <app-task-details [task]="selectedTask()!" (edit)="isEditingTask.set(true)" (delete)="deleteTask(selectedTask()!)"></app-task-details>
   }
   }
 </crm-drawer>

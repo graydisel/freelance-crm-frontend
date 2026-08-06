@@ -47,7 +47,7 @@
       (statusChange)="onStatusChange($event)">
     </app-client-filters>
 
-    <app-clients-table [clients]="paginatedClients()" (rowClicked)="selectedClient.set($event)">
+    <app-clients-table [clients]="paginatedClients()" (rowClicked)="selectedClient.set($event)" (archive)="onArchiveClient($event)">
     </app-clients-table>
 
     @if (totalItems() > 0) {

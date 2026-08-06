@@ -14,8 +14,13 @@ import { CrmButtonComponent } from '../../../../shared/components/crm-button/crm
 export class TaskDetailsComponent {
   task = input.required<Task>();
   edit = output<void>();
+  delete = output<void>();
 
   onEditClick(): void {
     this.edit.emit();
+  }
+
+  onDeleteClick(): void {
+    this.delete.emit();
   }
 }

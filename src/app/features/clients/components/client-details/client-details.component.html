@@ -8,7 +8,18 @@
     <div class="crm-client-details__header-info">
       @if (!isEditMode()) {
       <h2>{{ activeClient.companyName }}</h2>
-      <crm-status-badge [status]="activeClient.status"></crm-status-badge>
+      <div style="display: flex; gap: 8px; align-items: center;">
+        <crm-status-badge [status]="activeClient.status"></crm-status-badge>
+        @if (activeClient.status !== 'archived') {
+        <button class="crm-table-action-btn" (click)="onArchiveClient()" title="Archive Client">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <polyline points="21 8 21 21 3 21 3 8"></polyline>
+            <rect x="1" y="3" width="22" height="5"></rect>
+            <line x1="10" y1="12" x2="14" y2="12"></line>
+          </svg>
+        </button>
+        }
+      </div>
       } @else {
       <div [formGroup]="editForm" class="crm-client-details__edit-row">
         <input formControlName="companyName" class="crm-form__input" placeholder="Company Name" />

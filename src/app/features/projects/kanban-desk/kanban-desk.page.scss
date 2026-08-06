@@ -88,11 +88,37 @@
   cursor: grab;
   transition: box-shadow 0.2s, transform 0.2s;
 
+  &--header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
   &--header {
     cursor: pointer;
+    margin: 0 0 $space-xs 0;
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    color: $color-text-dark;
+    flex-grow: 1;
 
     &:hover {
       text-decoration: underline;
+    }
+  }
+
+  .delete-task-btn {
+    background: none;
+    border: none;
+    color: $color-text-muted;
+    font-size: 1.25rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 0 0 $space-xs;
+    transition: color 0.2s;
+    
+    &:hover {
+      color: $color-danger;
     }
   }
 
@@ -119,13 +145,6 @@
 
   &:active {
     cursor: grabbing;
-  }
-
-  h4 {
-    margin: 0 0 $space-xs 0;
-    font-size: $font-size-base;
-    font-weight: $font-weight-semibold;
-    color: $color-text-dark;
   }
 
   p {
