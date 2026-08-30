@@ -15,7 +15,7 @@ export class NotFoundPage {
   private readonly authService = inject(AuthService);
 
   goHome(): void {
-    if (this.authService.isAuthenticated) {
+    if (this.authService.isAuthenticated()) {
       this.router.navigate(['/dashboard']);
     } else {
       this.router.navigate(['/login']);

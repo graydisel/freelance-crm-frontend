@@ -116,7 +116,7 @@ export class TaskFormComponent implements OnInit {
         priority: t.priority,
         assigneeId: t.assignee?.id || '',
       });
-      this.selectedAssigneeName.set(t.assignee ? `${t.assignee.firstName} ${t.assignee.lastName}` : '');
+      this.selectedAssigneeName.set(t.assignee && t.assignee.profile ? `${t.assignee.profile.firstName} ${t.assignee.profile.lastName}` : '');
     }
   }
 
@@ -128,7 +128,7 @@ export class TaskFormComponent implements OnInit {
     this.form.patchValue({ assigneeId });
     const selected = this.assigneeSearchResults().find((u) => u.id === assigneeId);
     if (selected) {
-      this.selectedAssigneeName.set(`${selected.firstName} ${selected.lastName}`);
+      this.selectedAssigneeName.set(`${selected.profile.firstName} ${selected.profile.lastName}`);
     }
   }
 

@@ -1,15 +1,15 @@
-import {HttpErrorResponse, HttpInterceptorFn} from '@angular/common/http';
-import {Router} from '@angular/router';
-import {inject} from '@angular/core';
-import {AuthService} from '../services/auth/auth.service';
-import {catchError, throwError} from 'rxjs';
-import {environment} from '../../../environments/environment';
+import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { inject } from '@angular/core';
+import { AuthService } from '../services/auth/auth.service';
+import { catchError, throwError } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  const token = authService.getToken() || localStorage.getItem(environment.token);
+  const token = authService.getToken();
 
   let clonedReq = req;
   if (token && !req.url.includes('/auth/login')) {
@@ -22,7 +22,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       if (error.status === 401) {
         console.warn('Session is not valid');
         authService.logout();
-        router.navigate(['/login']);
       }
       return throwError(() => error);
     })

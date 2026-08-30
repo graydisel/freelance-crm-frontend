@@ -56,8 +56,8 @@
               {{ editForm.value.contactPerson || 'Search or add contact person' }}
             </div>
             @for (user of searchResults(); track user.id) {
-            <div crm-dropdown-option [value]="`${user.firstName} ${user.lastName}`">{{ user.firstName }} {{
-              user.lastName
+            <div crm-dropdown-option [value]="`${user.profile.firstName} ${user.profile.lastName}`">{{ user.profile.firstName }} {{
+              user.profile.lastName
               }} ({{ user.email }})</div>
             }
           </crm-dropdown>

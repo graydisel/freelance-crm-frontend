@@ -8,6 +8,7 @@ import {
   ProjectsServerResponse,
   UpdateProjectDto
 } from '../../models/project.model';
+import { ProjectStatusEnum } from '../../enums/project-status.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -41,6 +42,10 @@ export class ProjectsService {
 
   updateProject(id: string, dto: UpdateProjectDto): Observable<Project> {
     return this.http.patch<Project>(`${this.URL_PROJECTS}/${id}`, dto);
+  }
+
+  updateStatusProject(id: string, newStatus: ProjectStatusEnum): Observable<Project> {
+    return this.http.patch<Project>(`${this.URL_PROJECTS}/${id}/status`, { newStatus });
   }
 
   deleteProject(id: string): Observable<void> {

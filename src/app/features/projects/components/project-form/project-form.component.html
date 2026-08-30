@@ -57,7 +57,7 @@
       @for (user of managerSearchResults(); track user.id) {
         <div crm-dropdown-option [value]="user.id"
           (click)="onManagerSelected(user.id)">
-          {{ user.firstName }} {{ user.lastName }} ({{ user.email }})
+          {{ user.profile.firstName }} {{ user.profile.lastName }} ({{ user.email }})
         </div>
       }
     </crm-dropdown>

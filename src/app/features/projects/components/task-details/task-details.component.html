@@ -25,7 +25,7 @@
     <div class="task-details__info-row">
       <span class="task-details__info-label">Assignee:</span>
       <span class="task-details__info-value">
-        {{ task().assignee ? task().assignee.firstName + ' ' + task().assignee.lastName : 'Unassigned' }}
+        {{ task().assignee && task().assignee.profile ? task().assignee.profile.firstName + ' ' + task().assignee.profile.lastName : 'Unassigned' }}
       </span>
     </div>
   </div>

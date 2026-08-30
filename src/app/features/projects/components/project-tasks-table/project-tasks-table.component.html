@@ -18,9 +18,9 @@
           @if (task.assignee) {
             <div class="assignee-cell">
               <div class="assignee-avatar">
-                {{ task.assignee.firstName.charAt(0) }}{{ task.assignee.lastName.charAt(0) }}
+                {{ task.assignee.profile.firstName.charAt(0) }}{{ task.assignee.profile.lastName.charAt(0) }}
               </div>
-              <span class="assignee-name">{{ task.assignee.firstName }} {{ task.assignee.lastName }}</span>
+              <span class="assignee-name">{{ task.assignee.profile.firstName }} {{ task.assignee.profile.lastName }}</span>
             </div>
           } @else {
             <span class="unassigned-text">Unassigned</span>

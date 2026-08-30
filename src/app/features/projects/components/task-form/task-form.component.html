@@ -60,7 +60,7 @@
         </div>
         @for (user of assigneeSearchResults(); track user.id) {
         <div crm-dropdown-option [value]="user.id" (click)="onAssigneeSelected(user.id)">
-          {{ user.firstName }} {{ user.lastName }}
+          {{ user.profile.firstName }} {{ user.profile.lastName }}
         </div>
         }
         @if (assigneeSearchResults().length === 0) {

@@ -24,7 +24,7 @@ export class SidebarComponent {
 
   protected readonly userDisplayName = computed(() => {
     const user = this.authService.currentUser();
-    return user ? `${user.firstName} ${user.lastName}` : 'Eleonora';
+    return user && user.profile ? `${user.profile.firstName} ${user.profile.lastName}` : 'Eleonora';
   });
 
   protected readonly userRole = computed(() => {
@@ -47,7 +47,6 @@ export class SidebarComponent {
 
   protected logout(): void {
     this.authService.logout();
-    this.router.navigate(['/login']);
   }
 
   protected readonly navItems = navItems;

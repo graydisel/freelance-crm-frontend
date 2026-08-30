@@ -136,7 +136,6 @@ export class ProjectFormComponent implements OnInit {
       });
       this.selectedClientName.set(p.client?.companyName || '');
       this.selectedManagerName.set(p.manager.fullName);
-      console.log(p);
     }
   }
 
@@ -160,7 +159,7 @@ export class ProjectFormComponent implements OnInit {
     this.form.patchValue({ managerId });
     const selected = this.managerSearchResults().find((u) => u.id === managerId);
     if (selected) {
-      this.selectedManagerName.set(`${selected.firstName} ${selected.lastName}`);
+      this.selectedManagerName.set(`${selected.profile.firstName} ${selected.profile.lastName}`);
     }
   }
 

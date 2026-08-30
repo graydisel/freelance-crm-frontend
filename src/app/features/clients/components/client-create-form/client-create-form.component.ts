@@ -74,7 +74,7 @@ export class ClientCreateFormComponent {
       .subscribe((fullName) => {
         if (fullName) {
           const selectedUser = this.searchResults().find(
-            (user) => `${user.firstName} ${user.lastName}` === fullName,
+            (user) => `${user.profile.firstName} ${user.profile.lastName}` === fullName,
           );
           if (selectedUser) {
             this.form.patchValue({ contactEmail: selectedUser.email });

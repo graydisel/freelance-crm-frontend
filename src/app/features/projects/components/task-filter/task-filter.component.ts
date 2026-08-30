@@ -106,7 +106,7 @@ export class TaskFilterComponent {
     }
     const selected = this.assigneeSearchResults().find((u) => u.id === assigneeId);
     if (selected) {
-      this.selectedAssigneeName.set(`${selected.firstName} ${selected.lastName}`);
+      this.selectedAssigneeName.set(`${selected.profile.firstName} ${selected.profile.lastName}`);
     }
   }
 
