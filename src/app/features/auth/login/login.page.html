@@ -5,9 +5,9 @@
       <p class="crm-login__subtitle">Enter your account</p>
     </header>
 
-    @if (errorMessage) {
+    @if (authStore.error()) {
       <div class="crm-form__alert crm-form__alert--danger" role="alert">
-        {{ errorMessage }}
+        {{ authStore.error() }}
       </div>
     }
 
@@ -60,7 +60,7 @@
           type="submit"
           variant="primary"
           size="lg"
-          [loading]="isLoading()">
+          [loading]="authStore.isLoading()">
           Sign In
         </button>
       </div>

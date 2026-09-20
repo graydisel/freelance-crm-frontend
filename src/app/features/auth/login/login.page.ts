@@ -1,25 +1,20 @@
-import { Component, inject, signal, DestroyRef, ChangeDetectionStrategy } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, inject, DestroyRef, ChangeDetectionStrategy } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../../core/services/auth/auth.service';
 import { Router } from '@angular/router';
 import { CrmButtonComponent } from '../../../shared/components/crm-button/crm-button';
+import { AuthStore } from '../../../core/stores/auth.store';
 
 @Component({
   selector: 'app-login',
   imports: [ReactiveFormsModule, CrmButtonComponent],
   templateUrl: './login.page.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './login.page.scss',
 })
 export class LoginPage {
   protected readonly fb = inject(NonNullableFormBuilder);
-  protected readonly authService = inject(AuthService);
   protected readonly router = inject(Router);
-  private readonly destroyRef = inject(DestroyRef);
-
-  isLoading = signal(false);
-  errorMessage = '';
+  protected readonly authStore = inject(AuthStore);
 
   loginForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -32,29 +27,6 @@ export class LoginPage {
       return;
     }
 
-    this.isLoading.set(true);
-    this.errorMessage = '';
-
-    const { email, password } = this.loginForm.getRawValue();
-
-    this.authService
-      .login(email, password)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (response) => {
-          this.isLoading.set(false);
-          this.router.navigate(['/dashboard']);
-        },
-        error: (error) => {
-          this.isLoading.set(false);
-          if (error.status === 0) {
-            this.errorMessage = 'No access to the server. Please try again';
-          } else {
-            this.errorMessage = error.error?.message || 'Authorization error';
-          }
-
-          console.error('Error details:', error);
-        },
-      });
+    this.authStore.login(this.loginForm.getRawValue());
   }
 }

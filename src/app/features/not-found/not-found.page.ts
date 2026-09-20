@@ -1,6 +1,7 @@
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../core/services/auth/auth.service';
 import { Router } from '@angular/router';
+import { AuthStore } from '../../core/stores/auth.store';
 
 @Component({
   selector: 'app-not-found',
@@ -12,10 +13,10 @@ import { Router } from '@angular/router';
 })
 export class NotFoundPage {
   private readonly router = inject(Router);
-  private readonly authService = inject(AuthService);
+  private readonly authStore = inject(AuthStore);
 
   goHome(): void {
-    if (this.authService.isAuthenticated()) {
+    if (this.authStore.isAuthenticated()) {
       this.router.navigate(['/dashboard']);
     } else {
       this.router.navigate(['/login']);

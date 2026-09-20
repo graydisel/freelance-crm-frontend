@@ -1,12 +1,12 @@
-import {CanActivateFn, Router} from '@angular/router';
-import {inject} from '@angular/core';
-import {AuthService} from '../services/auth/auth.service';
+import { CanActivateFn, Router } from '@angular/router';
+import { inject } from '@angular/core';
+import { AuthStore } from '../stores/auth.store';
 
 export const dashboardGuard: CanActivateFn = (route, state) => {
-  const authService = inject(AuthService);
   const router = inject(Router);
+  const authStore = inject(AuthStore);
 
-  const user = authService.currentUser();
+  const user = authStore.user();
 
   if (user && user.role) {
     const role = user.role.toLowerCase();
