@@ -2,7 +2,12 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
-import { ClientProfile, ClientsServerResponse, CreateClientDto, UpdateClientDto } from '../../models/client.model';
+import {
+  ClientProfile,
+  ClientsServerResponse,
+  CreateClientDto,
+  UpdateClientDto,
+} from '../../models/client.model';
 import { ClientStatusEnum } from '../../enums/client-status.enum';
 
 @Injectable({
@@ -12,10 +17,13 @@ export class ClientsService {
   private readonly http = inject(HttpClient);
   private readonly API_URL = `${environment.apiUrl}/client`;
 
-  getClients(page: number, limit: number, search?: string, status?: string): Observable<ClientsServerResponse> {
-    let params = new HttpParams()
-      .set('page', page.toString())
-      .set('limit', limit.toString());
+  getClients(
+    page: number,
+    limit: number,
+    search?: string,
+    status?: string,
+  ): Observable<ClientsServerResponse> {
+    let params = new HttpParams().set('page', page.toString()).set('limit', limit.toString());
 
     if (search) {
       params = params.set('search', search);

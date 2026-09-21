@@ -220,7 +220,7 @@ export class ClientDetailsComponent {
       error: (err) => {
         this.isLoading.set(false);
         console.error('Failed to archive client:', err);
-      }
+      },
     });
   }
 }

@@ -1,4 +1,4 @@
-import {DashboardMetrics} from '../../../core/models/dashboard.model';
+import { DashboardMetrics } from '../../../core/models/dashboard.model';
 
 export function createEmptyMetrics(): DashboardMetrics {
   return {
@@ -12,6 +12,6 @@ export function createEmptyMetrics(): DashboardMetrics {
     tasksCompleted: 0,
     tasksTotal: 0,
     recentClients: [],
-    topProjects: []
+    topProjects: [],
   };
 }

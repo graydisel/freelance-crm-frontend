@@ -51,13 +51,9 @@ export class TaskFormComponent implements OnInit {
   saved = output<void>();
 
   protected readonly isEditMode = computed(() => !!this.task());
-  protected readonly formTitle = computed(() =>
-    this.isEditMode() ? 'Edit Task' : 'Add New Task',
-  );
+  protected readonly formTitle = computed(() => (this.isEditMode() ? 'Edit Task' : 'Add New Task'));
   protected readonly formSubtitle = computed(() =>
-    this.isEditMode()
-      ? 'Update the task details below.'
-      : 'Enter the details for the new task.',
+    this.isEditMode() ? 'Update the task details below.' : 'Enter the details for the new task.',
   );
   protected readonly submitLabel = computed(() =>
     this.isEditMode() ? 'Save Changes' : 'Create Task',
@@ -116,7 +112,11 @@ export class TaskFormComponent implements OnInit {
         priority: t.priority,
         assigneeId: t.assignee?.id || '',
       });
-      this.selectedAssigneeName.set(t.assignee && t.assignee.profile ? `${t.assignee.profile.firstName} ${t.assignee.profile.lastName}` : '');
+      this.selectedAssigneeName.set(
+        t.assignee && t.assignee.profile
+          ? `${t.assignee.profile.firstName} ${t.assignee.profile.lastName}`
+          : '',
+      );
     }
   }
 

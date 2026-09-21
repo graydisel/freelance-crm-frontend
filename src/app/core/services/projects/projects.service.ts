@@ -6,7 +6,7 @@ import {
   CreateProjectDto,
   Project,
   ProjectsServerResponse,
-  UpdateProjectDto
+  UpdateProjectDto,
 } from '../../models/project.model';
 import { ProjectStatusEnum } from '../../enums/project-status.enum';
 
@@ -17,10 +17,13 @@ export class ProjectsService {
   private readonly http = inject(HttpClient);
   private readonly URL_PROJECTS = `${environment.apiUrl}/projects`;
 
-  getProjects(page: number, limit: number, search?: string, status?: string): Observable<ProjectsServerResponse> {
-    let params = new HttpParams()
-      .set('page', page.toString())
-      .set('limit', limit.toString());
+  getProjects(
+    page: number,
+    limit: number,
+    search?: string,
+    status?: string,
+  ): Observable<ProjectsServerResponse> {
+    let params = new HttpParams().set('page', page.toString()).set('limit', limit.toString());
 
     if (search) {
       params = params.set('search', search);

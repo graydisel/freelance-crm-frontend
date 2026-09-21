@@ -15,7 +15,7 @@ export interface ConfirmationModalData {
   standalone: true,
   imports: [NgClass],
   templateUrl: './confirmation-modal.component.html',
-  styleUrls: ['./confirmation-modal.component.scss']
+  styleUrls: ['./confirmation-modal.component.scss'],
 })
 export class ConfirmationModalComponent {
   title: string;
@@ -26,7 +26,7 @@ export class ConfirmationModalComponent {
 
   constructor(
     public dialogRef: DialogRef<boolean>,
-    @Inject(DIALOG_DATA) public data: ConfirmationModalData
+    @Inject(DIALOG_DATA) public data: ConfirmationModalData,
   ) {
     this.title = data.title;
     this.description = data.description;

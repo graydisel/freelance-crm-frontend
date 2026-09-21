@@ -22,14 +22,25 @@ import { CrmDrawerComponent } from '../../../shared/components/crm-drawer/crm-dr
 import { CrmButtonComponent } from '../../../shared/components/crm-button/crm-button';
 import { TaskFormComponent } from '../components/task-form/task-form.component';
 import { TaskDetailsComponent } from '../components/task-details/task-details.component';
-import { TaskFilterComponent, TaskFilterOptions } from '../components/task-filter/task-filter.component';
+import {
+  TaskFilterComponent,
+  TaskFilterOptions,
+} from '../components/task-filter/task-filter.component';
 import { Dialog, DialogModule } from '@angular/cdk/dialog';
 import { ConfirmationModalComponent } from '../../../shared/components/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-kanban-desk',
   standalone: true,
-  imports: [CommonModule, DragDropModule, DialogModule, CrmDrawerComponent, TaskFormComponent, TaskDetailsComponent, TaskFilterComponent],
+  imports: [
+    CommonModule,
+    DragDropModule,
+    DialogModule,
+    CrmDrawerComponent,
+    TaskFormComponent,
+    TaskDetailsComponent,
+    TaskFilterComponent,
+  ],
   templateUrl: './kanban-desk.page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./kanban-desk.page.scss'],
@@ -59,21 +70,19 @@ export class KanbanDeskPage implements OnInit {
     return this.isEditingTask() ? 'Edit Task' : 'Task Details';
   });
 
-  constructor() {
-
-  }
+  constructor() {}
 
   boardGrid = computed(() => {
     const currentTasks = this.tasks();
     const grid: Record<string, Task[]> = {};
 
-    this.statuses.forEach(status => {
-      this.priorities.forEach(priority => {
+    this.statuses.forEach((status) => {
+      this.priorities.forEach((priority) => {
         grid[`${status}_${priority}`] = [];
       });
     });
 
-    currentTasks.forEach(task => {
+    currentTasks.forEach((task) => {
       const key = `${task.status}_${task.priority}`;
       if (grid[key]) {
         grid[key].push(task);
@@ -94,13 +103,13 @@ export class KanbanDeskPage implements OnInit {
           }
           return forkJoin({
             project: this.projectsService.getProject(id),
-            tasks: this.taskService.getTasks(id)
+            tasks: this.taskService.getTasks(id),
           }).pipe(
             catchError((err) => {
               this.errorMessage.set('Failed to load kanban board data.');
               this.isLoading.set(false);
               return of({ project: null, tasks: [] });
-            })
+            }),
           );
         }),
         takeUntilDestroyed(this.destroyRef),
@@ -112,7 +121,7 @@ export class KanbanDeskPage implements OnInit {
             this.tasks.set(tasks);
           }
           this.isLoading.set(false);
-        }
+        },
       });
   }
 
@@ -121,13 +130,15 @@ export class KanbanDeskPage implements OnInit {
     if (id) {
       const filters = this.activeFilters();
       if (Object.keys(filters).length > 0) {
-        this.taskService.getFilteredTasks({ projectId: id, ...filters })
+        this.taskService
+          .getFilteredTasks({ projectId: id, ...filters })
           .pipe(takeUntilDestroyed(this.destroyRef))
-          .subscribe(tasks => this.tasks.set(tasks));
+          .subscribe((tasks) => this.tasks.set(tasks));
       } else {
-        this.taskService.getTasks(id)
+        this.taskService
+          .getTasks(id)
           .pipe(takeUntilDestroyed(this.destroyRef))
-          .subscribe(tasks => this.tasks.set(tasks));
+          .subscribe((tasks) => this.tasks.set(tasks));
       }
     }
   }
@@ -166,29 +177,29 @@ export class KanbanDeskPage implements OnInit {
     const selectElement = event.target as HTMLSelectElement;
     const newPriority = selectElement.value as TaskPriorityEnum;
 
-    const targetTask = this.tasks().find(t => t.id === taskId);
+    const targetTask = this.tasks().find((t) => t.id === taskId);
     if (!targetTask || targetTask.priority === newPriority) {
       return;
     }
     const oldPriority = targetTask.priority;
 
-    this.tasks.update(currentTasks =>
-      currentTasks.map(t => t.id === taskId ? { ...t, priority: newPriority } : t)
+    this.tasks.update((currentTasks) =>
+      currentTasks.map((t) => (t.id === taskId ? { ...t, priority: newPriority } : t)),
     );
 
-    this.taskService.updateTaskPriority(taskId, newPriority)
+    this.taskService
+      .updateTaskPriority(taskId, newPriority)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         error: (err) => {
           console.error('Failed to update task priority via dropdown:', err);
-          this.tasks.update(currentTasks =>
-            currentTasks.map(t => t.id === taskId ? { ...t, priority: oldPriority } : t)
+          this.tasks.update((currentTasks) =>
+            currentTasks.map((t) => (t.id === taskId ? { ...t, priority: oldPriority } : t)),
           );
           this.errorMessage.set('Could not update task priority. Changes reverted.');
-        }
+        },
       });
   }
-
 
   onTaskDrop(event: CdkDragDrop<Task[]>) {
     if (event.previousContainer === event.container) {
@@ -199,63 +210,72 @@ export class KanbanDeskPage implements OnInit {
     const oldStatus = task.status;
     const oldPriority = task.priority;
 
-    const [newStatus, newPriority] = event.container.id.split('_') as [TaskStatusEnum, TaskPriorityEnum];
+    const [newStatus, newPriority] = event.container.id.split('_') as [
+      TaskStatusEnum,
+      TaskPriorityEnum,
+    ];
 
-    this.tasks.update(currentTasks =>
-      currentTasks.map(t => t.id === task.id ? { ...t, status: newStatus, priority: newPriority } : t)
+    this.tasks.update((currentTasks) =>
+      currentTasks.map((t) =>
+        t.id === task.id ? { ...t, status: newStatus, priority: newPriority } : t,
+      ),
     );
 
     const updateStatus$ = this.taskService.updateTaskStatus(task.id, newStatus);
     const updatePriority$ = this.taskService.updateTaskPriority(task.id, newPriority);
 
-    forkJoin([updateStatus$, updatePriority$]).pipe(
-      takeUntilDestroyed(this.destroyRef)
-    ).subscribe({
-      error: (err) => {
-        console.error('Failed to update task position:', err);
-        this.tasks.update(currentTasks =>
-          currentTasks.map(t => t.id === task.id ? { ...t, status: oldStatus, priority: oldPriority } : t)
-        );
-        this.errorMessage.set('Could not save task changes.');
-      }
-    });
+    forkJoin([updateStatus$, updatePriority$])
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        error: (err) => {
+          console.error('Failed to update task position:', err);
+          this.tasks.update((currentTasks) =>
+            currentTasks.map((t) =>
+              t.id === task.id ? { ...t, status: oldStatus, priority: oldPriority } : t,
+            ),
+          );
+          this.errorMessage.set('Could not save task changes.');
+        },
+      });
   }
 
   deleteTask(task: Task, event?: Event): void {
     if (event) {
       event.stopPropagation();
     }
-    
+
     const dialogRef = this.dialog.open(ConfirmationModalComponent, {
       data: {
         title: 'Delete Task',
         description: `Are you sure you want to delete task "${task.title}"? This action cannot be undone.`,
         confirmText: 'Delete',
         variant: 'danger',
-      }
+      },
     });
 
-    dialogRef.closed.pipe(
-      switchMap((result) => {
-        if (result) {
-          return this.taskService.deleteTask(task.id);
-        }
-        return of(null);
-      }),
-      takeUntilDestroyed(this.destroyRef)
-    ).subscribe({
-      next: (result) => {
-        if (result !== null) {
-          this.loadTasks();
-          if (this.selectedTask()?.id === task.id) {
-            this.closeDrawer();
+    dialogRef.closed
+      .pipe(
+        switchMap((result) => {
+          if (result) {
+            return this.taskService.deleteTask(task.id);
           }
-        }
-      },
-      error: (err) => {
-        console.error('Failed to delete task:', err);
-        this.errorMessage.set('Could not delete task.');
-      }
-    });
+          return of(null);
+        }),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe({
+        next: (result) => {
+          if (result !== null) {
+            this.loadTasks();
+            if (this.selectedTask()?.id === task.id) {
+              this.closeDrawer();
+            }
+          }
+        },
+        error: (err) => {
+          console.error('Failed to delete task:', err);
+          this.errorMessage.set('Could not delete task.');
+        },
+      });
   }
 }

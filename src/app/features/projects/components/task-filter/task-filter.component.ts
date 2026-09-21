@@ -76,18 +76,16 @@ export class TaskFilterComponent {
         this.assigneeSearchResults.set(data);
       });
 
-    this.form.valueChanges
-      .pipe(takeUntilDestroyed())
-      .subscribe((val) => {
-        const options: TaskFilterOptions = {};
-        if (val.priority && val.priority !== 'all') {
-          options.priority = val.priority;
-        }
-        if (val.assigneeId) {
-          options.assigneeId = val.assigneeId;
-        }
-        this.filterChange.emit(options);
-      });
+    this.form.valueChanges.pipe(takeUntilDestroyed()).subscribe((val) => {
+      const options: TaskFilterOptions = {};
+      if (val.priority && val.priority !== 'all') {
+        options.priority = val.priority;
+      }
+      if (val.assigneeId) {
+        options.assigneeId = val.assigneeId;
+      }
+      this.filterChange.emit(options);
+    });
   }
 
   protected onOpenAddTask(): void {

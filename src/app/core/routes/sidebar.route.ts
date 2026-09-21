@@ -1,4 +1,4 @@
-import {NavItem} from '../models/sidebar.model';
+import { NavItem } from '../models/sidebar.model';
 
 export const navItems: NavItem[] = [
   { label: 'Dashboard', route: '/dashboard', icon: 'dashboard' },

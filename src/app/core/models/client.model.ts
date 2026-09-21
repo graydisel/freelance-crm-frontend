@@ -1,4 +1,4 @@
-import { ClientStatusEnum } from "../enums/client-status.enum";
+import { ClientStatusEnum } from '../enums/client-status.enum';
 
 export interface ClientProfile {
   id: string;
@@ -23,7 +23,7 @@ export interface CreateClientDto {
   status?: ClientStatusEnum;
 }
 
-export interface UpdateClientDto extends CreateClientDto { }
+export interface UpdateClientDto extends CreateClientDto {}
 
 export interface ClientsServerResponse {
   data: ClientProfile[];
@@ -44,7 +44,7 @@ export interface ClientsServerResponse {
       archivedCount: number;
       totalGlobal: number;
       totalActiveRevenue: number;
-    }
+    };
   };
 }
 

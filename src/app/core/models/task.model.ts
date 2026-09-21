@@ -1,6 +1,6 @@
-import {User} from './user.model';
-import {TaskStatusEnum} from '../enums/task-status.enum';
-import {TaskPriorityEnum} from '../enums/task-priority.enum';
+import { User } from './user.model';
+import { TaskStatusEnum } from '../enums/task-status.enum';
+import { TaskPriorityEnum } from '../enums/task-priority.enum';
 
 export interface Task {
   id: string;

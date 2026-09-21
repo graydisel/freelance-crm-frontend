@@ -50,28 +50,33 @@ export class ProjectDetailsComponent {
           : `Are you sure you want to delete "${project.name}"? This action cannot be undone.`,
         confirmText: hasTasks ? 'Archive' : 'Delete',
         variant: hasTasks ? 'warning' : 'danger',
-      }
+      },
     });
 
-    dialogRef.closed.pipe(
-      switchMap((result) => {
-        if (result) {
-          if (hasTasks) {
-            return this.projectsService.updateStatusProject(project.id, ProjectStatusEnum.ARCHIVED);
-          } else {
-            return this.projectsService.deleteProject(project.id);
+    dialogRef.closed
+      .pipe(
+        switchMap((result) => {
+          if (result) {
+            if (hasTasks) {
+              return this.projectsService.updateStatusProject(
+                project.id,
+                ProjectStatusEnum.ARCHIVED,
+              );
+            } else {
+              return this.projectsService.deleteProject(project.id);
+            }
           }
-        }
-        return EMPTY;
-      })
-    ).subscribe({
-      next: () => {
-        this.save.emit();
-        this.router.navigate(['/projects']);
-      },
-      error: (err) => {
-        console.error('Failed to process project deletion/archiving:', err);
-      }
-    });
+          return EMPTY;
+        }),
+      )
+      .subscribe({
+        next: () => {
+          this.save.emit();
+          this.router.navigate(['/projects']);
+        },
+        error: (err) => {
+          console.error('Failed to process project deletion/archiving:', err);
+        },
+      });
   }
 }

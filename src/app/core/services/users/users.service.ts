@@ -13,9 +13,7 @@ export class UsersService {
   private readonly baseUrl = `${environment.apiUrl}/users`;
 
   getAvailableUsers(search: string, role: UserRoleEnum): Observable<User[]> {
-    const params = new HttpParams()
-      .set('search', search)
-      .set('role', role);
+    const params = new HttpParams().set('search', search).set('role', role);
 
     return this.http.get<User[]>(this.baseUrl, { params });
   }

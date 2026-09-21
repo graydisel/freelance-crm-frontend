@@ -1,9 +1,4 @@
-import {
-  Component,
-  input,
-  output,
-  ChangeDetectionStrategy,
-} from '@angular/core';
+import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Task } from '../../../../core/models/task.model';
 import { TaskPriorityEnum } from '../../../../core/enums/task-priority.enum';
@@ -20,7 +15,7 @@ import { CrmStatusBadgeComponent } from '../../../../shared/components/crm-statu
 })
 export class ProjectTasksTableComponent {
   tasks = input.required<Task[]>();
-  
+
   taskClick = output<Task>();
   priorityChange = output<{ task: Task; newPriority: TaskPriorityEnum }>();
 

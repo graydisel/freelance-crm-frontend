@@ -1,5 +1,5 @@
-import { RecentClient } from "./client.model";
-import { ProjectProgress } from "./project.model";
+import { RecentClient } from './client.model';
+import { ProjectProgress } from './project.model';
 
 export interface DashboardMetrics {
   activeClientsCount: number;

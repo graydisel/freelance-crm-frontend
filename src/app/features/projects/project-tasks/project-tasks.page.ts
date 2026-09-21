@@ -18,7 +18,10 @@ import { Task } from '../../../core/models/task.model';
 import { CrmDrawerComponent } from '../../../shared/components/crm-drawer/crm-drawer.component';
 import { TaskFormComponent } from '../components/task-form/task-form.component';
 import { TaskDetailsComponent } from '../components/task-details/task-details.component';
-import { TaskFilterComponent, TaskFilterOptions } from '../components/task-filter/task-filter.component';
+import {
+  TaskFilterComponent,
+  TaskFilterOptions,
+} from '../components/task-filter/task-filter.component';
 import { ProjectTasksTableComponent } from '../components/project-tasks-table/project-tasks-table.component';
 import { TaskPriorityEnum } from '../../../core/enums/task-priority.enum';
 
@@ -75,7 +78,7 @@ export class ProjectTasksPage implements OnInit {
               this.errorMessage.set('Failed to load tasks data.');
               this.isLoading.set(false);
               return of({ project: null, tasks: [] });
-            })
+            }),
           );
         }),
         takeUntilDestroyed(this.destroyRef),
@@ -144,7 +147,7 @@ export class ProjectTasksPage implements OnInit {
     const oldPriority = task.priority;
 
     this.tasks.update((currentTasks) =>
-      currentTasks.map((t) => (t.id === task.id ? { ...t, priority: newPriority } : t))
+      currentTasks.map((t) => (t.id === task.id ? { ...t, priority: newPriority } : t)),
     );
 
     this.taskService
@@ -154,7 +157,7 @@ export class ProjectTasksPage implements OnInit {
         error: (err) => {
           console.error('Failed to update task priority via table:', err);
           this.tasks.update((currentTasks) =>
-            currentTasks.map((t) => (t.id === task.id ? { ...t, priority: oldPriority } : t))
+            currentTasks.map((t) => (t.id === task.id ? { ...t, priority: oldPriority } : t)),
           );
           this.errorMessage.set('Could not update task priority. Changes reverted.');
         },

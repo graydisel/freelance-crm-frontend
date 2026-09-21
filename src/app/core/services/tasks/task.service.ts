@@ -17,7 +17,11 @@ export class TaskService {
     return this.http.get<Task[]>(`${this.URL_TASKS}/project/${id}`);
   }
 
-  getFilteredTasks(params: { projectId: string; priority?: string; assigneeId?: string }): Observable<Task[]> {
+  getFilteredTasks(params: {
+    projectId: string;
+    priority?: string;
+    assigneeId?: string;
+  }): Observable<Task[]> {
     let httpParams = new HttpParams().set('projectId', params.projectId);
     if (params.priority && params.priority !== 'all') {
       httpParams = httpParams.set('priority', params.priority);

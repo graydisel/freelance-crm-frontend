@@ -14,5 +14,4 @@ export class DashboardService {
   getDashboardData(): Observable<DashboardMetrics> {
     return this.http.get<DashboardMetrics>(`${this.apiUrl}/dashboard/stats`);
   }
-
 }
