@@ -33,7 +33,7 @@ export class ProjectCardComponent {
   protected readonly ProjectStatusEnum = ProjectStatusEnum;
 
   isExpanded = signal(false);
-  private elementRef = inject(ElementRef);
+  private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
 
   @ViewChild(CrmExpandableTextComponent) expandableText!: CrmExpandableTextComponent;
 
@@ -43,7 +43,7 @@ export class ProjectCardComponent {
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
-    if (this.isExpanded() && !this.elementRef.nativeElement.contains(event.target)) {
+    if (this.isExpanded() && !this.elementRef.nativeElement.contains(event.target as Node)) {
       this.isExpanded.set(false);
       if (this.expandableText) {
         this.expandableText.isExpanded.set(false);

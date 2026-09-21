@@ -62,7 +62,7 @@ export class ProjectLayoutPage implements OnInit {
           this.project.set(project);
           this.isLoading.set(false);
         },
-        error: (err) => {
+        error: () => {
           this.errorMessage.set('Failed to load project details.');
           this.isLoading.set(false);
         },

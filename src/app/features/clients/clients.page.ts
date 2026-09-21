@@ -14,6 +14,7 @@ import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 import { ClientFiltersComponent } from './components/client-filters/client-filters.component';
 import { ClientsTableComponent } from './components/clients-table/clients-table.component';
 import { ClientProfile, ClientsServerResponse } from '../../core/models/client.model';
+import { ClientStatusEnum } from '../../core/enums/client-status.enum';
 import { ClientsService } from '../../core/services/clients/clients.service';
 import { CrmMetricCard } from '../../shared/components/crm-metric-card/crm-metric-card';
 import { CrmDrawerComponent } from '../../shared/components/crm-drawer/crm-drawer.component';
@@ -136,7 +137,7 @@ export class ClientsPageComponent implements OnInit {
   }
 
   protected onArchiveClient(client: ClientProfile): void {
-    this.clientsService.updateClientStatus(client.id, 'archived' as any).subscribe({
+    this.clientsService.updateClientStatus(client.id, ClientStatusEnum.ARCHIVED).subscribe({
       next: () => {
         this.loadClients();
       },

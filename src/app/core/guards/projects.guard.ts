@@ -1,9 +1,8 @@
 import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
-import { AuthService } from '../services/auth/auth.service';
 import { AuthStore } from '../stores/auth.store';
 
-export const projectsGuard: CanActivateFn = (route, state) => {
+export const projectsGuard: CanActivateFn = () => {
   const router = inject(Router);
   const authStore = inject(AuthStore);
 
@@ -17,6 +16,6 @@ export const projectsGuard: CanActivateFn = (route, state) => {
   }
 
   console.warn('Access denied: Not appropriate role');
-  router.navigate(['/login']);
+  void router.navigate(['/login']);
   return false;
 };

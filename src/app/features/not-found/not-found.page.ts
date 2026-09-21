@@ -1,5 +1,4 @@
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../core/services/auth/auth.service';
 import { Router } from '@angular/router';
 import { AuthStore } from '../../core/stores/auth.store';
 
@@ -17,9 +16,9 @@ export class NotFoundPage {
 
   goHome(): void {
     if (this.authStore.isAuthenticated()) {
-      this.router.navigate(['/dashboard']);
+      void this.router.navigate(['/dashboard']);
     } else {
-      this.router.navigate(['/login']);
+      void this.router.navigate(['/login']);
     }
   }
 

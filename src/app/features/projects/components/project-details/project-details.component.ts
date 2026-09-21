@@ -35,7 +35,7 @@ export class ProjectDetailsComponent {
   }
 
   onNavigateClick(): void {
-    this.router.navigate([`/${this.router.url.split('/')[1]}/${this.project().id}/kanban`]);
+    void this.router.navigate([`/${this.router.url.split('/')[1]}/${this.project().id}/kanban`]);
   }
 
   onDeleteClick(): void {
@@ -72,7 +72,7 @@ export class ProjectDetailsComponent {
       .subscribe({
         next: () => {
           this.save.emit();
-          this.router.navigate(['/projects']);
+          void this.router.navigate(['/projects']);
         },
         error: (err) => {
           console.error('Failed to process project deletion/archiving:', err);

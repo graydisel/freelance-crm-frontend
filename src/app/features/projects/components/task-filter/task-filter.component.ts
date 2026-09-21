@@ -18,6 +18,7 @@ import {
 import { CrmButtonComponent } from '../../../../shared/components/crm-button/crm-button';
 import { TaskPriorityEnum } from '../../../../core/enums/task-priority.enum';
 import { UserRoleEnum } from '../../../../core/enums/user-role.enum';
+import { User } from '../../../../core/models/user.model';
 
 export interface TaskFilterOptions {
   priority?: string;
@@ -49,7 +50,7 @@ export class TaskFilterComponent {
   protected readonly TaskPriorityEnum = TaskPriorityEnum;
   protected readonly priorities = Object.values(TaskPriorityEnum);
 
-  protected readonly assigneeSearchResults = signal<any[]>([]);
+  protected readonly assigneeSearchResults = signal<User[]>([]);
   protected readonly selectedAssigneeName = signal<string>('All Assignees');
   private assigneeSearchSubject = new Subject<string>();
 
@@ -71,8 +72,8 @@ export class TaskFilterComponent {
             .pipe(catchError(() => of([])));
         }),
       )
-      .subscribe((res: any) => {
-        const data = Array.isArray(res) ? res : res?.data || [];
+      .subscribe((res) => {
+        const data = res || [];
         this.assigneeSearchResults.set(data);
       });
 

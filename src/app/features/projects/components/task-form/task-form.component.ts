@@ -25,6 +25,8 @@ import { TaskStatusEnum } from '../../../../core/enums/task-status.enum';
 import { TaskPriorityEnum } from '../../../../core/enums/task-priority.enum';
 import { UserRoleEnum } from '../../../../core/enums/user-role.enum';
 import { CrmValidators } from '../../../../core/validators/custom-validators';
+import { User } from '../../../../core/models/user.model';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-task-form',
@@ -65,7 +67,7 @@ export class TaskFormComponent implements OnInit {
   protected readonly isSubmitting = signal(false);
   protected readonly errorMessage = signal<string | null>(null);
 
-  protected readonly assigneeSearchResults = signal<any[]>([]);
+  protected readonly assigneeSearchResults = signal<User[]>([]);
   protected readonly selectedAssigneeName = signal<string>('');
   private assigneeSearchSubject = new Subject<string>();
 
@@ -96,8 +98,8 @@ export class TaskFormComponent implements OnInit {
             .pipe(catchError(() => of([])));
         }),
       )
-      .subscribe((res: any) => {
-        const data = Array.isArray(res) ? res : res?.data || [];
+      .subscribe((res) => {
+        const data = res || [];
         this.assigneeSearchResults.set(data);
       });
   }
@@ -160,11 +162,13 @@ export class TaskFormComponent implements OnInit {
             this.isSubmitting.set(false);
             this.saved.emit();
           },
-          error: (err) => {
+          error: (err: unknown) => {
             this.isSubmitting.set(false);
-            this.errorMessage.set(
-              err.error?.message || 'An unexpected error occurred while saving.',
-            );
+            const message =
+              err instanceof HttpErrorResponse
+                ? (err.error as { message?: string } | undefined)?.message
+                : undefined;
+            this.errorMessage.set(message || 'An unexpected error occurred while saving.');
           },
         });
     } else {
@@ -191,11 +195,13 @@ export class TaskFormComponent implements OnInit {
             this.selectedAssigneeName.set('');
             this.saved.emit();
           },
-          error: (err) => {
+          error: (err: unknown) => {
             this.isSubmitting.set(false);
-            this.errorMessage.set(
-              err.error?.message || 'An unexpected error occurred while creating.',
-            );
+            const message =
+              err instanceof HttpErrorResponse
+                ? (err.error as { message?: string } | undefined)?.message
+                : undefined;
+            this.errorMessage.set(message || 'An unexpected error occurred while creating.');
           },
         });
     }

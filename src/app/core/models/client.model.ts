@@ -23,7 +23,7 @@ export interface CreateClientDto {
   status?: ClientStatusEnum;
 }
 
-export interface UpdateClientDto extends CreateClientDto {}
+export type UpdateClientDto = CreateClientDto;
 
 export interface ClientsServerResponse {
   data: ClientProfile[];

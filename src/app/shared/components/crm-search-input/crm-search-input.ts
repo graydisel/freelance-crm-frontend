@@ -41,7 +41,7 @@ const CRM_SEARCH_INPUT_PROVIDER: Provider = {
 })
 export class CrmSearchInput {
   private readonly fb = inject(NonNullableFormBuilder);
-  private readonly elementRef = inject(ElementRef);
+  private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
 
   placeholder = input<string>('Search...');
   labelKey = input<string>('name');
@@ -81,7 +81,7 @@ export class CrmSearchInput {
             : of({ data: [] });
         }),
       )
-      .subscribe((res: any) => {
+      .subscribe((res: { data: any[] } | null | undefined) => {
         const data = res?.data ?? [];
         this.searchResultsPreview.set(data);
         this.showDropdown.set(data.length > 0);
@@ -92,11 +92,11 @@ export class CrmSearchInput {
     this.searchControl.setValue(value || '', { emitEvent: false });
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: (value: string) => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 
@@ -121,8 +121,8 @@ export class CrmSearchInput {
     this.enterPressed.emit(this.searchControl.value);
   }
 
-  protected selectPreviewClient(item: any): void {
-    const label = item[this.labelKey()];
+  protected selectPreviewClient(item: Record<string, any>): void {
+    const label = String(item[this.labelKey()]);
     this.searchControl.setValue(label);
     this.searchResultsPreview.set([]);
     this.showDropdown.set(false);

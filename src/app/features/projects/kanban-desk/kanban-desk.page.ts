@@ -19,7 +19,6 @@ import { TaskService } from '../../../core/services/tasks/task.service';
 import { TaskPriorityEnum } from '../../../core/enums/task-priority.enum';
 import { Task } from '../../../core/models/task.model';
 import { CrmDrawerComponent } from '../../../shared/components/crm-drawer/crm-drawer.component';
-import { CrmButtonComponent } from '../../../shared/components/crm-button/crm-button';
 import { TaskFormComponent } from '../components/task-form/task-form.component';
 import { TaskDetailsComponent } from '../components/task-details/task-details.component';
 import {
@@ -105,7 +104,7 @@ export class KanbanDeskPage implements OnInit {
             project: this.projectsService.getProject(id),
             tasks: this.taskService.getTasks(id),
           }).pipe(
-            catchError((err) => {
+            catchError(() => {
               this.errorMessage.set('Failed to load kanban board data.');
               this.isLoading.set(false);
               return of({ project: null, tasks: [] });

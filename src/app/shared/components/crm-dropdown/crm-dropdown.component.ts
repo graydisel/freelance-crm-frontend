@@ -29,7 +29,7 @@ const CRM_DROPDOWN_PROVIDER: Provider = {
   styleUrl: './crm-dropdown.component.scss',
 })
 export class CrmDropdownComponent implements ControlValueAccessor {
-  private readonly elementRef = inject(ElementRef);
+  private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
 
   placeholder = input<string>('Select an option...');
   searchable = input<boolean>(false);
@@ -49,11 +49,11 @@ export class CrmDropdownComponent implements ControlValueAccessor {
     this.value.set(value);
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: (value: any) => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 
@@ -92,7 +92,7 @@ export class CrmDropdownComponent implements ControlValueAccessor {
   @HostListener('document:click', ['$event'])
   protected onClickOutside(event: MouseEvent): void {
     if (!this.elementRef.nativeElement) return;
-    const clickedInside = this.elementRef.nativeElement.contains(event.target);
+    const clickedInside = this.elementRef.nativeElement.contains(event.target as Node);
     if (!clickedInside) {
       this.close();
     }

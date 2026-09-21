@@ -28,6 +28,8 @@ import { Subject, catchError, debounceTime, distinctUntilChanged, of, switchMap 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UsersService } from '../../../../core/services/users/users.service';
 import { UserRoleEnum } from '../../../../core/enums/user-role.enum';
+import { User } from '../../../../core/models/user.model';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-client-details',
@@ -83,7 +85,7 @@ export class ClientDetailsComponent {
     status: [ClientStatusEnum.LEAD, Validators.required],
   });
 
-  searchResults = signal<any[]>([]);
+  searchResults = signal<User[]>([]);
   private searchSubject = new Subject<string>();
 
   statusOptions = Object.values(ClientStatusEnum);
@@ -101,8 +103,8 @@ export class ClientDetailsComponent {
             .pipe(catchError(() => of([])));
         }),
       )
-      .subscribe((res: any) => {
-        this.searchResults.set(Array.isArray(res) ? res : res?.data || []);
+      .subscribe((res) => {
+        this.searchResults.set(Array.isArray(res) ? res : []);
       });
 
     this.editForm.valueChanges.pipe(takeUntilDestroyed()).subscribe(() => {
@@ -196,15 +198,18 @@ export class ClientDetailsComponent {
           this.isEditMode.set(false);
           this.saved.emit();
         },
-        error: (err) => {
+        error: (err: unknown) => {
           this.isSubmitting.set(false);
-          if (err.status === 409 || err?.error?.statusCode === 409) {
-            this.errorMessage.set(
-              err.error?.message || 'This email is already taken by another company.',
-            );
-          } else {
-            this.errorMessage.set('An unexpected error occurred while saving.');
+          if (err instanceof HttpErrorResponse) {
+            const errorObj = err.error as { statusCode?: number; message?: string } | undefined;
+            if (err.status === 409 || errorObj?.statusCode === 409) {
+              this.errorMessage.set(
+                errorObj?.message || 'This email is already taken by another company.',
+              );
+              return;
+            }
           }
+          this.errorMessage.set('An unexpected error occurred while saving.');
         },
       });
   }

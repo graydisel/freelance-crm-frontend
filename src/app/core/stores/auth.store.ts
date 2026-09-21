@@ -1,4 +1,4 @@
-import { IAuthResponse, ILoginCredentials, IUser, TAuthState } from '../models/auth.model';
+import { ILoginCredentials, IUser, TAuthState } from '../models/auth.model';
 import {
   patchState,
   signalStore,
@@ -14,6 +14,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { catchError, of, pipe, switchMap, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { HttpErrorResponse } from '@angular/common/http';
 
 const initialState: TAuthState = {
   user: null,
@@ -62,12 +63,16 @@ export const AuthStore = signalStore(
                     isLoading: false,
                   });
 
-                  router.navigate(['/dashboard']);
+                  void router.navigate(['/dashboard']);
                 }),
-                catchError((err) => {
+                catchError((err: unknown) => {
+                  const message =
+                    err instanceof HttpErrorResponse
+                      ? (err.error as { message?: string } | undefined)?.message
+                      : undefined;
                   patchState(store, {
                     isLoading: false,
-                    error: err?.error?.message || 'Login failed',
+                    error: message || 'Login failed',
                   });
                   return of(null);
                 }),
@@ -82,7 +87,7 @@ export const AuthStore = signalStore(
             localStorage.removeItem(environment.userKey);
           }
           patchState(store, initialState);
-          router.navigate(['/login']);
+          void router.navigate(['/login']);
         },
 
         initAuthFromStorage() {
