@@ -1,7 +1,5 @@
 import { Routes } from '@angular/router';
-import { dashboardGuard } from './core/guards/dashboard.guard';
-import { clientsGuard } from './core/guards/clients.guard';
-import { projectsGuard } from './core/guards/projects.guard';
+import { rolesGuard } from './core/guards/roles.guard';
 
 export const routes: Routes = [
   {
@@ -17,26 +15,30 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     title: 'Dashboard',
-    canActivate: [dashboardGuard],
+    canActivate: [rolesGuard],
+    data: { roles: ['manager', 'admin'] },
     loadComponent: () => import('./features/dashboard/dashboard.page').then((m) => m.DashboardPage),
   },
   {
     path: 'clients',
     title: 'Clients',
-    canActivate: [clientsGuard],
+    canActivate: [rolesGuard],
+    data: { roles: ['manager', 'admin'] },
     loadComponent: () =>
       import('./features/clients/clients.page').then((m) => m.ClientsPageComponent),
   },
   {
     path: 'projects',
     title: 'Projects',
-    canActivate: [projectsGuard],
+    canActivate: [rolesGuard],
+    data: { roles: ['manager', 'admin'] },
     loadComponent: () =>
       import('./features/projects/projects.page').then((m) => m.ProjectsPageComponent),
   },
   {
     path: 'projects/:id',
-    canActivate: [projectsGuard],
+    canActivate: [rolesGuard],
+    data: { roles: ['manager', 'admin', 'developer'] },
     loadComponent: () =>
       import('./features/projects/project-layout/project-layout.page').then(
         (m) => m.ProjectLayoutPage,
@@ -62,6 +64,11 @@ export const routes: Routes = [
           import('./features/projects/kanban-desk/kanban-desk.page').then((m) => m.KanbanDeskPage),
       },
     ],
+  },
+  {
+    path: 'forbidden',
+    title: 'Forbidden',
+    loadComponent: () => import('./features/forbidden/forbidden.page').then((m) => m.ForbiddenPage),
   },
   {
     path: '**',
