@@ -9,4 +9,4 @@ import { RouterLink } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './forbidden.page.scss',
 })
-export class ForbiddenPage { }
+export class ForbiddenPage {}
