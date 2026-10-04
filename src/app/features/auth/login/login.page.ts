@@ -1,6 +1,5 @@
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { CrmButtonComponent } from '../../../shared/components/crm-button/crm-button';
 import { AuthStore } from '../../../core/stores/auth.store';
 
@@ -13,7 +12,6 @@ import { AuthStore } from '../../../core/stores/auth.store';
 })
 export class LoginPage {
   protected readonly fb = inject(NonNullableFormBuilder);
-  protected readonly router = inject(Router);
   protected readonly authStore = inject(AuthStore);
 
   loginForm = this.fb.group({
@@ -28,5 +26,13 @@ export class LoginPage {
     }
 
     this.authStore.login(this.loginForm.getRawValue());
+  }
+
+  onManagerDemoLogin(): void {
+    this.loginForm.patchValue({
+      email: 'manager@crm.com',
+      password: 'password123',
+    });
+    this.onSubmit();
   }
 }

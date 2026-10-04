@@ -9,7 +9,7 @@ export interface Task {
   status: TaskStatusEnum;
   priority: TaskPriorityEnum;
   creator: User;
-  assignee: User;
+  assignee: User | null;
   createdAt: string;
 }
 

@@ -6,69 +6,55 @@
     </header>
 
     @if (authStore.error()) {
-      <div class="crm-form__alert crm-form__alert--danger" role="alert">
-        {{ authStore.error() }}
-      </div>
+    <div class="crm-form__alert crm-form__alert--danger" role="alert">
+      {{ authStore.error() }}
+    </div>
     }
 
     <form class="crm-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="crm-form__fields">
         <div class="crm-form__field">
           <label class="crm-form__label" for="login-email">Email</label>
-          <input
-            id="login-email"
-            formControlName="email"
-            type="email"
-            class="crm-form__input"
-            placeholder="user@crm.com"
-            autocomplete="email" />
+          <input id="login-email" formControlName="email" type="email" class="crm-form__input"
+            placeholder="user@crm.com" autocomplete="email" />
 
           @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
-            @if (loginForm.get('email')?.hasError('required')) {
-              <p class="crm-form__error">Email required</p>
-            }
-            @if (loginForm.get('email')?.hasError('email')) {
-              <p class="crm-form__error">Not correct email format</p>
-            }
+          @if (loginForm.get('email')?.hasError('required')) {
+          <p class="crm-form__error">Email required</p>
+          }
+          @if (loginForm.get('email')?.hasError('email')) {
+          <p class="crm-form__error">Not correct email format</p>
+          }
           }
         </div>
 
         <div class="crm-form__field">
           <label class="crm-form__label" for="login-password">Password</label>
-          <input
-            id="login-password"
-            formControlName="password"
-            type="password"
-            class="crm-form__input"
-            placeholder="••••••••"
-            autocomplete="current-password" />
+          <input id="login-password" formControlName="password" type="password" class="crm-form__input"
+            placeholder="••••••••" autocomplete="current-password" />
 
           @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
-            @if (loginForm.get('password')?.hasError('required')) {
-              <p class="crm-form__error">Password required</p>
-            }
-            @if (loginForm.get('password')?.hasError('minlength')) {
-              <p class="crm-form__error">Password length 6 symbols minimum</p>
-            }
+          @if (loginForm.get('password')?.hasError('required')) {
+          <p class="crm-form__error">Password required</p>
+          }
+          @if (loginForm.get('password')?.hasError('minlength')) {
+          <p class="crm-form__error">Password length 6 symbols minimum</p>
+          }
           }
         </div>
       </div>
 
       <div class="crm-form__actions">
-        <button
-          crm-btn
-          type="submit"
-          variant="primary"
-          size="lg"
-          [loading]="authStore.isLoading()">
+        <button crm-btn type="submit" variant="primary" size="lg" [loading]="authStore.isLoading()">
           Sign In
         </button>
       </div>
     </form>
-    <div style="margin-top: 20px; padding: 12px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px; text-align: center; font-size: 13px; color: #475569;">
+    <div
+      style="margin-top: 20px; padding: 12px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px; text-align: center; font-size: 13px; color: #475569;">
       <p style="margin: 0 0 6px 0; font-weight: bold;">💡 Demo Access:</p>
-      <div>👔 <b>Manager:</b> manager&#64;crm.com / password123</div>
+      <button crm-btn type="button" variant="secondary" size="md" [loading]="authStore.isLoading()"
+        (click)="onManagerDemoLogin()">Login as manager</button>
     </div>
   </div>
 </div>
-
