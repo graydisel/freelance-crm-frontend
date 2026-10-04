@@ -1,26 +1,17 @@
-import {
-  Component,
-  computed,
-  effect,
-  inject,
-  signal,
-  DestroyRef,
-  ChangeDetectionStrategy,
-} from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 import { ProjectFiltersComponent } from './components/project-filters/project-filters.component';
 import { ProjectCardComponent } from './components/project-card/project-card.component';
-import { Project, ProjectsServerResponse } from '../../core/models/project.model';
-import { ProjectsService } from '../../core/services/projects/projects.service';
+import { Project } from '../../core/models/project.model';
 import { ProjectTableComponent } from './components/project-table/project-table.component';
 import { CrmPagination } from '../../shared/components/crm-pagination/crm-pagination';
 import { CrmButtonComponent } from '../../shared/components/crm-button/crm-button';
 import { CrmDrawerComponent } from '../../shared/components/crm-drawer/crm-drawer.component';
 import { ProjectFormComponent } from './components/project-form/project-form.component';
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
+import { ProjectsStore } from '../../core/stores/projects.store';
 
 @Component({
   selector: 'app-projects-page',
@@ -39,81 +30,52 @@ import { ProjectDetailsComponent } from './components/project-details/project-de
     ProjectDetailsComponent,
   ],
   templateUrl: './projects.page.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./projects.page.scss'],
 })
 export class ProjectsPageComponent {
-  private readonly projectsService = inject(ProjectsService);
-  private readonly destroyRef = inject(DestroyRef);
+  protected readonly store = inject(ProjectsStore);
 
-  protected readonly currentPage = signal<number>(1);
-  protected readonly pageSize = signal<number>(10);
-  protected readonly searchQuery = signal<string>('');
-  protected readonly statusFilter = signal<string>('all');
+  protected readonly currentPage = this.store.currentPage;
+  protected readonly pageSize = this.store.pageSize;
+
   protected readonly viewMode = signal<'grid' | 'table'>('grid');
   protected readonly isDrawerOpen = signal<boolean>(false);
   protected readonly drawerMode = signal<'create' | 'details' | 'edit'>('create');
   protected readonly selectedProject = signal<Project | null>(null);
 
-  private readonly serverResponse = signal<ProjectsServerResponse | null>(null);
-
-  constructor() {
-    effect(() => {
-      this.loadProjects();
-    });
-  }
-
-  private loadProjects(): void {
-    this.projectsService
-      .getProjects(this.currentPage(), this.pageSize(), this.searchQuery(), this.statusFilter())
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (response) => {
-          this.serverResponse.set(response);
-        },
-        error: (err) => console.error('Error loading projects:', err),
-      });
-  }
-
-  protected readonly paginatedProjects = computed<Project[]>(() => {
-    return this.serverResponse()?.data ?? [];
-  });
-
-  protected readonly totalItems = computed<number>(() => {
-    return this.serverResponse()?.meta.totalItems ?? 0;
-  });
+  protected readonly paginatedProjects = computed<Project[]>(() => this.store.projects());
+  protected readonly totalItems = computed<number>(() => this.store.totalItems());
 
   protected readonly filteredPlanningCount = computed(
-    () => this.serverResponse()?.meta.filteredMetrics?.planningCount ?? 0,
+    () => this.store.filteredMetrics()?.planningCount ?? 0,
   );
   protected readonly filteredActiveCount = computed(
-    () => this.serverResponse()?.meta.filteredMetrics?.activeCount ?? 0,
+    () => this.store.filteredMetrics()?.activeCount ?? 0,
   );
   protected readonly filteredReviewCount = computed(
-    () => this.serverResponse()?.meta.filteredMetrics?.reviewCount ?? 0,
+    () => this.store.filteredMetrics()?.reviewCount ?? 0,
   );
   protected readonly filteredCompletedCount = computed(
-    () => this.serverResponse()?.meta.filteredMetrics?.completedCount ?? 0,
+    () => this.store.filteredMetrics()?.completedCount ?? 0,
   );
   protected readonly filteredPausedCount = computed(
-    () => this.serverResponse()?.meta.filteredMetrics?.pausedCount ?? 0,
+    () => this.store.filteredMetrics()?.pausedCount ?? 0,
   );
   protected readonly filteredTotalCount = computed(
-    () => this.serverResponse()?.meta.filteredMetrics?.totalCount ?? 0,
+    () => this.store.filteredMetrics()?.totalCount ?? 0,
   );
 
   protected onPageChange(newPage: number): void {
-    this.currentPage.set(newPage);
+    this.store.setPage(newPage);
   }
 
   protected onSearchChange(query: string): void {
-    this.searchQuery.set(query);
-    this.currentPage.set(1);
+    this.store.setSearchQuery(query);
   }
 
   protected onStatusChange(status: string): void {
-    this.statusFilter.set(status);
-    this.currentPage.set(1);
+    this.store.setStatusFilter(status);
   }
 
   protected setViewMode(mode: 'grid' | 'table'): void {
@@ -146,6 +108,11 @@ export class ProjectsPageComponent {
 
   protected onProjectSaved(): void {
     this.closeDrawer();
-    this.loadProjects();
+    this.store.loadProjects({
+      page: this.store.currentPage(),
+      limit: this.store.pageSize(),
+      search: this.store.searchQuery(),
+      status: this.store.statusFilter(),
+    });
   }
 }

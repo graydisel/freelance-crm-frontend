@@ -15,7 +15,7 @@
     <h3 class="project-details__section-title">Client Information</h3>
     <div class="project-details__info-row">
       <span class="project-details__info-label">Company Name:</span>
-      <span class="project-details__info-value">{{ project().client.companyName || '—' }}</span>
+      <span class="project-details__info-value">{{ project().client?.companyName || '—' }}</span>
     </div>
   </div>
 
@@ -23,7 +23,7 @@
     <h3 class="project-details__section-title">Manager Information</h3>
     <div class="project-details__info-row">
       <span class="project-details__info-label">Full Name:</span>
-      <span class="project-details__info-value">{{ project().manager.fullName || '—' }}</span>
+      <span class="project-details__info-value">{{ project().manager?.fullName || '—' }}</span>
     </div>
   </div>
 

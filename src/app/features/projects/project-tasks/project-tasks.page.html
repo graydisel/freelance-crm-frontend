@@ -1,18 +1,18 @@
 <div class="tasks-page-container">
   <app-task-filter (filterChange)="onFilterChange($event)" (openAddTask)="openAddTask()"></app-task-filter>
 
-  @if (isLoading()) {
+  @if (store.isLoading()) {
     <div class="loading-state">
       <div class="spinner"></div>
       <p>Loading tasks...</p>
     </div>
-  } @else if (errorMessage()) {
+  } @else if (store.error()) {
     <div class="error-state">
-      <p>{{ errorMessage() }}</p>
+      <p>{{ store.error() }}</p>
     </div>
-  } @else if (project()) {
+  } @else if (store.project()) {
     <app-project-tasks-table 
-      [tasks]="tasks()" 
+      [tasks]="store.tasks()" 
       (taskClick)="viewTask($event)" 
       (priorityChange)="onPriorityChange($event)">
     </app-project-tasks-table>
@@ -22,7 +22,7 @@
 <crm-drawer [isOpen]="isDrawerOpen()" [title]="drawerTitle()" (closed)="closeDrawer()">
   @if (isDrawerOpen()) {
     @if (isEditingTask() || !selectedTask()) {
-      <app-task-form [task]="selectedTask()" [projectId]="project()!.id" (saved)="onTaskSaved()"></app-task-form>
+      <app-task-form [task]="selectedTask()" [projectId]="store.project()!.id" (saved)="onTaskSaved()"></app-task-form>
     } @else {
       <app-task-details [task]="selectedTask()!" (edit)="isEditingTask.set(true)"></app-task-details>
     }

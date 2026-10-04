@@ -1,16 +1,16 @@
 <app-task-filter (filterChange)="onFilterChange($event)" (openAddTask)="openAddTask()"></app-task-filter>
 
 <div class="kanban-board-container">
-  @if (isLoading()) {
+  @if (store.isLoading()) {
   <div class="loading-state">
     <div class="spinner"></div>
     <p>Loading board...</p>
   </div>
-  } @else if (errorMessage()) {
+  } @else if (store.error()) {
   <div class="error-state">
-    <p>{{ errorMessage() }}</p>
+    <p>{{ store.error() }}</p>
   </div>
-  } @else if (project()) {
+  } @else if (store.project()) {
   <div class="kanban-grid" cdkDropListGroup>
 
     <div class="grid-header-cell corner">Status Priority</div>
@@ -29,7 +29,7 @@
 
     @for (status of statuses; track status) {
     @let cellKey = status + '_' + priority;
-    @let cellTasks = boardGrid()[cellKey];
+    @let cellTasks = store.boardGrid()[cellKey];
 
     <div class="grid-drop-cell" cdkDropList [id]="cellKey" [cdkDropListData]="cellTasks"
       (cdkDropListDropped)="onTaskDrop($event)">
@@ -61,9 +61,9 @@
 <crm-drawer [isOpen]="isDrawerOpen()" [title]="drawerTitle()" (closed)="closeDrawer()">
   @if (isDrawerOpen()) {
   @if (isEditingTask() || !selectedTask()) {
-  <app-task-form [task]="selectedTask()" [projectId]="project()!.id" (saved)="onTaskSaved()"></app-task-form>
+  <app-task-form [task]="selectedTask()" [projectId]="store.project()!.id" (saved)="onTaskSaved()"></app-task-form>
   } @else {
   <app-task-details [task]="selectedTask()!" (edit)="isEditingTask.set(true)" (delete)="deleteTask(selectedTask()!)"></app-task-details>
   }
   }
-</crm-drawer>
+</crm-drawer>

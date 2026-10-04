@@ -1,22 +1,11 @@
 import { CurrencyPipe, PercentPipe } from '@angular/common';
-import {
-  Component,
-  computed,
-  inject,
-  OnInit,
-  signal,
-  DestroyRef,
-  ChangeDetectionStrategy,
-} from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { DashboardService } from '../../core/services/dashboard/dashboard.service';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 import { RecentClientsTable } from './components/recent-clients-table/recent-clients-table';
 import { ProjectProgressList } from './components/project-progress-list/project-progress-list';
 import { CrmButtonComponent } from '../../shared/components/crm-button/crm-button';
-import { DashboardMetrics } from '../../core/models/dashboard.model';
-import { createEmptyMetrics } from './creators/metrics-creator';
 import { CrmMetricCard } from '../../shared/components/crm-metric-card/crm-metric-card';
+import { DashboardStore } from '../../core/stores/dashboard.store';
 
 @Component({
   selector: 'app-dashboard',
@@ -30,51 +19,19 @@ import { CrmMetricCard } from '../../shared/components/crm-metric-card/crm-metri
     CrmButtonComponent,
   ],
   templateUrl: './dashboard.page.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './dashboard.page.scss',
 })
-export class DashboardPage implements OnInit {
-  private readonly dashboardService = inject(DashboardService);
-  private readonly destroyRef = inject(DestroyRef);
+export class DashboardPage {
+  protected readonly store = inject(DashboardStore);
 
-  protected readonly isRefreshing = signal(false);
-
-  protected readonly metrics = signal<DashboardMetrics>(createEmptyMetrics());
-
-  ngOnInit(): void {
-    this.loadData();
-  }
-
-  private loadData(): void {
-    this.dashboardService
-      .getDashboardData()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (metrics) => {
-          this.metrics.set(metrics);
-
-          this.isRefreshing.set(false);
-        },
-        error: (err) => {
-          console.error('Error with dashboard data:', err);
-          this.isRefreshing.set(false);
-        },
-      });
-  }
-
-  protected readonly tasksProgress = computed(() => {
-    const { tasksTotal, tasksCompleted } = this.metrics();
-    return tasksTotal === 0 ? 0 : tasksCompleted / tasksTotal;
-  });
-
-  protected readonly summaryText = computed(() => {
-    const { activeClientsCount, projectsActive, tasksCompleted } = this.metrics();
-    return `${activeClientsCount} active clients · ${projectsActive} live projects · ${tasksCompleted} tasks completed this quarter`;
-  });
+  protected readonly isRefreshing = this.store.isLoading;
+  protected readonly metrics = this.store.metrics;
+  protected readonly tasksProgress = this.store.tasksProgress;
+  protected readonly summaryText = this.store.summaryText;
 
   protected refreshData(): void {
     if (this.isRefreshing()) return;
-    this.isRefreshing.set(true);
-    this.loadData();
+    this.store.loadData();
   }
 }
