@@ -44,13 +44,12 @@ export class ClientFiltersComponent {
   leadsCount = input<number>(0);
   archivedCount = input<number>(0);
 
-  protected readonly clientSearchFn = (term: string) => this.clientsService.getSearchPreview(term);
-
   searchChange = output<string>();
   statusChange = output<string>();
 
   protected readonly isLoading = signal(false);
   protected readonly currentStatus = signal<string>('all');
+  protected readonly clientSearchFn = (term: string) => this.clientsService.getSearchPreview(term);
 
   searchForm = this.fb.group({
     text: [''],
