@@ -22,7 +22,12 @@
       </div>
       } @else {
       <div [formGroup]="editForm" class="crm-client-details__edit-row">
-        <input formControlName="companyName" class="crm-form__input" placeholder="Company Name" />
+        <div style="display: flex; flex-direction: column;">
+          <input formControlName="companyName" class="crm-form__input" placeholder="Company Name" />
+          @if (editForm.controls.companyName.invalid && editForm.controls.companyName.touched) {
+          <div class="crm-form__error">Required</div>
+          }
+        </div>
         <select formControlName="status" class="crm-form__select">
           @for (status of statusOptions; track status) {
           <option [value]="status">{{ status }}</option>
@@ -56,11 +61,15 @@
               {{ editForm.value.contactPerson || 'Search or add contact person' }}
             </div>
             @for (user of searchResults(); track user.id) {
-            <div crm-dropdown-option [value]="`${user.profile.firstName} ${user.profile.lastName}`">{{ user.profile.firstName }} {{
+            <div crm-dropdown-option [value]="`${user.profile.firstName} ${user.profile.lastName}`">{{
+              user.profile.firstName }} {{
               user.profile.lastName
               }} ({{ user.email }})</div>
             }
           </crm-dropdown>
+          @if (editForm.controls.contactPerson.invalid && editForm.controls.contactPerson.touched) {
+          <div class="crm-form__error">Required</div>
+          }
           }
         </div>
 
@@ -70,6 +79,9 @@
           <p><a [href]="'mailto:' + activeClient.contactEmail">{{ activeClient.contactEmail }}</a></p>
           } @else {
           <input formControlName="contactEmail" class="crm-form__input" type="email" />
+          @if (editForm.controls.contactEmail.invalid && editForm.controls.contactEmail.touched) {
+          <div class="crm-form__error">Valid email is required</div>
+          }
           }
         </div>
 
@@ -79,7 +91,10 @@
           <p><a [href]="'tel:' + activeClient.phone">{{ activeClient.phone || '—' }}</a></p>
           } @else {
           <input formControlName="phone" class="crm-form__input" mask="+0 (000) 000-00-00"
-            [dropSpecialCharacters]="false" />
+            [dropSpecialCharacters]="false" [validation]="false" />
+          @if (editForm.controls.phone.invalid && editForm.controls.phone.touched) {
+          <div class="crm-form__error">Phone is required</div>
+          }
           }
         </div>
 
@@ -89,6 +104,9 @@
           <p>{{ (activeClient.contractValue || 0) | currency:'USD':'symbol':'1.0-0' }}</p>
           } @else {
           <input type="number" formControlName="contractValue" class="crm-form__input" />
+          @if (editForm.controls.contractValue.invalid && editForm.controls.contractValue.touched) {
+          <div class="crm-form__error">Contract Value is required and must be >= 0</div>
+          }
           }
         </div>
 
