@@ -31,6 +31,8 @@ import { UserRoleEnum } from '../../../../core/enums/user-role.enum';
 import { User } from '../../../../core/models/user.model';
 import { HttpErrorResponse } from '@angular/common/http';
 
+import { AuthStore } from '../../../../core/stores/auth.store';
+
 @Component({
   selector: 'app-client-details',
   standalone: true,
@@ -47,7 +49,7 @@ import { HttpErrorResponse } from '@angular/common/http';
     CrmDropdownOptionComponent,
   ],
   templateUrl: './client-details.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./client-details.component.scss'],
 })
 export class ClientDetailsComponent {
@@ -59,6 +61,7 @@ export class ClientDetailsComponent {
   isSubmitting = signal<boolean>(false);
   errorMessage = signal<string | null>(null);
 
+  protected readonly authStore = inject(AuthStore);
   private clientsService = inject(ClientsService);
   private fb = inject(NonNullableFormBuilder);
   private usersService = inject(UsersService);

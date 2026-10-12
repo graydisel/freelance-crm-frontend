@@ -11,7 +11,11 @@
       <div style="display: flex; gap: 8px; align-items: center;">
         <crm-status-badge [status]="activeClient.status"></crm-status-badge>
         @if (activeClient.status !== 'archived') {
-        <button class="crm-table-action-btn" (click)="onArchiveClient()" title="Archive Client">
+        <button
+          class="crm-table-action-btn"
+          [disabled]="authStore.isDemo()"
+          [title]="authStore.isDemo() ? 'Disabled in demo mode' : 'Archive Client'"
+          (click)="onArchiveClient()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
             <polyline points="21 8 21 21 3 21 3 8"></polyline>
             <rect x="1" y="3" width="22" height="5"></rect>
@@ -131,12 +135,30 @@
 
   <div class="crm-client-details__footer">
     @if (!isEditMode()) {
-    <button crm-btn variant="primary" (click)="toggleEditMode()">Edit Details</button>
+    <button
+      crm-btn
+      variant="primary"
+      [disabled]="authStore.isDemo()"
+      [title]="authStore.isDemo() ? 'Disabled in demo mode' : ''"
+      (click)="toggleEditMode()">
+      Edit Details
+      @if (authStore.isDemo()) {
+        <span class="crm-demo-badge">Demo</span>
+      }
+    </button>
     } @else {
     <button crm-btn variant="secondary" (click)="toggleEditMode()">Cancel</button>
-    <button crm-btn variant="primary" (click)="onSubmit()" [disabled]="isSubmitting() || editForm.invalid"
+    <button
+      crm-btn
+      variant="primary"
+      (click)="onSubmit()"
+      [disabled]="isSubmitting() || editForm.invalid || authStore.isDemo()"
+      [title]="authStore.isDemo() ? 'Disabled in demo mode' : ''"
       [loading]="isSubmitting()">
       Save Changes
+      @if (authStore.isDemo()) {
+        <span class="crm-demo-badge">Demo</span>
+      }
     </button>
     }
   </div>

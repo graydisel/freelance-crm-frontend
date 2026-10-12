@@ -31,7 +31,33 @@
   </div>
 
   <div class="task-details__actions" style="display: flex; gap: 8px;">
-    <button crm-btn type="button" variant="danger" size="md" (click)="onDeleteClick()">Delete Task</button>
-    <button crm-btn type="button" variant="primary" size="md" (click)="onEditClick()">Edit Task</button>
+    <button
+      *hasPermission="'tasks:delete'"
+      crm-btn
+      type="button"
+      variant="danger"
+      size="md"
+      [disabled]="authStore.isDemo()"
+      [title]="authStore.isDemo() ? 'Disabled in demo mode' : 'Delete Task'"
+      (click)="onDeleteClick()">
+      Delete Task
+      @if (authStore.isDemo()) {
+        <span class="crm-demo-badge">Demo</span>
+      }
+    </button>
+    <button
+      *hasPermission="'tasks:update'"
+      crm-btn
+      type="button"
+      variant="primary"
+      size="md"
+      [disabled]="authStore.isDemo()"
+      [title]="authStore.isDemo() ? 'Disabled in demo mode' : 'Edit Task'"
+      (click)="onEditClick()">
+      Edit Task
+      @if (authStore.isDemo()) {
+        <span class="crm-demo-badge">Demo</span>
+      }
+    </button>
   </div>
 </div>

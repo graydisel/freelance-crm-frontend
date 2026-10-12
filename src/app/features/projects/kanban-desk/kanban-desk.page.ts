@@ -25,6 +25,8 @@ import {
 import { Dialog, DialogModule } from '@angular/cdk/dialog';
 import { ConfirmationModalComponent } from '../../../shared/components/confirmation-modal/confirmation-modal.component';
 import { TasksStore } from '../../../core/stores/tasks.store';
+import { AuthStore } from '../../../core/stores/auth.store';
+import { HasPermissionDirective } from '../../../shared/directives/has-permission.directive';
 
 @Component({
   selector: 'app-kanban-desk',
@@ -37,6 +39,7 @@ import { TasksStore } from '../../../core/stores/tasks.store';
     TaskFormComponent,
     TaskDetailsComponent,
     TaskFilterComponent,
+    HasPermissionDirective,
   ],
   templateUrl: './kanban-desk.page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -48,9 +51,19 @@ export class KanbanDeskPage implements OnInit {
   private readonly dialog = inject(Dialog);
 
   protected readonly store = inject(TasksStore);
+  protected readonly authStore = inject(AuthStore);
 
   protected readonly statuses = Object.values(TaskStatusEnum);
   protected readonly priorities = Object.values(TaskPriorityEnum);
+
+  dropListEnterPredicate = (status: TaskStatusEnum) => {
+    return () => {
+      if (status === TaskStatusEnum.DONE) {
+        return this.authStore.hasPermission('tasks:complete');
+      }
+      return true;
+    };
+  };
 
   protected readonly isDrawerOpen = signal<boolean>(false);
   protected readonly selectedTask = signal<Task | null>(null);

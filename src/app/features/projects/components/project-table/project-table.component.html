@@ -5,7 +5,7 @@
     <th>Manager</th>
     <th>Status</th>
     <th>Date</th>
-    <th>Tasks</th>
+    <th *hasPermission="'analytics:read'">Tasks</th>
   </tr>
 
   <ng-container crm-table-body>
@@ -24,7 +24,7 @@
           </span>
         </td>
         <td class="crm-table-text-muted">{{ project.date }}</td>
-        <td class="crm-table-text-muted">{{ project.tasksCount }}</td>
+        <td class="crm-table-text-muted" *hasPermission="'analytics:read'">{{ project.tasksCount }}</td>
       </tr>
     } @empty {
       <tr>

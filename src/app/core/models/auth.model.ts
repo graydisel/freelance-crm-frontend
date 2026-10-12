@@ -6,11 +6,13 @@ export interface ILoginCredentials {
 export interface IUser {
   id: string;
   email: string;
-  profile: {
+  profile?: {
     firstName: string;
     lastName: string;
-  };
+  } | null;
   role: string;
+  clientId?: string | null;
+  permissions: string[];
 }
 
 export interface IAuthResponse {

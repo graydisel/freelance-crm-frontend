@@ -29,6 +29,8 @@ import { ClientProfile } from '../../../../core/models/client.model';
 import { User } from '../../../../core/models/user.model';
 import { HttpErrorResponse } from '@angular/common/http';
 
+import { AuthStore } from '../../../../core/stores/auth.store';
+
 @Component({
   selector: 'app-project-form',
   standalone: true,
@@ -40,7 +42,7 @@ import { HttpErrorResponse } from '@angular/common/http';
     CrmDropdownOptionComponent,
   ],
   templateUrl: './project-form.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./project-form.component.scss'],
 })
 export class ProjectFormComponent implements OnInit {
@@ -49,6 +51,7 @@ export class ProjectFormComponent implements OnInit {
   private readonly clientsService = inject(ClientsService);
   private readonly usersService = inject(UsersService);
   private readonly destroyRef = inject(DestroyRef);
+  protected readonly authStore = inject(AuthStore);
 
   project = input<Project | null>(null);
   saved = output<void>();

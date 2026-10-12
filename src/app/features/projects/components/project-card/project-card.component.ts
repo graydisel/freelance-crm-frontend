@@ -16,13 +16,15 @@ import { ProjectStatusEnum } from '../../../../core/enums/project-status.enum';
 import { CrmMetricCard } from '../../../../shared/components/crm-metric-card/crm-metric-card';
 import { CrmExpandableTextComponent } from '../../../../shared/components/crm-expandable-text/crm-expandable-text.component';
 
+import { HasPermissionDirective } from '../../../../shared/directives/has-permission.directive';
+
 @Component({
   selector: 'app-project-card',
   standalone: true,
-  imports: [CommonModule, CrmMetricCard, CrmExpandableTextComponent],
+  imports: [CommonModule, CrmMetricCard, CrmExpandableTextComponent, HasPermissionDirective],
   templateUrl: './project-card.component.html',
   styleUrls: ['./project-card.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class.is-card-expanded]': 'isExpanded()',
   },

@@ -6,6 +6,8 @@ import { TaskPriorityEnum } from '../../../../core/enums/task-priority.enum';
 import { CRM_TABLE_DECORATORS } from '../../../../shared/components/crm-table/crm-table';
 import { CrmStatusBadgeComponent } from '../../../../shared/components/crm-status-badge/crm-status-badge.component';
 import { CrmAvatarComponent } from '../../../../shared/components/crm-avatar/crm-avatar.component';
+import { AuthStore } from '../../../../core/stores/auth.store';
+import { inject } from '@angular/core';
 
 @Component({
   selector: 'app-project-tasks-table',
@@ -16,6 +18,8 @@ import { CrmAvatarComponent } from '../../../../shared/components/crm-avatar/crm
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectTasksTableComponent {
+  protected readonly authStore = inject(AuthStore);
+
   tasks = input.required<Task[]>();
 
   taskClick = output<Task>();

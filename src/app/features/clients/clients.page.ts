@@ -22,6 +22,8 @@ import { ClientCreateFormComponent } from './components/client-create-form/clien
 import { ClientDetailsComponent } from './components/client-details/client-details.component';
 import { CrmPagination } from '../../shared/components/crm-pagination/crm-pagination';
 
+import { AuthStore } from '../../core/stores/auth.store';
+
 @Component({
   selector: 'app-clients-page',
   standalone: true,
@@ -38,12 +40,13 @@ import { CrmPagination } from '../../shared/components/crm-pagination/crm-pagina
     CrmPagination,
   ],
   templateUrl: './clients.page.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./clients.page.scss'],
 })
 export class ClientsPageComponent implements OnInit {
   private readonly clientsService = inject(ClientsService);
   private readonly destroyRef = inject(DestroyRef);
+  protected readonly authStore = inject(AuthStore);
 
   protected readonly isDrawerOpen = signal<boolean>(false);
   protected readonly selectedClient = signal<ClientProfile | null>(null);

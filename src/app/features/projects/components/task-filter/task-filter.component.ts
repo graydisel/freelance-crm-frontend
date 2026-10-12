@@ -25,6 +25,9 @@ export interface TaskFilterOptions {
   assigneeId?: string;
 }
 
+import { HasPermissionDirective } from '../../../../shared/directives/has-permission.directive';
+import { AuthStore } from '../../../../core/stores/auth.store';
+
 @Component({
   selector: 'app-task-filter',
   standalone: true,
@@ -34,6 +37,7 @@ export interface TaskFilterOptions {
     CrmDropdownComponent,
     CrmDropdownOptionComponent,
     CrmButtonComponent,
+    HasPermissionDirective,
   ],
   templateUrl: './task-filter.component.html',
   styleUrls: ['./task-filter.component.scss'],
@@ -43,6 +47,7 @@ export class TaskFilterComponent {
   private readonly fb = inject(FormBuilder);
   private readonly usersService = inject(UsersService);
   private readonly destroyRef = inject(DestroyRef);
+  protected readonly authStore = inject(AuthStore);
 
   filterChange = output<TaskFilterOptions>();
   openAddTask = output();

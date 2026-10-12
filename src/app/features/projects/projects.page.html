@@ -21,7 +21,20 @@
           </button>
         </div>
 
-        <button crm-btn type="button" variant="primary" size="md" (click)="openAddProject()">Add Project</button>
+        <button
+          *hasPermission="'projects:create'"
+          crm-btn
+          type="button"
+          variant="primary"
+          size="md"
+          [disabled]="authStore.isDemo()"
+          [title]="authStore.isDemo() ? 'Disabled in demo mode' : 'Add Project'"
+          (click)="openAddProject()">
+          Add Project
+          @if (authStore.isDemo()) {
+            <span class="crm-demo-badge">Demo</span>
+          }
+        </button>
       </div>
     </div>
 

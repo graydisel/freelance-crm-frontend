@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { rolesGuard } from './core/guards/roles.guard';
+import { authGuard, clientPortalGuard, internalStaffGuard, permissionGuard } from './core/guards';
 
 export const routes: Routes = [
   {
@@ -13,32 +13,37 @@ export const routes: Routes = [
     loadComponent: () => import('./features/auth/login/login.page').then((m) => m.LoginPage),
   },
   {
+    path: 'portal',
+    title: 'Client Portal',
+    canActivate: [authGuard, clientPortalGuard],
+    loadComponent: () =>
+      import('./features/client-portal/client-portal.component').then(
+        (m) => m.ClientPortalComponent,
+      ),
+  },
+  {
     path: 'dashboard',
     title: 'Dashboard',
-    canActivate: [rolesGuard],
-    data: { roles: ['manager', 'admin'] },
+    canActivate: [authGuard, internalStaffGuard, permissionGuard('analytics:read')],
     loadComponent: () => import('./features/dashboard/dashboard.page').then((m) => m.DashboardPage),
   },
   {
     path: 'clients',
     title: 'Clients',
-    canActivate: [rolesGuard],
-    data: { roles: ['manager', 'admin'] },
+    canActivate: [authGuard, internalStaffGuard, permissionGuard('clients:read')],
     loadComponent: () =>
       import('./features/clients/clients.page').then((m) => m.ClientsPageComponent),
   },
   {
     path: 'projects',
     title: 'Projects',
-    canActivate: [rolesGuard],
-    data: { roles: ['manager', 'admin'] },
+    canActivate: [authGuard, internalStaffGuard, permissionGuard('projects:read')],
     loadComponent: () =>
       import('./features/projects/projects.page').then((m) => m.ProjectsPageComponent),
   },
   {
     path: 'projects/:id',
-    canActivate: [rolesGuard],
-    data: { roles: ['manager', 'admin', 'developer'] },
+    canActivate: [authGuard, internalStaffGuard, permissionGuard('projects:read')],
     loadComponent: () =>
       import('./features/projects/project-layout/project-layout.page').then(
         (m) => m.ProjectLayoutPage,
@@ -52,6 +57,7 @@ export const routes: Routes = [
       {
         path: 'tasks',
         title: 'Project Tasks',
+        canActivate: [permissionGuard('tasks:read')],
         loadComponent: () =>
           import('./features/projects/project-tasks/project-tasks.page').then(
             (m) => m.ProjectTasksPage,
@@ -60,6 +66,7 @@ export const routes: Routes = [
       {
         path: 'kanban',
         title: 'Project Kanban',
+        canActivate: [permissionGuard('tasks:read')],
         loadComponent: () =>
           import('./features/projects/kanban-desk/kanban-desk.page').then((m) => m.KanbanDeskPage),
       },

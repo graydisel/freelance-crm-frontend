@@ -1,0 +1,222 @@
+<div class="client-portal">
+    <!-- Top Navigation Header -->
+    <header class="client-portal__header">
+        <div class="client-portal__brand-group">
+            <div class="client-portal__logo">⚡ Freelance CRM</div>
+            <span class="client-portal__divider">/</span>
+            <span class="client-portal__company-badge">{{ companyName() }}</span>
+        </div>
+
+        <div class="client-portal__user-group">
+            <div class="client-portal__user-pill">
+                <crm-avatar [initials]="userInitials()" variant="contact" />
+                <div class="client-portal__user-details">
+                    <span class="client-portal__user-name">{{ userDisplayName() }}</span>
+                    <span class="client-portal__user-role">Client Access</span>
+                </div>
+            </div>
+            <button crm-btn variant="secondary" size="sm" (click)="onLogout()" aria-label="Sign out">
+                Sign out
+            </button>
+        </div>
+    </header>
+
+    <main class="client-portal__main">
+        @if (errorMessage()) {
+        <div class="client-portal__alert client-portal__alert--error">
+            <span>{{ errorMessage() }}</span>
+            <button crm-btn variant="secondary" size="sm" (click)="loadProjects()">Retry</button>
+        </div>
+        }
+
+        @if (isLoadingProjects()) {
+        <div class="client-portal__loading-state">
+            <div class="client-portal__spinner"></div>
+            <p>Loading your project portal...</p>
+        </div>
+        } @else if (projects().length === 0) {
+        <div class="client-portal__empty-state">
+            <div class="client-portal__empty-icon">📁</div>
+            <h3>No Projects Assigned</h3>
+            <p>There are currently no active projects linked to your account.</p>
+        </div>
+        } @else {
+        @if (projects().length > 1) {
+        <div class="client-portal__project-tabs">
+            <span class="client-portal__tabs-label">Your Projects:</span>
+            <div class="client-portal__tabs-list">
+                @for (project of projects(); track project.id) {
+                <button type="button" class="client-portal__tab-btn"
+                    [class.client-portal__tab-btn--active]="selectedProject()?.id === project.id"
+                    (click)="selectProject(project)">
+                    {{ project.name }}
+                </button>
+                }
+            </div>
+        </div>
+        }
+
+        @if (selectedProject(); as currentProject) {
+        <section class="client-portal__overview-grid">
+            <div class="client-portal__project-summary-card">
+                <div class="client-portal__card-header">
+                    <div>
+                        <span class="client-portal__eyebrow">Project Overview</span>
+                        <h1 class="client-portal__title">{{ currentProject.name }}</h1>
+                    </div>
+                    <crm-status-badge [status]="currentProject.status || 'active'" />
+                </div>
+
+                <p class="client-portal__description">
+                    {{
+                    currentProject.description ||
+                    'Dedicated client deliverables tracking and milestone visibility.'
+                    }}
+                </p>
+
+                <div class="client-portal__meta-row">
+                    <div class="client-portal__meta-item">
+                        <span class="client-portal__meta-label">Target Delivery</span>
+                        <span class="client-portal__meta-value">{{ currentProject.date }}</span>
+                    </div>
+                    <div class="client-portal__meta-item">
+                        <span class="client-portal__meta-label">Overall Progress</span>
+                        <span class="client-portal__meta-value client-portal__meta-value--highlight">
+                            {{ completionPercentage() }}% Completed
+                        </span>
+                    </div>
+                    <div class="client-portal__meta-item">
+                        <span class="client-portal__meta-label">Total Deliverables</span>
+                        <span class="client-portal__meta-value">{{ totalTasks() }} tasks</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="client-portal__pm-card">
+                <span class="client-portal__eyebrow">Dedicated Manager</span>
+                <div class="client-portal__pm-profile">
+                    <crm-avatar [initials]="pmInitials()" variant="company" />
+                    <div class="client-portal__pm-details">
+                        <h3 class="client-portal__pm-name">
+                            {{ currentProject.manager.fullName || 'Lead Project Manager' }}
+                        </h3>
+                        <span class="client-portal__pm-title">Project Delivery Lead</span>
+                    </div>
+                </div>
+                <div class="client-portal__pm-contact">
+                    <div class="client-portal__contact-row">
+                        <span class="client-portal__contact-icon">✉️</span>
+                        <span class="client-portal__contact-text">support&#64;freelancecrm.dev</span>
+                    </div>
+                    <div class="client-portal__contact-row">
+                        <span class="client-portal__contact-icon">💬</span>
+                        <span class="client-portal__contact-text">Dedicated SLA: Priority Response</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="client-portal__tracker-section">
+            <div class="client-portal__section-header">
+                <div>
+                    <h2 class="client-portal__section-title">Milestone Progress</h2>
+                    <p class="client-portal__section-subtitle">
+                        Real-time status of your project deliverables and milestones
+                    </p>
+                </div>
+                <span class="client-portal__percentage-display">{{ completionPercentage() }}%</span>
+            </div>
+
+            <div class="client-portal__progress-bar-container">
+                <div class="client-portal__progress-bar-fill" [style.width.%]="completionPercentage()"></div>
+            </div>
+
+            <div class="client-portal__metrics-grid">
+                <crm-metric-card header="Completed" label="Tasks Delivered" [value]="completedTasks()"
+                    hint="Finished & Verified" />
+                <crm-metric-card header="In Progress" label="Under Active Work" [value]="inProgressTasks()"
+                    [isLive]="true" hint="Currently In Sprint" />
+                <crm-metric-card header="Review" label="In QA / Acceptance" [value]="reviewTasks()"
+                    hint="Pending Sign-off" />
+                <crm-metric-card header="Backlog" label="Upcoming Items" [value]="todoTasks()"
+                    hint="Queued for next sprint" />
+            </div>
+        </section>
+
+        <section class="client-portal__tasks-section">
+            <div class="client-portal__section-header">
+                <div>
+                    <h2 class="client-portal__section-title">Client Deliverables & Tasks</h2>
+                    <p class="client-portal__section-subtitle">
+                        Read-only overview of assigned items and delivery progress
+                    </p>
+                </div>
+                <span class="client-portal__task-count-badge">{{ tasks().length }} Total Items</span>
+            </div>
+
+            @if (isLoadingTasks()) {
+            <div class="client-portal__tasks-loading">
+                <div class="client-portal__spinner"></div>
+                <span>Loading deliverables...</span>
+            </div>
+            } @else {
+            <crm-table>
+                <tr crm-table-header>
+                    <th>Deliverable</th>
+                    <th>Status</th>
+                    <th>Priority</th>
+                    <th>Assignee</th>
+                    <th>Created Date</th>
+                </tr>
+
+                <ng-container crm-table-body>
+                    @for (task of tasks(); track task.id) {
+                    <tr>
+                        <td>
+                            <div class="client-portal__task-title-cell">
+                                <span class="client-portal__task-name">{{ task.title }}</span>
+                                @if (task.description) {
+                                <span class="client-portal__task-desc">{{ task.description }}</span>
+                                }
+                            </div>
+                        </td>
+                        <td>
+                            <span class="client-portal__status-pill client-portal__status-pill--{{
+                              normalizeStatus(task.status)
+                            }}">
+                                {{ formatStatus(task.status) }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="client-portal__priority-pill client-portal__priority-pill--{{
+                              task.priority
+                            }}">
+                                {{ task.priority }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="client-portal__assignee-text">
+                                {{ formatAssignee(task) }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="client-portal__date-text">
+                                {{ task.createdAt | date: 'mediumDate' }}
+                            </span>
+                        </td>
+                    </tr>
+                    } @empty {
+                    <tr>
+                        <td colspan="5" class="client-portal__tasks-empty">
+                            No deliverables or tasks logged for this project yet.
+                        </td>
+                    </tr>
+                    }
+                </ng-container>
+            </crm-table>
+            }
+        </section>
+        }
+        }
+    </main>
+</div>

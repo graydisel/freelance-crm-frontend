@@ -1,0 +1,488 @@
+@use 'variables' as *;
+@use 'animations' as *;
+
+.client-portal {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: $color-bg-main;
+  color: $color-text-dark;
+  font-family: $font-family-base;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $space-lg $space-2xl;
+    background: $color-bg-card;
+    border-bottom: 1px solid $color-border-taupe;
+    box-shadow: $shadow-sm;
+  }
+
+  &__brand-group {
+    display: flex;
+    align-items: center;
+    gap: $space-md;
+  }
+
+  &__logo {
+    font-weight: $font-weight-extrabold;
+    font-size: $font-size-lg;
+    color: $color-text-heading;
+    letter-spacing: -0.02em;
+  }
+
+  &__divider {
+    color: $color-text-light;
+    font-weight: 300;
+  }
+
+  &__company-badge {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: $color-text-dark;
+    background-color: $color-bg-muted;
+    padding: $space-xs $space-md;
+    border-radius: $radius-md;
+  }
+
+  &__user-group {
+    display: flex;
+    align-items: center;
+    gap: $space-xl;
+  }
+
+  &__user-pill {
+    display: flex;
+    align-items: center;
+    gap: $space-md;
+  }
+
+  &__user-details {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__user-name {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: $color-text-dark;
+    line-height: 1.2;
+  }
+
+  &__user-role {
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+  }
+
+  &__main {
+    flex: 1;
+    max-width: 1280px;
+    margin: 0 auto;
+    width: 100%;
+    padding: $space-2xl;
+    display: flex;
+    flex-direction: column;
+    gap: $space-2xl;
+    animation: crm-fade-in $transition-duration-base $transition-timing-function;
+  }
+
+  &__alert {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $space-md $space-lg;
+    border-radius: $radius-md;
+    font-size: $font-size-sm;
+
+    &--error {
+      background-color: $color-danger-bg;
+      color: $color-danger-hover;
+      border: 1px solid rgba($color-danger, 0.25);
+    }
+  }
+
+  &__loading-state,
+  &__empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: $space-3xl $space-2xl;
+    text-align: center;
+    background: $color-bg-card;
+    border-radius: $radius-xl;
+    border: 1px solid $color-border-taupe;
+    gap: $space-md;
+    box-shadow: $shadow-sm;
+
+    h3 {
+      margin: 0;
+      font-size: $font-size-xl;
+      color: $color-text-heading;
+    }
+
+    p {
+      margin: 0;
+      color: $color-text-muted;
+      font-size: $font-size-sm;
+    }
+  }
+
+  &__empty-icon {
+    font-size: 2.5rem;
+    margin-bottom: $space-sm;
+  }
+
+  &__spinner {
+    width: 2rem;
+    height: 2rem;
+    border: 3px solid $color-bg-muted;
+    border-top-color: $color-primary;
+    border-radius: $radius-full;
+    animation: crm-spin 0.8s linear infinite;
+  }
+
+  &__project-tabs {
+    display: flex;
+    align-items: center;
+    gap: $space-lg;
+    overflow-x: auto;
+    padding-bottom: $space-xs;
+  }
+
+  &__tabs-label {
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    color: $color-text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  &__tabs-list {
+    display: flex;
+    gap: $space-sm;
+  }
+
+  &__tab-btn {
+    border: 1px solid $color-border-taupe;
+    background: $color-bg-card;
+    color: $color-text-dark;
+    padding: 0.4rem $space-md;
+    border-radius: $radius-md;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    cursor: pointer;
+    transition: $transition-fast;
+
+    &:hover {
+      border-color: $color-border-accent;
+      color: $color-text-heading;
+    }
+
+    &--active {
+      background: $color-text-heading;
+      color: $color-bg-card;
+      border-color: $color-text-heading;
+    }
+  }
+
+  &__overview-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: $space-xl;
+
+    @media (max-width: $breakpoint-md) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__project-summary-card,
+  &__pm-card {
+    background: $color-bg-card;
+    border: 1px solid $color-border-taupe;
+    border-radius: $radius-xl;
+    padding: $space-xl;
+    box-shadow: $shadow-sm;
+  }
+
+  &__card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: $space-lg;
+    margin-bottom: $space-md;
+  }
+
+  &__eyebrow {
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: $color-text-muted;
+    display: block;
+    margin-bottom: $space-xs;
+  }
+
+  &__title {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: $color-text-heading;
+    margin: 0;
+    line-height: 1.25;
+  }
+
+  &__description {
+    font-size: $font-size-base;
+    color: $color-text-dark;
+    margin: 0 0 $space-xl 0;
+    line-height: 1.5;
+  }
+
+  &__meta-row {
+    display: flex;
+    gap: $space-2xl;
+    border-top: 1px solid $color-bg-muted;
+    padding-top: $space-lg;
+  }
+
+  &__meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: $space-xs;
+  }
+
+  &__meta-label {
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &__meta-value {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: $color-text-dark;
+
+    &--highlight {
+      color: $color-primary;
+    }
+  }
+
+  &__pm-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  &__pm-profile {
+    display: flex;
+    align-items: center;
+    gap: $space-lg;
+    margin: $space-md 0;
+  }
+
+  &__pm-name {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $color-text-heading;
+    margin: 0;
+  }
+
+  &__pm-title {
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+  }
+
+  &__pm-contact {
+    display: flex;
+    flex-direction: column;
+    gap: $space-sm;
+    background: $color-bg-muted;
+    padding: $space-md $space-lg;
+    border-radius: $radius-md;
+    margin-top: $space-sm;
+  }
+
+  &__contact-row {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+    font-size: $font-size-sm;
+    color: $color-text-dark;
+  }
+
+  &__tracker-section,
+  &__tasks-section {
+    background: $color-bg-card;
+    border: 1px solid $color-border-taupe;
+    border-radius: $radius-xl;
+    padding: $space-xl;
+    box-shadow: $shadow-sm;
+  }
+
+  &__section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $space-xl;
+  }
+
+  &__section-title {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $color-text-heading;
+    margin: 0 0 $space-xs 0;
+  }
+
+  &__section-subtitle {
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+    margin: 0;
+  }
+
+  &__percentage-display {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-extrabold;
+    color: $color-success-text;
+  }
+
+  &__task-count-badge {
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    color: $color-text-dark;
+    background: $color-bg-muted;
+    padding: 0.3rem $space-md;
+    border-radius: $radius-md;
+  }
+
+  &__progress-bar-container {
+    width: 100%;
+    height: 10px;
+    background-color: $color-bg-muted;
+    border-radius: $radius-full;
+    overflow: hidden;
+    margin-bottom: $space-xl;
+  }
+
+  &__progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6 0%, $color-primary 100%);
+    border-radius: $radius-full;
+    transition: $transition-progress;
+  }
+
+  &__metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: $space-lg;
+
+    @media (max-width: $breakpoint-md) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  &__tasks-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $space-md;
+    padding: $space-3xl $space-lg;
+    color: $color-text-muted;
+    font-size: $font-size-sm;
+  }
+
+  &__task-title-cell {
+    display: flex;
+    flex-direction: column;
+    gap: $space-xs;
+  }
+
+  &__task-name {
+    font-weight: $font-weight-semibold;
+    color: $color-text-heading;
+    font-size: $font-size-sm;
+  }
+
+  &__task-desc {
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+    line-height: 1.3;
+    max-width: 400px;
+    white-space: normal;
+  }
+
+  &__status-pill {
+    display: inline-block;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    padding: 0.2rem 0.55rem;
+    border-radius: $radius-full;
+    text-transform: capitalize;
+
+    &--done {
+      background-color: $color-success-bg;
+      color: $color-success-text;
+      box-shadow: inset 0 0 0 1px $color-success-ring;
+    }
+
+    &--in-progress,
+    &--inprogress {
+      background-color: $color-accept-bg;
+      color: $color-accept-text;
+    }
+
+    &--review {
+      background-color: $color-warning-bg;
+      color: $color-warning-text;
+      box-shadow: inset 0 0 0 1px $color-warning-ring;
+    }
+
+    &--todo,
+    &--backlog {
+      background-color: $color-bg-muted;
+      color: $color-text-muted;
+    }
+  }
+
+  &__priority-pill {
+    display: inline-block;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    padding: 0.15rem 0.45rem;
+    border-radius: $radius-md;
+    text-transform: uppercase;
+
+    &--high,
+    &--urgent {
+      background-color: $color-danger-bg;
+      color: $color-danger-hover;
+      box-shadow: inset 0 0 0 1px rgba($color-danger, 0.2);
+    }
+
+    &--medium {
+      background-color: $color-warning-bg;
+      color: $color-warning-text;
+      box-shadow: inset 0 0 0 1px $color-warning-ring;
+    }
+
+    &--low {
+      background-color: $color-bg-muted;
+      color: $color-text-muted;
+    }
+  }
+
+  &__assignee-text,
+  &__date-text {
+    font-size: $font-size-sm;
+    color: $color-text-dark;
+  }
+
+  &__tasks-empty {
+    text-align: center;
+    padding: $space-3xl $space-lg;
+    color: $color-text-muted;
+    font-size: $font-size-sm;
+  }
+}

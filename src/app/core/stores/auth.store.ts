@@ -31,9 +31,15 @@ export const AuthStore = signalStore(
   withComputed(({ user }) => ({
     isAuthenticated: computed(() => !!user()),
     role: computed(() => user()?.role ?? null),
-    isManager: computed(() => user()?.role === 'MANAGER'),
-    isClient: computed(() => user()?.role === 'CLIENT'),
-    isDeveloper: computed(() => user()?.role === 'DEVELOPER'),
+    permissions: computed(() => user()?.permissions ?? []),
+    isClient: computed(() => user()?.role?.toUpperCase() === 'CLIENT'),
+    isDeveloper: computed(() => user()?.role?.toUpperCase() === 'DEVELOPER'),
+    isDemo: computed(() => user()?.role?.toUpperCase() === 'DEMO_MANAGER'),
+    isManager: computed(() =>
+      ['ADMIN', 'MANAGER', 'DEMO_MANAGER'].includes(user()?.role?.toUpperCase() ?? ''),
+    ),
+    canManageClients: computed(() => (user()?.permissions ?? []).includes('clients:read')),
+    canViewAnalytics: computed(() => (user()?.permissions ?? []).includes('analytics:read')),
   })),
 
   withMethods(
@@ -46,6 +52,20 @@ export const AuthStore = signalStore(
       const isBrowser = isPlatformBrowser(platformId);
 
       return {
+        hasPermission(permission: string): boolean {
+          if (store.isDemo()) {
+            return true;
+          }
+          return (store.permissions() ?? []).includes(permission);
+        },
+
+        hasAnyPermission(perms: string[]): boolean {
+          if (store.isDemo()) {
+            return true;
+          }
+          return perms.some((p) => (store.permissions() ?? []).includes(p));
+        },
+
         login: rxMethod<ILoginCredentials>(
           pipe(
             tap(() => patchState(store, { isLoading: true, error: null })),
@@ -63,7 +83,14 @@ export const AuthStore = signalStore(
                     isLoading: false,
                   });
 
-                  void router.navigate(['/dashboard']);
+                  const userRole = res.user.role?.toUpperCase();
+                  if (userRole === 'CLIENT') {
+                    void router.navigate(['/portal']);
+                  } else if (userRole === 'DEVELOPER') {
+                    void router.navigate(['/projects']);
+                  } else {
+                    void router.navigate(['/dashboard']);
+                  }
                 }),
                 catchError((err: unknown) => {
                   const message =

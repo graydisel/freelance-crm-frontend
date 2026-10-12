@@ -28,7 +28,11 @@
           <crm-status-badge [status]="task.status"></crm-status-badge>
         </td>
         <td>
-          <select class="priority-select" (change)="onPriorityChange(task, $event)">
+          <select
+            class="priority-select"
+            [disabled]="authStore.isDemo()"
+            [title]="authStore.isDemo() ? 'Disabled in demo mode' : 'Change priority'"
+            (change)="onPriorityChange(task, $event)">
             @for (p of priorities; track p) {
               <option [value]="p" [selected]="task.priority === p">
                 {{ p | titlecase }}

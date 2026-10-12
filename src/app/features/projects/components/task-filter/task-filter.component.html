@@ -38,5 +38,16 @@
   <button crm-btn variant="secondary" (click)="clearFilters()" class="clear-btn">
     Clear Filters
   </button>
-  <button crm-btn variant="primary" (click)="onOpenAddTask()">Add Task</button>
+  <button
+    *hasPermission="'tasks:create'"
+    crm-btn
+    variant="primary"
+    [disabled]="authStore.isDemo()"
+    [title]="authStore.isDemo() ? 'Disabled in demo mode' : 'Add Task'"
+    (click)="onOpenAddTask()">
+    Add Task
+    @if (authStore.isDemo()) {
+      <span class="crm-demo-badge">Demo</span>
+    }
+  </button>
 </div>

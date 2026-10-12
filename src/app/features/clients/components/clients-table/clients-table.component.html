@@ -48,7 +48,11 @@
         </td>
         <td>
           @if (client.status !== 'archived') {
-            <button class="crm-table-action-btn" (click)="onArchive(client, $event)" title="Archive Client">
+            <button
+              class="crm-table-action-btn"
+              [disabled]="authStore.isDemo()"
+              [title]="authStore.isDemo() ? 'Disabled in demo mode' : 'Archive Client'"
+              (click)="onArchive(client, $event)">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
                 <polyline points="21 8 21 21 3 21 3 8"></polyline>
                 <rect x="1" y="3" width="22" height="5"></rect>

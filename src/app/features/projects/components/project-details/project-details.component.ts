@@ -11,18 +11,22 @@ import { ProjectsService } from '../../../../core/services/projects/projects.ser
 import { switchMap } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';
 
+import { HasPermissionDirective } from '../../../../shared/directives/has-permission.directive';
+import { AuthStore } from '../../../../core/stores/auth.store';
+
 @Component({
   selector: 'app-project-details',
   standalone: true,
-  imports: [CommonModule, CrmButtonComponent, RouterModule, DialogModule],
+  imports: [CommonModule, CrmButtonComponent, RouterModule, DialogModule, HasPermissionDirective],
   templateUrl: './project-details.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./project-details.component.scss'],
 })
 export class ProjectDetailsComponent {
   protected readonly router = inject(Router);
   protected readonly dialog = inject(Dialog);
   protected readonly projectsService = inject(ProjectsService);
+  protected readonly authStore = inject(AuthStore);
 
   project = input.required<Project>();
   edit = output<void>();

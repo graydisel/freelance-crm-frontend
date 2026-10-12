@@ -27,7 +27,7 @@
     </div>
   </div>
 
-  <div class="project-details__section">
+  <div class="project-details__section" *hasPermission="'analytics:read'">
     <h3 class="project-details__section-title">Metrics</h3>
     <div class="project-details__info-row">
       <span class="project-details__info-label">Date Created:</span>
@@ -40,8 +40,34 @@
   </div>
 
   <div class="project-details__actions" style="display: flex; gap: 8px;">
-    <button crm-btn type="button" variant="danger" size="md" (click)="onDeleteClick()">Delete Project</button>
-    <button crm-btn type="button" variant="primary" size="md" (click)="onEditClick()">Edit Project</button>
+    <button
+      *hasPermission="'projects:delete'"
+      crm-btn
+      type="button"
+      variant="danger"
+      size="md"
+      [disabled]="authStore.isDemo()"
+      [title]="authStore.isDemo() ? 'Disabled in demo mode' : 'Delete Project'"
+      (click)="onDeleteClick()">
+      Delete Project
+      @if (authStore.isDemo()) {
+        <span class="crm-demo-badge">Demo</span>
+      }
+    </button>
+    <button
+      *hasPermission="'projects:update'"
+      crm-btn
+      type="button"
+      variant="primary"
+      size="md"
+      [disabled]="authStore.isDemo()"
+      [title]="authStore.isDemo() ? 'Disabled in demo mode' : 'Edit Project'"
+      (click)="onEditClick()">
+      Edit Project
+      @if (authStore.isDemo()) {
+        <span class="crm-demo-badge">Demo</span>
+      }
+    </button>
     <button crm-btn type="button" variant="primary" size="md" (click)="onNavigateClick()">View Kanban</button>
   </div>
 </div>

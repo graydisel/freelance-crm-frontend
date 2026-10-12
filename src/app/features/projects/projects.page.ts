@@ -12,6 +12,8 @@ import { CrmDrawerComponent } from '../../shared/components/crm-drawer/crm-drawe
 import { ProjectFormComponent } from './components/project-form/project-form.component';
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 import { ProjectsStore } from '../../core/stores/projects.store';
+import { HasPermissionDirective } from '../../shared/directives/has-permission.directive';
+import { AuthStore } from '../../core/stores/auth.store';
 
 @Component({
   selector: 'app-projects-page',
@@ -28,6 +30,7 @@ import { ProjectsStore } from '../../core/stores/projects.store';
     CrmDrawerComponent,
     ProjectFormComponent,
     ProjectDetailsComponent,
+    HasPermissionDirective,
   ],
   templateUrl: './projects.page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -35,6 +38,7 @@ import { ProjectsStore } from '../../core/stores/projects.store';
 })
 export class ProjectsPageComponent {
   protected readonly store = inject(ProjectsStore);
+  protected readonly authStore = inject(AuthStore);
 
   protected readonly currentPage = this.store.currentPage;
   protected readonly pageSize = this.store.pageSize;

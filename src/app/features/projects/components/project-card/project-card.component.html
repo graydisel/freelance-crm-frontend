@@ -18,7 +18,7 @@
       <span class="project-badge project-badge--{{ project().status }}">
         {{ project().status }}
       </span>
-      <div class="project-tasks-count">
+      <div class="project-tasks-count" *hasPermission="'analytics:read'">
         Tasks linked: <strong>{{ project().tasksCount }}</strong>
       </div>
     </div>

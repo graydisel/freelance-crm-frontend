@@ -9,7 +9,7 @@ import { AuthStore } from '../../core/stores/auth.store';
   imports: [RouterLink, RouterLinkActive],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'crm-sidebar',
     '[class.crm-sidebar--collapsed]': 'isDesktopCollapsed()',
@@ -30,7 +30,31 @@ export class SidebarComponent {
   protected readonly userRole = computed(() => {
     const user = this.authStore.user();
     if (!user || !user.role) return 'Manager';
-    return user.role.charAt(0).toUpperCase() + user.role.slice(1);
+    return user.role
+      .split('_')
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+      .join(' ');
+  });
+
+  protected readonly filteredNavItems = computed(() => {
+    if (this.authStore.isDeveloper()) {
+      return this.navItems.filter(
+        (item) => item.route === '/projects' && this.authStore.hasPermission('projects:read'),
+      );
+    }
+
+    return this.navItems.filter((item) => {
+      if (item.route === '/dashboard') {
+        return this.authStore.canViewAnalytics();
+      }
+      if (item.route === '/clients') {
+        return this.authStore.canManageClients();
+      }
+      if (item.route === '/projects') {
+        return this.authStore.hasPermission('projects:read');
+      }
+      return false;
+    });
   });
 
   protected toggleMobileMenu(): void {

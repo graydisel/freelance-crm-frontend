@@ -78,8 +78,17 @@
 
     <!-- Submit Button -->
     <div class="form-actions">
-      <button crm-btn type="submit" variant="primary" [disabled]="form.invalid" [loading]="isSubmitting()">
+      <button
+        crm-btn
+        type="submit"
+        variant="primary"
+        [disabled]="form.invalid || authStore.isDemo()"
+        [title]="authStore.isDemo() ? 'Disabled in demo mode' : ''"
+        [loading]="isSubmitting()">
         {{ isSubmitting() ? submittingLabel() : submitLabel() }}
+        @if (authStore.isDemo()) {
+          <span class="crm-demo-badge">Demo</span>
+        }
       </button>
     </div>
   </form>

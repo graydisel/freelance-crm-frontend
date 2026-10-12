@@ -1,9 +1,10 @@
-import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, input, output, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { ClientProfile } from '../../../../core/models/client.model';
 import { CrmAvatarComponent } from '../../../../shared/components/crm-avatar/crm-avatar.component';
 import { CrmStatusBadgeComponent } from '../../../../shared/components/crm-status-badge/crm-status-badge.component';
 import { CRM_TABLE_DECORATORS } from '../../../../shared/components/crm-table/crm-table';
+import { AuthStore } from '../../../../core/stores/auth.store';
 
 @Component({
   selector: 'app-clients-table',
@@ -16,10 +17,12 @@ import { CRM_TABLE_DECORATORS } from '../../../../shared/components/crm-table/cr
     ...CRM_TABLE_DECORATORS,
   ],
   templateUrl: './clients-table.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./clients-table.component.scss'],
 })
 export class ClientsTableComponent {
+  protected readonly authStore = inject(AuthStore);
+
   clients = input.required<ClientProfile[]>();
   rowClicked = output<ClientProfile>();
   archive = output<ClientProfile>();

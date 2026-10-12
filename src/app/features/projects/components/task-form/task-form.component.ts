@@ -28,6 +28,8 @@ import { CrmValidators } from '../../../../core/validators/custom-validators';
 import { User } from '../../../../core/models/user.model';
 import { HttpErrorResponse } from '@angular/common/http';
 
+import { AuthStore } from '../../../../core/stores/auth.store';
+
 @Component({
   selector: 'app-task-form',
   standalone: true,
@@ -39,7 +41,7 @@ import { HttpErrorResponse } from '@angular/common/http';
     CrmDropdownOptionComponent,
   ],
   templateUrl: './task-form.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./task-form.component.scss'],
 })
 export class TaskFormComponent implements OnInit {
@@ -47,6 +49,7 @@ export class TaskFormComponent implements OnInit {
   private readonly taskService = inject(TaskService);
   private readonly usersService = inject(UsersService);
   private readonly destroyRef = inject(DestroyRef);
+  protected readonly authStore = inject(AuthStore);
 
   task = input<Task | null>(null);
   projectId = input.required<string>();

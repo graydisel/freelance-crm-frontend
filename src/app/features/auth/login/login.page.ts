@@ -30,7 +30,7 @@ export class LoginPage {
 
   onManagerDemoLogin(): void {
     this.loginForm.patchValue({
-      email: 'manager@crm.com',
+      email: 'demo@crm.com',
       password: 'password123',
     });
     this.onSubmit();

@@ -19,8 +19,15 @@
         <p class="crm-clients__subtitle">{{ activeClientsCount() }} active accounts total &mdash; {{ totalRevenue() |
           currency: 'USD' : 'symbol' : '1.0-0' }} in active contracts</p>
       </div>
-      <button class="crm-clients__add-btn" (click)="isDrawerOpen.set(true)">
+      <button
+        class="crm-clients__add-btn"
+        [disabled]="authStore.isDemo()"
+        [title]="authStore.isDemo() ? 'Disabled in demo mode' : 'Add Client'"
+        (click)="isDrawerOpen.set(true)">
         <span>+ Add</span>
+        @if (authStore.isDemo()) {
+          <span class="crm-demo-badge">Demo</span>
+        }
       </button>
     </div>
 

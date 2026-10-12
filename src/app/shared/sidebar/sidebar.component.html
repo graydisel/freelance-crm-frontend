@@ -29,7 +29,7 @@
   </div>
 
   <nav class="crm-sidebar__nav" aria-label="Main navigation">
-    @for (item of navItems; track item.label) {
+    @for (item of filteredNavItems(); track item.label) {
     <a [routerLink]="item.route" routerLinkActive="crm-sidebar__nav-link--active"
       [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }" [title]="item.label"
       class="crm-sidebar__nav-link">
@@ -77,7 +77,7 @@
   </div>
 
   <nav class="crm-sidebar__drawer-nav">
-    @for (item of navItems; track item.label) {
+    @for (item of filteredNavItems(); track item.label) {
     <a [routerLink]="item.route" routerLinkActive="crm-sidebar__nav-link--active" (click)="closeMobileMenu()"
       class="crm-sidebar__nav-link">
       <span class="crm-sidebar__nav-icon" aria-hidden="true">{{ item.label.charAt(0) }}</span>
