@@ -1,0 +1,73 @@
+<section class="portal-tasks">
+  <div class="portal-tasks__header">
+    <div>
+      <h2 class="portal-tasks__title">Client Deliverables & Tasks</h2>
+      <p class="portal-tasks__subtitle">
+        Read-only overview of assigned items and delivery progress
+      </p>
+    </div>
+    <span class="portal-tasks__count-badge">{{ tasks().length }} Total Items</span>
+  </div>
+
+  @if (isLoading()) {
+  <div class="portal-tasks__loading">
+    <div class="portal-tasks__spinner"></div>
+    <span>Loading deliverables...</span>
+  </div>
+  } @else {
+  <crm-table>
+    <tr crm-table-header>
+      <th>Deliverable</th>
+      <th>Status</th>
+      <th>Priority</th>
+      <th>Assignee</th>
+      <th>Created Date</th>
+    </tr>
+
+    <ng-container crm-table-body>
+      @for (task of tasks(); track task.id) {
+      <tr>
+        <td>
+          <div class="portal-tasks__title-cell">
+            <span class="portal-tasks__task-name">{{ task.title }}</span>
+            @if (task.description) {
+            <span class="portal-tasks__task-desc">{{ task.description }}</span>
+            }
+          </div>
+        </td>
+        <td>
+          <span class="portal-tasks__status-pill portal-tasks__status-pill--{{
+            normalizeStatus(task.status)
+          }}">
+            {{ formatStatus(task.status) }}
+          </span>
+        </td>
+        <td>
+          <span class="portal-tasks__priority-pill portal-tasks__priority-pill--{{
+            task.priority
+          }}">
+            {{ task.priority }}
+          </span>
+        </td>
+        <td>
+          <span class="portal-tasks__assignee-text">
+            {{ formatAssignee(task) }}
+          </span>
+        </td>
+        <td>
+          <span class="portal-tasks__date-text">
+            {{ task.createdAt | date: 'mediumDate' }}
+          </span>
+        </td>
+      </tr>
+      } @empty {
+      <tr>
+        <td colspan="5" class="portal-tasks__empty">
+          No deliverables or tasks logged for this project yet.
+        </td>
+      </tr>
+      }
+    </ng-container>
+  </crm-table>
+  }
+</section>

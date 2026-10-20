@@ -50,11 +50,16 @@
         </button>
       </div>
     </form>
-    <div
-      style="margin-top: 20px; padding: 12px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px; text-align: center; font-size: 13px; color: #475569;">
+    <div class="crm-login__demo">
       <p style="margin: 0 0 6px 0; font-weight: bold;">💡 Demo Access:</p>
-      <button crm-btn type="button" variant="secondary" size="md" [loading]="authStore.isLoading()"
-        (click)="onManagerDemoLogin()">Login as manager</button>
+      <div class="crm-login__demo__buttons">
+        <button crm-btn type="button" variant="secondary" size="md" [loading]="authStore.isLoading()"
+          (click)="onDemoLogin('manager')">Manager</button>
+        <button crm-btn type="button" variant="secondary" size="md" [loading]="authStore.isLoading()"
+          (click)="onDemoLogin('developer')">Developer</button>
+        <button crm-btn type="button" variant="secondary" size="md" [loading]="authStore.isLoading()"
+          (click)="onDemoLogin('client')">Client</button>
+      </div>
     </div>
   </div>
 </div>

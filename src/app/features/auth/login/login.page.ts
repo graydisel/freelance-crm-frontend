@@ -28,9 +28,9 @@ export class LoginPage {
     this.authStore.login(this.loginForm.getRawValue());
   }
 
-  onManagerDemoLogin(): void {
+  onDemoLogin(role: string): void {
     this.loginForm.patchValue({
-      email: 'demo@crm.com',
+      email: `${role}@crm.com`,
       password: 'password123',
     });
     this.onSubmit();

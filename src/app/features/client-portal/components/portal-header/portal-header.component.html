@@ -1,0 +1,20 @@
+<header class="portal-header">
+  <div class="portal-header__brand-group">
+    <div class="portal-header__logo">⚡ Freelance CRM</div>
+    <span class="portal-header__divider">/</span>
+    <span class="portal-header__company-badge">{{ companyName() }}</span>
+  </div>
+
+  <div class="portal-header__user-group">
+    <div class="portal-header__user-pill">
+      <crm-avatar [initials]="userInitials()" variant="contact" />
+      <div class="portal-header__user-details">
+        <span class="portal-header__user-name">{{ userDisplayName() }}</span>
+        <span class="portal-header__user-role">Client Access</span>
+      </div>
+    </div>
+    <button crm-btn variant="secondary" size="sm" (click)="logout.emit()" aria-label="Sign out">
+      Sign out
+    </button>
+  </div>
+</header>

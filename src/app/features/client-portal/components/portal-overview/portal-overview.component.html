@@ -1,0 +1,58 @@
+<section class="portal-overview">
+  <div class="portal-overview__card portal-overview__project-summary">
+    <div class="portal-overview__card-header">
+      <div>
+        <span class="portal-overview__eyebrow">Project Overview</span>
+        <h1 class="portal-overview__title">{{ project().name }}</h1>
+      </div>
+      <crm-status-badge [status]="project().status || 'active'" />
+    </div>
+
+    <p class="portal-overview__description">
+      {{
+        project().description ||
+        'Dedicated client deliverables tracking and milestone visibility.'
+      }}
+    </p>
+
+    <div class="portal-overview__meta-row">
+      <div class="portal-overview__meta-item">
+        <span class="portal-overview__meta-label">Target Delivery</span>
+        <span class="portal-overview__meta-value">{{ project().date }}</span>
+      </div>
+      <div class="portal-overview__meta-item">
+        <span class="portal-overview__meta-label">Overall Progress</span>
+        <span class="portal-overview__meta-value portal-overview__meta-value--highlight">
+          {{ completionPercentage() }}% Completed
+        </span>
+      </div>
+      <div class="portal-overview__meta-item">
+        <span class="portal-overview__meta-label">Total Deliverables</span>
+        <span class="portal-overview__meta-value">{{ totalTasks() }} tasks</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="portal-overview__card portal-overview__pm-card">
+    <span class="portal-overview__eyebrow">Dedicated Manager</span>
+    <div class="portal-overview__pm-profile">
+      <crm-avatar [initials]="pmInitials()" variant="company" />
+      <div class="portal-overview__pm-details">
+        <h3 class="portal-overview__pm-name">
+          {{ project().manager?.fullName ?? 'Lead Project Manager' }}
+        </h3>
+        <span class="portal-overview__pm-title">Project Delivery Lead</span>
+      </div>
+    </div>
+    <div class="portal-overview__pm-contact">
+      <div class="portal-overview__contact-row">
+        <span class="portal-overview__contact-icon">✉️</span>
+        <span class="portal-overview__contact-text">support&#64;freelancecrm.dev</span>
+      </div>
+      <div class="portal-overview__contact-row">
+        <span class="portal-overview__contact-icon">💬</span>
+        <span class="portal-overview__contact-text">Dedicated SLA: Priority Response</span>
+      </div>
+    </div>
+  </div>
+</section>

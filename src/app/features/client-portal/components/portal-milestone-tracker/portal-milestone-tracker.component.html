@@ -1,0 +1,26 @@
+<section class="portal-tracker">
+  <div class="portal-tracker__header">
+    <div>
+      <h2 class="portal-tracker__title">Milestone Progress</h2>
+      <p class="portal-tracker__subtitle">
+        Real-time status of your project deliverables and milestones
+      </p>
+    </div>
+    <span class="portal-tracker__percentage">{{ completionPercentage() }}%</span>
+  </div>
+
+  <div class="portal-tracker__progress-bar-container">
+    <div class="portal-tracker__progress-bar-fill" [style.width.%]="completionPercentage()"></div>
+  </div>
+
+  <div class="portal-tracker__metrics-grid">
+    <crm-metric-card header="Completed" label="Tasks Delivered" [value]="completedTasks()"
+      hint="Finished & Verified" />
+    <crm-metric-card header="In Progress" label="Under Active Work" [value]="inProgressTasks()"
+      [isLive]="true" hint="Currently In Sprint" />
+    <crm-metric-card header="Review" label="In QA / Acceptance" [value]="reviewTasks()"
+      hint="Pending Sign-off" />
+    <crm-metric-card header="Backlog" label="Upcoming Items" [value]="todoTasks()"
+      hint="Queued for next sprint" />
+  </div>
+</section>

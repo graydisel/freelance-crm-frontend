@@ -6,7 +6,7 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthStore } from '../../core/stores/auth.store';
 import { ProjectsService } from '../../core/services/projects/projects.service';
@@ -14,22 +14,21 @@ import { TaskService } from '../../core/services/tasks/task.service';
 import { Project } from '../../core/models/project.model';
 import { Task } from '../../core/models/task.model';
 import { CrmButtonComponent } from '../../shared/components/crm-button/crm-button';
-import { CrmStatusBadgeComponent } from '../../shared/components/crm-status-badge/crm-status-badge.component';
-import { CRM_TABLE_DECORATORS } from '../../shared/components/crm-table/crm-table';
-import { CrmAvatarComponent } from '../../shared/components/crm-avatar/crm-avatar.component';
-import { CrmMetricCard } from '../../shared/components/crm-metric-card/crm-metric-card';
+import { PortalHeaderComponent } from './components/portal-header/portal-header.component';
+import { PortalOverviewComponent } from './components/portal-overview/portal-overview.component';
+import { PortalMilestoneTrackerComponent } from './components/portal-milestone-tracker/portal-milestone-tracker.component';
+import { PortalTasksTableComponent } from './components/portal-tasks-table/portal-tasks-table.component';
 
 @Component({
   selector: 'app-client-portal',
   standalone: true,
   imports: [
     CommonModule,
-    DatePipe,
     CrmButtonComponent,
-    CrmStatusBadgeComponent,
-    ...CRM_TABLE_DECORATORS,
-    CrmAvatarComponent,
-    CrmMetricCard,
+    PortalHeaderComponent,
+    PortalOverviewComponent,
+    PortalMilestoneTrackerComponent,
+    PortalTasksTableComponent,
   ],
   templateUrl: './client-portal.component.html',
   styleUrl: './client-portal.component.scss',
@@ -133,7 +132,6 @@ export class ClientPortalComponent implements OnInit {
         this.projects.set(projectList);
 
         if (projectList.length > 0) {
-          // If user has a clientId, check if a matching project exists
           const userClientId = this.authStore.user()?.clientId;
           let matched = projectList[0];
           if (userClientId) {
@@ -174,22 +172,6 @@ export class ClientPortalComponent implements OnInit {
         this.tasks.set([]);
       },
     });
-  }
-
-  normalizeStatus(status: string): string {
-    return (status || '').toLowerCase().replace(/_/g, '-');
-  }
-
-  formatStatus(status: string): string {
-    return (status || '').replace(/[-_]/g, ' ');
-  }
-
-  formatAssignee(task: Task): string {
-    if (task.assignee?.profile?.firstName) {
-      const last = task.assignee.profile.lastName ? ` ${task.assignee.profile.lastName}` : '';
-      return `${task.assignee.profile.firstName}${last}`;
-    }
-    return task.assignee?.email || 'Engineering Team';
   }
 
   onLogout(): void {

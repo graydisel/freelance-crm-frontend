@@ -1,0 +1,129 @@
+@use 'variables' as *;
+
+:host {
+  display: block;
+}
+
+.portal-overview {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: $space-xl;
+
+  @media (max-width: $breakpoint-md) {
+    grid-template-columns: 1fr;
+  }
+
+  &__card {
+    background: $color-bg-card;
+    border: 1px solid $color-border-taupe;
+    border-radius: $radius-xl;
+    padding: $space-xl;
+    box-shadow: $shadow-sm;
+  }
+
+  &__card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: $space-lg;
+    margin-bottom: $space-md;
+  }
+
+  &__eyebrow {
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: $color-text-muted;
+    display: block;
+    margin-bottom: $space-xs;
+  }
+
+  &__title {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: $color-text-heading;
+    margin: 0;
+    line-height: 1.25;
+  }
+
+  &__description {
+    font-size: $font-size-base;
+    color: $color-text-dark;
+    margin: 0 0 $space-xl 0;
+    line-height: 1.5;
+  }
+
+  &__meta-row {
+    display: flex;
+    gap: $space-2xl;
+    border-top: 1px solid $color-bg-muted;
+    padding-top: $space-lg;
+  }
+
+  &__meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: $space-xs;
+  }
+
+  &__meta-label {
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &__meta-value {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: $color-text-dark;
+
+    &--highlight {
+      color: $color-primary;
+    }
+  }
+
+  &__pm-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  &__pm-profile {
+    display: flex;
+    align-items: center;
+    gap: $space-lg;
+    margin: $space-md 0;
+  }
+
+  &__pm-name {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $color-text-heading;
+    margin: 0;
+  }
+
+  &__pm-title {
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+  }
+
+  &__pm-contact {
+    display: flex;
+    flex-direction: column;
+    gap: $space-sm;
+    background: $color-bg-muted;
+    padding: $space-md $space-lg;
+    border-radius: $radius-md;
+    margin-top: $space-sm;
+  }
+
+  &__contact-row {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+    font-size: $font-size-sm;
+    color: $color-text-dark;
+  }
+}

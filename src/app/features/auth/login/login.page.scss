@@ -35,6 +35,28 @@
     font-size: $font-size-sm;
     color: $color-text-muted;
   }
+
+  &__demo {
+    display: flex;
+    flex-direction: column;
+    gap: $space-md;
+    align-items: center;
+    justify-content: center;
+    margin-top: $space-xl;
+    padding: $space-md;
+    background: $color-bg-card;
+    border: 1px dashed $color-border-taupe;
+    border-radius: $radius-md;
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+
+    &__buttons {
+      display: flex;
+      gap: $space-md;
+      align-items: center;
+      justify-content: center;
+    }
+  }
 }
 
 .crm-form {
