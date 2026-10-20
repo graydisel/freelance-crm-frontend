@@ -1,8 +1,8 @@
 # 💻 Freelance CRM — Frontend Application
 
-A modern, responsive Single-Page Application (SPA) for the Freelance CRM & Project Management platform built with **Angular (v19/22)**, **Angular Signals**, **Angular CDK**.
+A high-performance, responsive Single-Page Application (SPA) for the Freelance CRM & Project Management platform built with **Angular 21**, **Angular Signals**, **NgRx SignalStore**, and **Angular CDK**.
 
-Engineered for freelancers, digital agencies, and project managers to track clients, oversee contract budgets, and manage tasks on an interactive drag-and-drop Kanban board.
+Engineered for digital agencies, freelance collectives, and project managers to streamline client management, monitor project budgets, manage deliverables on an interactive drag-and-drop Kanban desk, and provide a dedicated, modular **Client Portal**.
 
 ---
 
@@ -10,10 +10,13 @@ Engineered for freelancers, digital agencies, and project managers to track clie
 
 - [Overview](#-overview)
 - [Architecture & Tech Stack](#-architecture--tech-stack)
+- [Reactivity & State Management (SignalStore)](#-reactivity--state-management-signalstore)
+- [Security & Access Control (PBAC & Role Guards)](#-security--access-control-pbac--role-guards)
 - [Key Features](#-key-features)
-- [Application Views & Navigation](#-application-views--navigation)
-- [UI Design System & Components](#-ui-design-system--components)
-- [Default Login Credentials](#-default-login-credentials)
+- [Dedicated Client Portal (`/portal`)](#-dedicated-client-portal-portal)
+- [Application Views & Routing Structure](#-application-views--routing-structure)
+- [Reusable UI Component Library](#-reusable-ui-component-library)
+- [Default Login & Demo Access](#-default-login--demo-access)
 - [Prerequisites](#-prerequisites)
 - [Installation & Getting Started](#-installation--getting-started)
 - [Environment Configuration](#-environment-configuration)
@@ -24,113 +27,158 @@ Engineered for freelancers, digital agencies, and project managers to track clie
 
 ## 🌟 Overview
 
-The **Freelance CRM Frontend** is designed to deliver a desktop-class user experience. It combines fine-grained reactive state management with **Angular Signals**, an interactive **Kanban Board** with drag-and-drop workflows via **Angular CDK**, and a clean, responsive aesthetic powered by **SCSS**.
+The **Freelance CRM Frontend** is designed to deliver a desktop-class user experience. It combines fine-grained reactive state management with **Angular Signals** and **NgRx SignalStore**, an interactive **Kanban Board** with drag-and-drop workflows via **Angular CDK**, and a clean, modular design system powered by **SCSS** design tokens.
 
 ---
 
 ## 🛠 Architecture & Tech Stack
 
-- **Framework:** [Angular](https://angular.dev/) (Standalone Components, `ChangeDetectionStrategy.OnPush`)
-- **Reactivity & State Management:** Angular Signals (`signal()`, `computed()`, `takeUntilDestroyed()`) for seamless, zone-less-ready reactive updates without unnecessary change detection passes.
-- **Styling & Layout:**
-  - SCSS stylesheets for modular component styles and design tokens
-- **Interactive Drag & Drop:** [Angular CDK Drag & Drop](https://material.angular.io/cdk/drag-drop/overview) for the Kanban board columns and task movement
+- **Framework:** [Angular 21](https://angular.dev/) (Standalone Components, `ChangeDetectionStrategy.OnPush`)
+- **State Management:** [@ngrx/signals](https://ngrx.io/guide/signals) (SignalStore architecture for predictable, isolated domain states)
+- **Reactivity & Inputs/Outputs:**
+  - Modern Signal Inputs (`input()`, `input.required()`)
+  - Modern Outputs (`output<T>()`)
+  - Computed Signals (`computed()`) and cleanup via `takeUntilDestroyed()`
+- **Interactive Drag & Drop:** [Angular CDK Drag & Drop](https://material.angular.io/cdk/drag-drop/overview) for interactive Kanban columns and task cards
 - **Modal & Dialogs:** Angular CDK Dialog (`@angular/cdk/dialog`)
-- **Form Controls & Validation:** Angular Reactive Forms with dynamic validation and [ngx-mask](https://www.npmjs.com/package/ngx-mask) for phone number inputs
+- **Forms & Validation:** Angular Reactive Forms with dynamic validation and [ngx-mask](https://www.npmjs.com/package/ngx-mask) for phone inputs
+- **Styling:** Modular SCSS design tokens (`_variables.scss`, `_animations.scss`, `_forms.scss`), zero `::ng-deep` violations, and component host modifiers
 - **Unit Testing:** [Vitest](https://vitest.dev/) with `jsdom`
-- **Routing & Guards:** Angular Router with role-based functional route guards (`dashboardGuard`, `clientsGuard`, `projectsGuard`)
+- **Routing & Guards:** Functional Angular route guards (`authGuard`, `clientPortalGuard`, `internalStaffGuard`, `permissionGuard`)
 - **Hosting Target:** [Vercel](https://vercel.com/) with client-side SPA rewrites (`vercel.json`)
+
+---
+
+## ⚡ Reactivity & State Management (SignalStore)
+
+Application state is decoupled into domain-driven SignalStores under `src/app/core/stores/`:
+
+| Store | Location | Responsibility |
+| :--- | :--- | :--- |
+| **`AuthStore`** | `src/app/core/stores/auth.store.ts` | Session persistence, JWT tokens, active user profile, permission array, demo mode detection |
+| **`ProjectsStore`** | `src/app/core/stores/projects.store.ts` | Project catalog, pagination metadata, status filters, search queries, active drawer selection |
+| **`TasksStore`** | `src/app/core/stores/tasks.store.ts` | Project deliverables, Kanban column buckets, drag-and-drop transitions, priority/assignee filters |
+| **`DashboardStore`** | `src/app/core/stores/dashboard.store.ts` | Executive KPIs, financial metrics, and high-level progress aggregation |
+
+---
+
+## 🔐 Security & Access Control (PBAC & Role Guards)
+
+The frontend enforces strict Permission-Based Access Control (**PBAC**) and role boundaries at both route and template levels:
+
+### 1. Functional Route Guards
+- **`authGuard`**: Validates JWT session in `AuthStore`; redirects unauthenticated requests to `/login`.
+- **`permissionGuard(requiredPermission)`**: Enforces specific permission checks (e.g., `'projects:read'`, `'clients:read'`, `'analytics:read'`). If the user lacks the permission, they are routed to `/forbidden`.
+- **`clientPortalGuard`**: Protects the Client Portal route (`/portal`), ensuring client users can access their portal view.
+- **`internalStaffGuard`**: Restricts internal administration pages (`/dashboard`, `/clients`, `/projects`) from client accounts, redirecting clients directly to `/portal`.
+
+### 2. Template-Level Authorization Directive
+- **`*hasPermission="['projects:create']"`**: The custom structural directive `HasPermissionDirective` conditionally renders UI action buttons, drawers, or tabs based on the active user's permissions.
+
+### 3. Demo Mode Safeguards
+- A dedicated `isDemo()` signal disables destructive actions (deletions, mutations) and visually flags demo users with a styled badge.
 
 ---
 
 ## ⚡ Key Features
 
 ### 1. 📊 Executive Dashboard (`/dashboard`)
-- High-level KPI metric cards (`crm-metric-card`): total active projects, client count, and aggregated contract values.
-- Real-time project progress tracking list with percentage progress bars.
-- Recent client portfolio and transaction breakdown.
+- High-level KPI cards (`crm-metric-card`): active projects, client portfolio counts, and aggregated contract values.
+- Real-time project delivery progress bars with live activity indicators.
+- Guarded by `permissionGuard('analytics:read')` and `internalStaffGuard`.
 
 ### 2. 🗂 B2B Client Directory (`/clients`)
-- Comprehensive client data table (`crm-table`) with column sorting, live search, and status badges (`ACTIVE`, `INACTIVE`, `LEAD`).
-- Slide-out details and creation drawer (`crm-drawer`) for seamless editing without leaving the page.
-- Input validation with phone number masking.
-- Integrated pagination controls (`crm-pagination`).
+- Comprehensive client data table (`crm-table`) with column sorting, live search, and status badges (`ACTIVE`, `INACTIVE`, `LEAD`, `ARCHIVED`).
+- Slide-out details and creation drawer (`crm-drawer`) for editing without leaving the page.
+- Input validation with phone number masking via `ngx-mask`.
+- Signal-based pagination controls (`crm-pagination`).
 
 ### 3. 📂 Project Management Hub (`/projects`)
-- Grid and table views for client projects with status filtering (`PLANNED`, `IN_PROGRESS`, `COMPLETED`, `CANCELLED`, `ON_HOLD`).
-- Fast status transition dropdowns.
-- Project creation drawer with budget, deadline, and client association fields.
+- Grid and table view toggling for projects with status filtering (`PLANNING`, `ACTIVE`, `REVIEW`, `COMPLETED`, `PAUSED`).
+- Project creation and editing drawer with manager and client dropdown selectors (`crm-dropdown`).
+- **Deletion Safety Checks:** Prevents deletion of projects that contain active deliverables, alerting the user via `confirmation-modal`.
 
 ### 4. 📌 Dual Task Management Views (`/projects/:id`)
 - **Interactive Kanban Desk (`/projects/:id/kanban`):**
-  - Multi-column visual board: `BACKLOG`, `TO DO`, `IN PROGRESS`, `REVIEW`, `DONE`.
-  - Smooth drag-and-drop between columns with immediate status persistence to the backend API.
-  - Quick task addition, status chips, priority indicators (`LOW`, `MEDIUM`, `HIGH`), and task detail drawers.
+  - Visual status columns: `TODO`, `IN PROGRESS`, `REVIEW`, `DONE`, `BACKLOG`.
+  - Smooth drag-and-drop between columns with immediate status persistence to the backend.
+  - Quick task addition, priority chips, assignee avatars, and task detail drawers.
 - **Project Tasks Table (`/projects/:id/tasks`):**
   - Tabular view with advanced filter chips by priority and status.
-  - Searchable task lists with assignee avatars and due dates.
-
-### 5. 🔐 Security & Role-Based Access Control (RBAC)
-- Clean login page with credential validation and error messaging.
-- Persistent session handling with JWT storage and automatic Bearer token injection via HTTP Interceptors.
-- Route protection preventing unauthorized roles from accessing restricted sections:
-  - **Admin & Manager:** Access to Dashboard, Clients, Projects, Tasks, and creation tools.
-  - **Developer:** Access to Projects and Task Kanban boards.
-  - **Client:** View-only access to relevant project progress.
+  - Clickable task titles to inspect and edit details inside `crm-drawer`.
+  - Direct in-table priority selector dropdowns.
 
 ---
 
-## 🗺 Application Views & Navigation
+## 🏢 Dedicated Client Portal (`/portal`)
+
+Built specifically for client accounts to review deliverables, milestone tracking, and project delivery leads. Decomposed into modular components under `src/app/features/client-portal/components/`:
+
+- **`PortalHeaderComponent` (`app-portal-header`):** Brand logo, client company badge, user pill avatar with fallback initials, and sign-out action.
+- **`PortalOverviewComponent` (`app-portal-overview`):**
+  - **Project Summary Card:** Eyebrow, project title, status badge, description, target delivery date, completion percentage, and total task count.
+  - **Dedicated Manager Card:** Project manager profile, avatar, delivery lead title, and SLA support contacts.
+- **`PortalMilestoneTrackerComponent` (`app-portal-milestone-tracker`):** Gradient milestone progress bar with real-time percentage display and 4 KPI metric cards (*Completed*, *In Progress*, *Review*, *Backlog*).
+- **`PortalTasksTableComponent` (`app-portal-tasks-table`):** Read-only table of client deliverables with status pills, priority indicators, and assignee information.
+- **Project Selector Tabs:** Multi-project tab switcher for clients with multiple contracts, styled using the shared `crm-btn` directive.
+
+---
+
+## 🗺 Application Views & Routing Structure
 
 ```text
-/login                 ── Authenticate with email and password
+/login                 ── Authenticate with email/password or 1-click demo login
+/portal                ── Dedicated Client Portal for client accounts (Guarded)
 /dashboard             ── KPI metrics, financial summary, and progress overview (Guarded)
 /clients               ── Manage client companies, contracts, and contacts (Guarded)
 /projects              ── Project portfolio catalog & status management (Guarded)
 ├── /projects/:id/tasks   ── Tabular task management for a selected project (Guarded)
 └── /projects/:id/kanban  ── Interactive drag-and-drop Kanban desk for a selected project (Guarded)
+/forbidden             ── Access Denied view when lacking permissions
+/**                    ── 404 Not Found fallback view
 ```
 
 ---
 
-## 🧩 UI Design System & Components
+## 🧩 Reusable UI Component Library
 
-The application contains a standalone UI component library located in `src/app/shared/components/`:
+The application features a standalone UI component library located in `src/app/shared/components/`:
 
-| Component | Selector | Description |
+| Component | Selector / Usage | Description |
 | :--- | :--- | :--- |
-| **Drawer** | `<crm-drawer>` | Slide-over side panel for forms and detail views |
-| **Table** | `<crm-table>` | Generic data table with custom row templates and sorting |
-| **Pagination** | `<crm-pagination>` | Responsive pagination controls with page-size selectors |
-| **Metric Card** | `<crm-metric-card>` | KPI cards with icon slots, trends, and statistics |
-| **Status Badge** | `<crm-status-badge>` | Color-coded badges for project, client, and task statuses |
-| **Button** | `<crm-button>` | Styled buttons with primary, secondary, and destructive variants |
-| **Modal** | `<confirmation-modal>`| Dialog modal for confirming sensitive operations (e.g. deletion) |
-| **Search Input** | `<crm-search-input>` | Debounced input for instantaneous filtering |
+| **Button** | `<button crm-btn>` | Directive supporting `primary`, `secondary`, and `danger` variants, `sm`/`md`/`lg` sizes, and animated loading spinner |
+| **Drawer** | `<crm-drawer>` | Accessible slide-over side panel for forms, task details, and project editing |
+| **Table** | `<crm-table>` | Flexible table with `[crm-table-header]` and `[crm-table-body]` content projection |
+| **Pagination** | `<crm-pagination>` | Signal-based pagination controls with page-size selectors |
+| **Metric Card** | `<crm-metric-card>` | KPI cards with live badges, hint text, and status highlights |
+| **Status Badge** | `<crm-status-badge>` | Color-coded status badges with dot indicators for projects, clients, and tasks |
+| **Avatar** | `<crm-avatar>` | User and company avatar with fallback initials generation |
+| **Dropdown** | `<crm-dropdown>` | Contextual menu and status selection dropdown with content projection |
+| **Search Input** | `<crm-search-input>` | Debounced search input implementing `ControlValueAccessor` for Reactive Forms |
 | **Filter Chips** | `<crm-filter-chips>` | Interactive tag chips for multi-attribute filtering |
-| **Avatar** | `<crm-avatar>` | User and company avatar with fallback initials |
-| **Dropdown** | `<crm-dropdown>` | Contextual menu and status selection dropdown |
+| **Expandable Text**| `<crm-expandable-text>`| Smooth expanding description panel without breaking grid layouts |
+| **Modal** | `<confirmation-modal>`| Reusable modal dialog for destructive actions (deletions, status changes) |
 
 ---
 
-## 🔑 Default Login Credentials
+## 🔑 Default Login & Demo Access
 
-If running alongside the seeded backend API (`npm run seed`), use the following pre-configured credentials:
+The login view includes **1-click demo access buttons** to quickly test role-specific interfaces:
 
 | Role | Email | Password | Allowed Views |
 | :--- | :--- | :--- | :--- |
-| **Admin** | `admin@crm.com` | `password123` | Dashboard, Clients, Projects, Tasks, Kanban |
+| **Admin** | `admin@crm.com` | `password123` | Dashboard, Clients, Projects, Tasks, Kanban, User Management |
 | **Manager** | `manager@crm.com` | `password123` | Dashboard, Clients, Projects, Tasks, Kanban |
-| **Developer** | `developer@crm.com` | `password123` | Projects, Tasks, Kanban |
-| **Client** | `client@crm.com` | `password123` | Projects (Assigned) |
+| **Developer** | `developer@crm.com` | `password123` | Projects, Tasks Table, Kanban Desk |
+| **Client** | `client@crm.com` | `password123` | Client Portal (`/portal`) |
 
 ---
 
 ## 📋 Prerequisites
 
-- **Node.js**: v20.x or v24.x
+- **Node.js**: v20.x, v22.x, or v25.x
 - **npm**: v10+ or v11+
-- **Backend API**: The backend server running at `http://localhost:8080` (or a remote endpoint)
+- **Backend API**: The backend server running at `http://localhost:8080` (or configured remote URL)
 
 ---
 
@@ -148,7 +196,7 @@ npm install
 ```
 
 ### 3. Verify environment configuration
-Check `src/environments/environment.development.ts` to ensure the API endpoint points to your backend instance:
+Check `src/environments/environment.development.ts`:
 ```typescript
 export const environment = {
   production: false,
@@ -162,25 +210,21 @@ export const environment = {
 ```bash
 npm start
 ```
-Or with Angular CLI:
-```bash
-npx ng serve
-```
-
-Open your browser and navigate to **`http://localhost:4200`**. The application will automatically reload if you change any source files.
+Open **`http://localhost:4200`** in your browser. The app will automatically reload when source files change.
 
 ---
 
 ## 🧪 Testing & Code Quality
 
-The frontend uses **Vitest** for fast unit testing:
-
 ```bash
-# Run unit tests
+# Run unit tests via Vitest
 npm test
 
-# Run linter
+# Run ESLint with auto-fix
 npm run lint
+
+# Compile production bundle
+npm run build
 ```
 
 ---
@@ -189,15 +233,16 @@ npm run lint
 
 | Command | Description |
 | :--- | :--- |
-| `npm start` | Run development server on `http://localhost:4200` |
+| `npm start` | Launch Angular development server on `http://localhost:4200` |
 | `npm run build` | Compile production build into `dist/freelance-crm` |
 | `npm run watch` | Build in watch mode for development configuration |
 | `npm test` | Run Vitest unit tests |
+| `npm run lint` | Run ESLint with automatic fixes |
 
 ---
 
 ## 🌐 Deployment & CI/CD
 
-- **Vercel Deployment:** The repository includes `vercel.json` with rewrite rules directing all sub-routes to `/index.html` for seamless HTML5 pushState routing.
-- **GitHub Actions (`ci.yml`):** Automatically runs on pull requests and pushes to `master`, validating dependency installation, code quality, and production compilation (`ng build --configuration production`).
-- **Production API:** In production, the app connects to the deployed backend on Render via `src/environments/environment.ts`.
+- **Vercel Deployment:** Configured via `vercel.json` with SPA rewrite rules routing all subpaths to `/index.html`.
+- **GitHub Actions (`ci.yml`):** Runs on pushes and pull requests to `master`, verifying dependency integrity, linting, and production compilation (`ng build`).
+- **Production API:** Automatically connects to the hosted backend on Render via `src/environments/environment.ts`.
