@@ -113,6 +113,10 @@ export class ClientsPageComponent implements OnInit {
   });
 
   protected readonly totalItems = computed<number>(() => {
+    return this.serverResponse()?.meta.totalItems ?? 0;
+  });
+
+  protected readonly filteredTotalCount = computed<number>(() => {
     return this.serverResponse()?.meta.filteredMetrics?.totalCount ?? 0;
   });
 

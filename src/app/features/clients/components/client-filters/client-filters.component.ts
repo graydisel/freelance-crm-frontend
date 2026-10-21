@@ -40,6 +40,7 @@ export class ClientFiltersComponent {
   protected readonly clientsService = inject(ClientsService);
 
   totalResults = input<number>(0);
+  allCount = input<number>();
   activeCount = input<number>(0);
   leadsCount = input<number>(0);
   archivedCount = input<number>(0);
@@ -76,7 +77,7 @@ export class ClientFiltersComponent {
   }
 
   protected readonly filterChips = computed<CrmFilterChipItem[]>(() => [
-    { value: 'all', label: 'All', count: this.totalResults() },
+    { value: 'all', label: 'All', count: this.allCount() ?? this.totalResults() },
     { value: ClientStatusEnum.ACTIVE, label: 'Active', count: this.activeCount() },
     { value: ClientStatusEnum.LEAD, label: 'Lead', count: this.leadsCount() },
     { value: ClientStatusEnum.ARCHIVED, label: 'Archived', count: this.archivedCount() },
