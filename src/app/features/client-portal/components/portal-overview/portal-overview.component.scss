@@ -6,26 +6,31 @@
 
 .portal-overview {
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: $space-xl;
+  grid-template-columns: 1fr;
+  gap: $space-lg;
 
-  @media (max-width: $breakpoint-md) {
-    grid-template-columns: 1fr;
+  @include lg-up {
+    grid-template-columns: 2fr 1fr;
+    gap: $space-xl;
   }
 
   &__card {
     background: $color-bg-card;
     border: 1px solid $color-border-taupe;
     border-radius: $radius-xl;
-    padding: $space-xl;
+    padding: $space-lg;
     box-shadow: $shadow-sm;
+
+    @include sm-up {
+      padding: $space-xl;
+    }
   }
 
   &__card-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: $space-lg;
+    gap: $space-md;
     margin-bottom: $space-md;
   }
 
@@ -40,25 +45,40 @@
   }
 
   &__title {
-    font-size: $font-size-2xl;
+    font-size: $font-size-xl;
     font-weight: $font-weight-bold;
     color: $color-text-heading;
     margin: 0;
     line-height: 1.25;
+    word-break: break-word;
+
+    @include sm-up {
+      font-size: $font-size-2xl;
+    }
   }
 
   &__description {
-    font-size: $font-size-base;
+    font-size: $font-size-sm;
     color: $color-text-dark;
-    margin: 0 0 $space-xl 0;
+    margin: 0 0 $space-lg 0;
     line-height: 1.5;
+
+    @include sm-up {
+      font-size: $font-size-base;
+      margin-bottom: $space-xl;
+    }
   }
 
   &__meta-row {
-    display: flex;
-    gap: $space-2xl;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: $space-md;
     border-top: 1px solid $color-bg-muted;
     padding-top: $space-lg;
+
+    @include md-up {
+      gap: $space-xl;
+    }
   }
 
   &__meta-item {
@@ -88,25 +108,47 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    gap: $space-md;
   }
 
   &__pm-profile {
     display: flex;
     align-items: center;
-    gap: $space-lg;
-    margin: $space-md 0;
+    gap: $space-md;
+    margin: $space-sm 0;
+    min-width: 0;
+
+    @include sm-up {
+      gap: $space-lg;
+      margin: $space-md 0;
+    }
+  }
+
+  &__pm-details {
+    min-width: 0;
   }
 
   &__pm-name {
-    font-size: $font-size-lg;
+    font-size: $font-size-base;
     font-weight: $font-weight-semibold;
     color: $color-text-heading;
     margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    @include sm-up {
+      font-size: $font-size-lg;
+    }
   }
 
   &__pm-title {
-    font-size: $font-size-sm;
+    font-size: $font-size-xs;
     color: $color-text-muted;
+
+    @include sm-up {
+      font-size: $font-size-sm;
+    }
   }
 
   &__pm-contact {
@@ -114,16 +156,32 @@
     flex-direction: column;
     gap: $space-sm;
     background: $color-bg-muted;
-    padding: $space-md $space-lg;
+    padding: $space-md;
     border-radius: $radius-md;
-    margin-top: $space-sm;
+    margin-top: $space-xs;
+
+    @include sm-up {
+      padding: $space-md $space-lg;
+      margin-top: $space-sm;
+    }
   }
 
   &__contact-row {
     display: flex;
     align-items: center;
     gap: $space-sm;
-    font-size: $font-size-sm;
+    font-size: $font-size-xs;
     color: $color-text-dark;
+    min-width: 0;
+
+    @include sm-up {
+      font-size: $font-size-sm;
+    }
+  }
+
+  &__contact-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }

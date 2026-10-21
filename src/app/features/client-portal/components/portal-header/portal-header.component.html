@@ -1,20 +1,26 @@
 <header class="portal-header">
-  <div class="portal-header__brand-group">
-    <div class="portal-header__logo">⚡ Freelance CRM</div>
-    <span class="portal-header__divider">/</span>
-    <span class="portal-header__company-badge">{{ companyName() }}</span>
-  </div>
-
-  <div class="portal-header__user-group">
-    <div class="portal-header__user-pill">
-      <crm-avatar [initials]="userInitials()" variant="contact" />
-      <div class="portal-header__user-details">
-        <span class="portal-header__user-name">{{ userDisplayName() }}</span>
-        <span class="portal-header__user-role">Client Access</span>
+  <div class="portal-header__container">
+    <div class="portal-header__brand-group">
+      <div class="portal-header__logo">
+        <span class="portal-header__logo-icon" aria-hidden="true">⚡</span>
+        <span class="portal-header__logo-text">Freelance CRM</span>
       </div>
+      <span class="portal-header__divider" aria-hidden="true">/</span>
+      <span class="portal-header__company-badge" [title]="companyName()">{{ companyName() }}</span>
     </div>
-    <button crm-btn variant="secondary" size="sm" (click)="logout.emit()" aria-label="Sign out">
-      Sign out
-    </button>
+
+    <div class="portal-header__user-group">
+      <div class="portal-header__user-pill">
+        <crm-avatar [initials]="userInitials()" variant="contact" />
+        <div class="portal-header__user-details">
+          <span class="portal-header__user-name" [title]="userDisplayName()">{{ userDisplayName() }}</span>
+          <span class="portal-header__user-role">Client Access</span>
+        </div>
+      </div>
+      <button crm-btn variant="secondary" size="sm" class="portal-header__logout-btn" (click)="logout.emit()"
+        aria-label="Sign out">
+        Sign out
+      </button>
+    </div>
   </div>
 </header>

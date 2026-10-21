@@ -3,6 +3,7 @@
 
 .client-portal {
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   background-color: $color-bg-main;
@@ -14,17 +15,32 @@
     max-width: 1280px;
     margin: 0 auto;
     width: 100%;
-    padding: $space-2xl;
+    padding: $space-md;
+    padding-left: calc(#{$space-md} + env(safe-area-inset-left, 0px));
+    padding-right: calc(#{$space-md} + env(safe-area-inset-right, 0px));
+    padding-bottom: calc(#{$space-xl} + env(safe-area-inset-bottom, 0px));
     display: flex;
     flex-direction: column;
-    gap: $space-2xl;
+    gap: $space-lg;
     animation: crm-fade-in $transition-duration-base $transition-timing-function;
+
+    @include sm-up {
+      padding: $space-lg;
+      gap: $space-xl;
+    }
+
+    @include md-up {
+      padding: $space-2xl;
+      gap: $space-2xl;
+    }
   }
 
   &__alert {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: $space-md;
+    flex-wrap: wrap;
     padding: $space-md $space-lg;
     border-radius: $radius-md;
     font-size: $font-size-sm;
@@ -42,7 +58,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: $space-3xl $space-2xl;
+    padding: $space-2xl $space-lg;
     text-align: center;
     background: $color-bg-card;
     border-radius: $radius-xl;
@@ -50,10 +66,18 @@
     gap: $space-md;
     box-shadow: $shadow-sm;
 
+    @include sm-up {
+      padding: $space-3xl $space-2xl;
+    }
+
     h3 {
       margin: 0;
-      font-size: $font-size-xl;
+      font-size: $font-size-lg;
       color: $color-text-heading;
+
+      @include sm-up {
+        font-size: $font-size-xl;
+      }
     }
 
     p {
@@ -79,10 +103,16 @@
 
   &__project-tabs {
     display: flex;
-    align-items: center;
-    gap: $space-lg;
-    overflow-x: auto;
-    padding-bottom: $space-xs;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $space-sm;
+    width: 100%;
+
+    @include sm-up {
+      flex-direction: row;
+      align-items: center;
+      gap: $space-lg;
+    }
   }
 
   &__tabs-label {
@@ -92,10 +122,15 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
     white-space: nowrap;
+    flex-shrink: 0;
   }
 
   &__tabs-list {
     display: flex;
     gap: $space-sm;
+    overflow-x: auto;
+    padding-bottom: $space-xs;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
   }
 }

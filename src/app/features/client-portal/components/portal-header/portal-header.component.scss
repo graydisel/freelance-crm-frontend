@@ -2,59 +2,132 @@
 
 :host {
   display: block;
+  position: sticky;
+  top: 0;
+  z-index: 30;
 }
 
 .portal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: $space-lg $space-2xl;
   background: $color-bg-card;
   border-bottom: 1px solid $color-border-taupe;
   box-shadow: $shadow-sm;
+  padding: $space-sm $space-md;
+  padding-top: calc(#{$space-sm} + env(safe-area-inset-top, 0px));
+  padding-left: calc(#{$space-md} + env(safe-area-inset-left, 0px));
+  padding-right: calc(#{$space-md} + env(safe-area-inset-right, 0px));
+
+  @include sm-up {
+    padding: $space-md $space-xl;
+  }
+
+  @include md-up {
+    padding: $space-lg $space-2xl;
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    gap: $space-sm;
+    max-width: 1280px;
+    margin: 0 auto;
+    width: 100%;
+
+    @include md-up {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: $space-xl;
+    }
+  }
 
   &__brand-group {
     display: flex;
     align-items: center;
-    gap: $space-md;
+    gap: $space-sm;
+    min-width: 0;
+
+    @include sm-up {
+      gap: $space-md;
+    }
   }
 
   &__logo {
+    display: flex;
+    align-items: center;
+    gap: $space-xs;
     font-weight: $font-weight-extrabold;
-    font-size: $font-size-lg;
+    font-size: $font-size-base;
     color: $color-text-heading;
     letter-spacing: -0.02em;
+    flex-shrink: 0;
+    white-space: nowrap;
+
+    @include sm-up {
+      font-size: $font-size-lg;
+    }
   }
 
   &__divider {
     color: $color-text-light;
     font-weight: 300;
+    flex-shrink: 0;
   }
 
   &__company-badge {
-    font-size: $font-size-sm;
+    font-size: $font-size-xs;
     font-weight: $font-weight-semibold;
     color: $color-text-dark;
     background-color: $color-bg-muted;
-    padding: $space-xs $space-md;
+    padding: $space-xs $space-sm;
     border-radius: $radius-md;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 150px;
+
+    @include sm-up {
+      font-size: $font-size-sm;
+      padding: $space-xs $space-md;
+      max-width: 220px;
+    }
+
+    @include md-up {
+      max-width: 320px;
+    }
   }
 
   &__user-group {
     display: flex;
     align-items: center;
-    gap: $space-xl;
+    justify-content: space-between;
+    gap: $space-md;
+    min-width: 0;
+    padding-top: $space-xs;
+    border-top: 1px solid rgba($color-border-taupe, 0.6);
+
+    @include md-up {
+      padding-top: 0;
+      border-top: none;
+      justify-content: flex-end;
+      gap: $space-xl;
+    }
   }
 
   &__user-pill {
     display: flex;
     align-items: center;
-    gap: $space-md;
+    gap: $space-sm;
+    min-width: 0;
+
+    @include sm-up {
+      gap: $space-md;
+    }
   }
 
   &__user-details {
     display: flex;
     flex-direction: column;
+    min-width: 0;
   }
 
   &__user-name {
@@ -62,10 +135,26 @@
     font-weight: $font-weight-semibold;
     color: $color-text-dark;
     line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 140px;
+
+    @include sm-up {
+      max-width: 200px;
+    }
   }
 
   &__user-role {
     font-size: $font-size-xs;
     color: $color-text-muted;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__logout-btn {
+    flex-shrink: 0;
   }
 }

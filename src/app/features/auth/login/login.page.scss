@@ -55,6 +55,7 @@
       gap: $space-md;
       align-items: center;
       justify-content: center;
+      flex-wrap: wrap;
     }
   }
 }
@@ -124,5 +125,18 @@
     display: grid;
     grid-template-columns: 1fr;
     margin-top: $space-xl;
+  }
+}
+
+@media (max-width: 420px) {
+  .crm-login__demo {
+    &__buttons {
+      flex-direction: column;
+      width: 100%;
+
+      button {
+        width: 100%;
+      }
+    }
   }
 }

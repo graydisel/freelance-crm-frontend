@@ -9,27 +9,48 @@
   background: $color-bg-card;
   border: 1px solid $color-border-taupe;
   border-radius: $radius-xl;
-  padding: $space-xl;
+  padding: $space-lg;
   box-shadow: $shadow-sm;
+
+  @include sm-up {
+    padding: $space-xl;
+  }
 
   &__header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: $space-xl;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $space-sm;
+    margin-bottom: $space-lg;
+
+    @include sm-up {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: $space-md;
+      margin-bottom: $space-xl;
+    }
   }
 
   &__title {
-    font-size: $font-size-xl;
+    font-size: $font-size-lg;
     font-weight: $font-weight-bold;
     color: $color-text-heading;
     margin: 0 0 $space-xs 0;
+
+    @include sm-up {
+      font-size: $font-size-xl;
+    }
   }
 
   &__subtitle {
-    font-size: $font-size-sm;
+    font-size: $font-size-xs;
     color: $color-text-muted;
     margin: 0;
+
+    @include sm-up {
+      font-size: $font-size-sm;
+    }
   }
 
   &__count-badge {
@@ -39,6 +60,12 @@
     background: $color-bg-muted;
     padding: 0.3rem $space-md;
     border-radius: $radius-md;
+    white-space: nowrap;
+    align-self: flex-start;
+
+    @include sm-up {
+      align-self: auto;
+    }
   }
 
   &__loading {
@@ -81,7 +108,11 @@
   }
 
   &__status-pill {
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    text-wrap: nowrap;
     font-size: $font-size-xs;
     font-weight: $font-weight-semibold;
     padding: 0.2rem 0.55rem;
