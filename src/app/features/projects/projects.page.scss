@@ -26,7 +26,11 @@
     font-size: $font-size-3xl;
     font-weight: $font-weight-extrabold;
     color: $color-text-heading;
-    margin: 0 0 $space-xs 0;
+    margin: $space-3xl 0 $space-xs 0;
+
+    @include md-up {
+      margin: 0 0 $space-xs 0;
+    }
   }
 
   &__subtitle {

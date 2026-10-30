@@ -21,8 +21,9 @@ import { CrmDrawerComponent } from '../../shared/components/crm-drawer/crm-drawe
 import { ClientCreateFormComponent } from './components/client-create-form/client-create-form.component';
 import { ClientDetailsComponent } from './components/client-details/client-details.component';
 import { CrmPagination } from '../../shared/components/crm-pagination/crm-pagination';
-
+import { CrmButtonComponent } from '../../shared/components/crm-button/crm-button';
 import { AuthStore } from '../../core/stores/auth.store';
+import { HasPermissionDirective } from '../../shared/directives';
 
 @Component({
   selector: 'app-clients-page',
@@ -38,6 +39,8 @@ import { AuthStore } from '../../core/stores/auth.store';
     ClientCreateFormComponent,
     ClientDetailsComponent,
     CrmPagination,
+    HasPermissionDirective,
+    CrmButtonComponent
   ],
   templateUrl: './clients.page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -64,7 +67,7 @@ export class ClientsPageComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   private loadClients(): void {
     this.clientsService

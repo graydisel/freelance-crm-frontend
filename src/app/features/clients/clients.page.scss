@@ -42,22 +42,6 @@
     margin: 0;
   }
 
-  &__add-btn {
-    background-color: $color-primary;
-    color: white;
-    border: none;
-    border-radius: $radius-md;
-    padding: $space-sm $space-lg;
-    font-size: $font-size-sm;
-    font-weight: $font-weight-medium;
-    cursor: pointer;
-    transition: background-color 0.2s;
-
-    &:hover {
-      background-color: $color-primary-hover;
-    }
-  }
-
   &__metrics-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);

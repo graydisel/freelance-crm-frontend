@@ -1,12 +1,12 @@
 <crm-drawer [isOpen]="isDrawerOpen()" (closed)="isDrawerOpen.set(false)">
   @if (isDrawerOpen()) {
-    <app-client-create-form (saved)="onClientSaved()"></app-client-create-form>
+  <app-client-create-form (saved)="onClientSaved()"></app-client-create-form>
   }
 </crm-drawer>
 
 <crm-drawer [isOpen]="!!selectedClient()" (closed)="selectedClient.set(null)">
   @if (selectedClient(); as activeClient) {
-    <app-client-details [clientId]="activeClient.id" (saved)="onClientUpdated()"></app-client-details>
+  <app-client-details [clientId]="activeClient.id" (saved)="onClientUpdated()"></app-client-details>
   }
 </crm-drawer>
 
@@ -19,14 +19,12 @@
         <p class="crm-clients__subtitle">{{ activeClientsCount() }} active accounts total &mdash; {{ totalRevenue() |
           currency: 'USD' : 'symbol' : '1.0-0' }} in active contracts</p>
       </div>
-      <button
-        class="crm-clients__add-btn"
-        [disabled]="authStore.isDemo()"
-        [title]="authStore.isDemo() ? 'Disabled in demo mode' : 'Add Client'"
+      <button *hasPermission="'clients:create'" crm-btn type="button" variant="primary" size="sm"
+        [disabled]="authStore.isDemo()" [title]="authStore.isDemo() ? 'Disabled in demo mode' : 'Add Client'"
         (click)="isDrawerOpen.set(true)">
         <span>+ Add</span>
         @if (authStore.isDemo()) {
-          <span class="crm-demo-badge">Demo</span>
+        <span class="crm-demo-badge">Demo</span>
         }
       </button>
     </div>
@@ -45,28 +43,22 @@
       </crm-metric-card>
     </div>
 
-    <app-client-filters
-      [totalResults]="totalItems()"
-      [allCount]="filteredTotalCount()"
-      [activeCount]="filteredActiveCount()"
-      [leadsCount]="filteredLeadsCount()"
-      [archivedCount]="filteredArchivedCount()"
-      (searchChange)="onSearchChange($event)"
+    <app-client-filters [totalResults]="totalItems()" [allCount]="filteredTotalCount()"
+      [activeCount]="filteredActiveCount()" [leadsCount]="filteredLeadsCount()"
+      [archivedCount]="filteredArchivedCount()" (searchChange)="onSearchChange($event)"
       (statusChange)="onStatusChange($event)">
     </app-client-filters>
 
-    <app-clients-table [clients]="paginatedClients()" (rowClicked)="selectedClient.set($event)" (archive)="onArchiveClient($event)">
+    <app-clients-table [clients]="paginatedClients()" (rowClicked)="selectedClient.set($event)"
+      (archive)="onArchiveClient($event)">
     </app-clients-table>
 
     @if (totalItems() > 0) {
-      <div class="crm-clients__pagination" style="margin-top: 1.5rem;">
-        <crm-pagination
-          [currentPage]="currentPage()"
-          [pageSize]="pageSize()"
-          [totalItems]="totalItems()"
-          (pageChange)="onPageChange($event)">
-        </crm-pagination>
-      </div>
+    <div class="crm-clients__pagination" style="margin-top: 1.5rem;">
+      <crm-pagination [currentPage]="currentPage()" [pageSize]="pageSize()" [totalItems]="totalItems()"
+        (pageChange)="onPageChange($event)">
+      </crm-pagination>
+    </div>
     }
   </div>
 </main>
